@@ -40,3 +40,5 @@ Il s'agit d'une application de communication textuel. Elle contient un système 
 [Journal de travail de Benjamin FONTANA](https://www.notion.so/7be329fa55b847568017dec369d813f7)
 
 [Tâches](https://www.notion.so/5e8a52a33bfc477ba327235e7d2fc6ff)
+
+[Diagramme de classes](Zoning/diagramme_classes.jpeg)
