@@ -24,5 +24,9 @@ namespace DroxidClient
         {
             InitializeComponent();
         }
+
+        private void BtnDroxidClick(object sender, RoutedEventArgs e){
+            MessageBox.Show(sender.GetType().ToString());
+        }
     }
 }

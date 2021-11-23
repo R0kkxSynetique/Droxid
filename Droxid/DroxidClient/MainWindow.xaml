@@ -27,7 +27,7 @@
                     <RowDefinition Height="100*" />
                 </Grid.RowDefinitions>
 
-                <Button>
+                <Button x:Name="btnDroxid" Click="BtnDroxidClick">
                     <Button.Resources>
                         <Style TargetType="{x:Type Border}">
                             <Setter Property="CornerRadius" Value="50" />
