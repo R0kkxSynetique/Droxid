@@ -83,7 +83,7 @@
                 <Grid></Grid>
 
             </Border>
-            <Grid Grid.Column="2" Background="#36393f"></Grid>
+            <Grid Grid.Column="2" Background="#36393f"/>
         </Grid>
     </Grid>
 </Window>

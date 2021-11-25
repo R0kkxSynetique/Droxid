@@ -28,5 +28,10 @@ namespace Droxid
             _username = username;
             _guilds = guilds;
         }
+
+        public void SendMessage(Message message)
+        {
+            
+        }
     }
 }
