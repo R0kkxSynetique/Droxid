@@ -46,15 +46,49 @@
                     </Button.Content>
                 </Button>
 
-
-                <StackPanel Grid.Row="1" Style="{StaticResource stpServer}">
-                    <Button Style="{StaticResource btnDroxid}">
-                        a
-                    </Button>
-                    <Button Style="{StaticResource btnDroxid}">
-                        b
-                    </Button>
-                </StackPanel>
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
+                    <StackPanel Style="{StaticResource stpServer}">
+                        <Button>
+                            a
+                        </Button>
+                        <Button>
+                            b
+                        </Button>
+                        <Button>
+                            c
+                        </Button>
+                        <Button>
+                            d
+                        </Button>
+                        <Button>
+                            e
+                        </Button>
+                        <Button>
+                            e
+                        </Button>
+                        <Button>
+                            e
+                        </Button>
+                        <Button>
+                            e
+                        </Button>
+                        <Button>
+                            e
+                        </Button>
+                        <Button>
+                            e
+                        </Button>
+                        <Button>
+                            e
+                        </Button>
+                        <Button>
+                            e
+                        </Button>
+                        <Button>
+                            e
+                        </Button>
+                    </StackPanel>
+                </ScrollViewer>
 
             </Grid>
 

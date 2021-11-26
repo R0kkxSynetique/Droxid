@@ -30,6 +30,68 @@
 
     <Style x:Key="stpServer" TargetType="{x:Type StackPanel}">
         <Setter Property="Height" Value="auto"/>
-        <Setter Property="Margin" Value="10"/>
+        <Style.Resources>
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Margin" Value="0,4"/>
+                <Setter Property="Height" Value="50"/>
+                <Setter Property="Width" Value="50"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Background" Value="#282c34"/>
+                <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                <Setter Property="Foreground" Value="#ffffff"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Name="border" Background="{TemplateBinding Background}" CornerRadius="50" Height="50">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="CornerRadius" TargetName="border" Value="15"/>
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <TranslateTransform X="0" Y="3"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter TargetName="border" Property="CornerRadius" Value="15"/>
+                                    <Setter Property="Background" Value="#2c313c"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+
+            </Style>
+        </Style.Resources>
+    </Style>
+
+    <Style TargetType="{x:Type ScrollBar}">
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ScrollBar}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition MaxHeight="18"/>
+                            <RowDefinition Height="0.00001*"/>
+                            <RowDefinition MaxHeight="18"/>
+                        </Grid.RowDefinitions>
+                        <Border x:Name="Border" Grid.RowSpan="3" Width="2" CornerRadius="2" Background="AliceBlue">
+                        </Border>
+                        <Track x:Name="Track" Grid.Row="1" IsDirectionReversed="True">
+                            <Track.Thumb>
+                                <Thumb Margin="1,0" Background="#ffffff" OverridesDefaultStyle="True">
+                                    
+                                </Thumb>
+                            </Track.Thumb>
+                        </Track>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 </ResourceDictionary>
