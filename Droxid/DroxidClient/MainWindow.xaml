@@ -3,7 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:local="clr-namespace:DroxidClient" mc:Ignorable="d" Title="MainWindow" Height="750" Width="1300">
+    xmlns:local="clr-namespace:DroxidClient"
+    mc:Ignorable="d" Title="MainWindow" Height="750" Width="1300">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -12,7 +13,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    
+
     <Grid Background="#202225">
         <Grid.RowDefinitions>
             <RowDefinition Height="20" />
@@ -93,7 +94,8 @@
             </Grid>
 
             <Border Grid.Column="1" Background="#FF2F3136" CornerRadius="10,0,0,0">
-                <Grid></Grid>
+                <Grid>
+                </Grid>
 
             </Border>
             <Grid Grid.Column="2" Background="#36393f"></Grid>

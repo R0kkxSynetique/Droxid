@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DroxidClient.ViewModels;
 
 namespace DroxidClient
 {
@@ -23,6 +24,7 @@ namespace DroxidClient
         public MainWindow()
         {
             InitializeComponent();
+            MainWindowViewModel vm = new MainWindowViewModel();
         }
 
         private void BtnDroxidClick(object sender, RoutedEventArgs e){
