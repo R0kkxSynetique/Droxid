@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.1.31911.260
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31613.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Droxid", "Droxid\Droxid.csproj", "{9DC78586-26A5-4827-BA32-D26396C191AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Droxid", "Droxid\Droxid.csproj", "{9DC78586-26A5-4827-BA32-D26396C191AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DroxidClient", "DroxidClient\DroxidClient.csproj", "{C5433E3E-FAA6-45A2-81A9-5CC7814B092D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DroxidClient", "DroxidClient\DroxidClient.csproj", "{C5433E3E-FAA6-45A2-81A9-5CC7814B092D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DroxidGUI", "DroxidGUI\DroxidGUI.csproj", "{7D4265B9-63AB-4316-B954-B6D26DBEA748}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{C5433E3E-FAA6-45A2-81A9-5CC7814B092D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5433E3E-FAA6-45A2-81A9-5CC7814B092D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5433E3E-FAA6-45A2-81A9-5CC7814B092D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D4265B9-63AB-4316-B954-B6D26DBEA748}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D4265B9-63AB-4316-B954-B6D26DBEA748}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D4265B9-63AB-4316-B954-B6D26DBEA748}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D4265B9-63AB-4316-B954-B6D26DBEA748}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
