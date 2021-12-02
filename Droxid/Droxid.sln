@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Droxid", "Droxid\Droxid.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DroxidClient", "DroxidClient\DroxidClient.csproj", "{C5433E3E-FAA6-45A2-81A9-5CC7814B092D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DroxidGUI", "DroxidGUI\DroxidGUI.csproj", "{7D4265B9-63AB-4316-B954-B6D26DBEA748}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DroxidGUI", "DroxidGUI\DroxidGUI.csproj", "{7D4265B9-63AB-4316-B954-B6D26DBEA748}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DroxidCLI", "DroxidCLI\DroxidCLI.csproj", "{7261853B-94C0-4B67-8078-B44768C7BDBB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{7D4265B9-63AB-4316-B954-B6D26DBEA748}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D4265B9-63AB-4316-B954-B6D26DBEA748}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D4265B9-63AB-4316-B954-B6D26DBEA748}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7261853B-94C0-4B67-8078-B44768C7BDBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7261853B-94C0-4B67-8078-B44768C7BDBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7261853B-94C0-4B67-8078-B44768C7BDBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7261853B-94C0-4B67-8078-B44768C7BDBB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
