@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,20 +27,28 @@ namespace DroxidClient
         private List<Guild> _guilds;
         public MainWindow()
         {
-            InitializeComponent();
             _vm = new MainWindowViewModel();
             _vm.register(this);
             _guilds = new List<Guild>();
+            _guilds.Add(new Guild(1, "test", new User(1, "tester"), new List<Role>(), new List<Permission>(), new List<Channel>()));
+            DataContext = this;
+            Resources.Add("lstServer", Guilds);
             update();
+            InitializeComponent();
         }
         public void update()
         {
             _guilds = _vm.Guilds;
+            Resources["lstServer"] = Guilds;
         }
 
         public List<Guild> Guilds
         {
             get { return _guilds; }
+        }
+
+        public ObservableCollection<Guild> Test{
+            get { return new ObservableCollection<Guild>(Guilds); }
         }
 
         //Window events

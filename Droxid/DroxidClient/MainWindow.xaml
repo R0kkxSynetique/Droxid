@@ -13,7 +13,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-
+    
     <Grid Background="#202225">
         <Grid.RowDefinitions>
             <RowDefinition Height="20" />
@@ -61,43 +61,35 @@
                         <Button>
                             d
                         </Button>
-                        <Button>
-                            e
-                        </Button>
-                        <Button>
-                            e
-                        </Button>
-                        <Button>
-                            e
-                        </Button>
-                        <Button>
-                            e
-                        </Button>
-                        <Button>
-                            e
-                        </Button>
-                        <Button>
-                            e
-                        </Button>
-                        <Button>
-                            e
-                        </Button>
-                        <Button>
-                            e
-                        </Button>
-                        <Button>
-                            e
-                        </Button>
+                    
+                        <ItemsControl x:Name="ictlServer" ItemsSource="{Binding Path=Test}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Width="10" Height="10" Background="White">
+                                        <TextBox>
+                                            test
+                                        </TextBox>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                     </StackPanel>
                 </ScrollViewer>
 
             </Grid>
 
-            <Border Grid.Column="1" Background="#FF2F3136" CornerRadius="10,0,0,0">
-                <Grid>
-                </Grid>
+            <!--<ListBox Grid.Column="1" Background="#FF2F3136" Width="240" ItemsSource="{Binding Source={DynamicResource lstServer}}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock Text="{Binding Path=this}" />
+                            <TextBlock Text="{Binding Path=Name}"/>
+                            <TextBlock Text="{Binding Path=Priority}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>-->
 
-            </Border>
             <Grid Grid.Column="2" Background="#36393f"/>
         </Grid>
     </Grid>
