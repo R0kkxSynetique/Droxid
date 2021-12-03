@@ -50,4 +50,5 @@ namespace Droxid.DataBase
             CloseDBConnection();
             return reader;
         }
+    }
 }
