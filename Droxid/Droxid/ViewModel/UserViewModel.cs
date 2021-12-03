@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Droxid.DataBase;
+using MySql.Data.MySqlClient;
 
 namespace Droxid.ViewModel
 {
@@ -25,7 +25,7 @@ namespace Droxid.ViewModel
 
             _parameters.Add(username);
             
-            SqlDataReader reader = _dBManager.Select(query, _parameters);
+            MySqlDataReader reader = _dBManager.Select(query, _parameters);
 
             while (reader.Read())
             {
@@ -50,7 +50,7 @@ namespace Droxid.ViewModel
 
             _parameters.Add(id.ToString());
 
-            SqlDataReader reader = _dBManager.Select(query, _parameters);
+            MySqlDataReader reader = _dBManager.Select(query, _parameters);
 
             while (reader.Read())
             {
@@ -71,7 +71,7 @@ namespace Droxid.ViewModel
 
             _parameters.Add(id.ToString());
 
-            SqlDataReader reader = _dBManager.Select(query, _parameters);
+            MySqlDataReader reader = _dBManager.Select(query, _parameters);
 
             while (reader.Read())
             {

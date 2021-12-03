@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MySql.Data.MySqlClient;
 
 namespace Droxid.DataBase
 {
     // This class will only open connection to DB
     public class DBManager
     {
-        private SqlConnection _connection;
+        private MySqlConnection _connection;
 
         public DBManager()
         {
             // check the config to change
-            string ConnectionSting = "Database=Droxid;Server=localhost;user=Droxid;password=Droxid";
-            _connection = new SqlConnection(ConnectionSting);
+            string ConnectionSting = "Database=droxid;Server=localhost;user=Droxid;password=Droxid";
+            _connection = new MySqlConnection(ConnectionSting);
         }
 
         public void OpenDBConnection()
@@ -29,24 +29,24 @@ namespace Droxid.DataBase
             _connection.Close();
         }
 
-        public SqlDataReader Select(string query)
+        public MySqlDataReader Select(string query)
         {
             OpenDBConnection();
-            SqlCommand command = new SqlCommand(query, _connection);
-            SqlDataReader reader = command.ExecuteReader();
+            MySqlCommand command = new MySqlCommand(query, _connection);
+            MySqlDataReader reader = command.ExecuteReader();
             CloseDBConnection();
             return reader;
         }
 
-        public SqlDataReader Select(string query, List<string> parameters)
+        public MySqlDataReader Select(string query, List<string> parameters)
         {
             OpenDBConnection();
-            SqlCommand command = new SqlCommand(query, _connection);
+            MySqlCommand command = new MySqlCommand(query, _connection);
             foreach (string param in parameters)
             {
                 command.Parameters.AddWithValue("@" + param, param);
             }
-            SqlDataReader reader = command.ExecuteReader();
+            MySqlDataReader reader = command.ExecuteReader();
             CloseDBConnection();
             return reader;
         }
