@@ -16,7 +16,7 @@ namespace Droxid.DataBase
         public DBManager()
         {
             // check the config to change
-            string ConnectionSting = "Database=droxid;Server=localhost;user=Droxid;password=Droxid";
+            string ConnectionSting = "Database=droxid;Server=localhost;user=Droxid;password=Droxid;";
             _connection = new MySqlConnection(ConnectionSting);
         }
 
@@ -38,16 +38,17 @@ namespace Droxid.DataBase
             return reader;
         }
 
-        public MySqlDataReader Select(string query, List<string> parameters)
+        public MySqlDataReader Select(string query, List<MySqlParameter> parameters)
         {
             OpenDBConnection();
             MySqlCommand command = new MySqlCommand(query, _connection);
-            foreach (string param in parameters)
+            foreach (MySqlParameter param in parameters)
             {
-                command.Parameters.AddWithValue("@" + param, param);
+                command.Parameters.Add(param);
+                
             }
+            Console.WriteLine(command.CommandText);
             MySqlDataReader reader = command.ExecuteReader();
-            CloseDBConnection();
             return reader;
         }
     }

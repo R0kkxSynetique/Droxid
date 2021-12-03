@@ -12,32 +12,38 @@ namespace Droxid.ViewModel
     public class UserViewModel
     {
         private DBManager _dBManager = new DBManager();
-        private List<string> _parameters = new List<string>();
+        private List<MySqlParameter> _parameters = new List<MySqlParameter>();
 
-
-        //The "@param" must have the same name as the DB header
-        //Eg. DB header = name -> here @name
         public User GetUserByUsername(string username)
         {
-            string query = "SELECT * FROM users WHERE username = \"@username\"";
+            string query = "SELECT * FROM users WHERE username = @username";
 
             _parameters.Clear();
 
-            _parameters.Add(username);
-            
+            _parameters.Add(new MySqlParameter("@username", username));
+
             MySqlDataReader reader = _dBManager.Select(query, _parameters);
 
-            while (reader.Read())
+            User user;
+
+
+            if (reader.HasRows)
             {
-                ReadSingleRow((IDataRecord)reader);
+                while (reader.Read())
+                {
+                    ReadSingleRow((IDataRecord)reader);
+                }
+            }
+            else
+            {
+                Console.WriteLine("No rows found.");
             }
 
-            User user = new User(reader.GetInt32(0), reader.GetString(1));
+            user = new User(reader.GetInt32(0), reader.GetString(1));
 
             reader.Close();
 
             return user;
-
         }
 
         public List<int> GetUserGuildsId(int id)
@@ -48,7 +54,7 @@ namespace Droxid.ViewModel
 
             _parameters.Clear();
 
-            _parameters.Add(id.ToString());
+            _parameters.Add(new MySqlParameter("@id", id));
 
             MySqlDataReader reader = _dBManager.Select(query, _parameters);
 
@@ -69,7 +75,7 @@ namespace Droxid.ViewModel
 
             _parameters.Clear();
 
-            _parameters.Add(id.ToString());
+            _parameters.Add(new MySqlParameter("@id", id));
 
             MySqlDataReader reader = _dBManager.Select(query, _parameters);
 
