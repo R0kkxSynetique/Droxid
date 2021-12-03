@@ -54,23 +54,10 @@
 
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
                     <StackPanel Style="{StaticResource stpServer}">
-                        <Button>
-                            a
-                        </Button>
-                        <Button>
-                            b
-                        </Button>
-                        <Button>
-                            c
-                        </Button>
-                        <Button>
-                            d
-                        </Button>
-                    
-                        <ItemsControl x:Name="ictlServer" ItemsSource="{Binding Guilds}">
+                        <ItemsControl ItemsSource="{Binding Guilds}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Button>
+                                    <Button Content="{Binding Name}" Click="BtnSelectServer">
                                         
                                     </Button>
                                 </DataTemplate>
@@ -81,16 +68,28 @@
 
             </Grid>
 
-            <ListBox Grid.Column="1" Background="#FF2F3136" Width="240" ItemsSource="{Binding Guilds}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel>
-                            <TextBlock Text="{Binding Path=Name}"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+            <Grid Grid.Column="1" Background="#FF2F3136" Width="240">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Foreground="white" Text="{Binding CurrentGuild.Name}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    
+                </TextBlock>
+                <StackPanel Grid.Row="1">
+                    <ItemsControl ItemsSource="{Binding CurrentChannels}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Content="{Binding Name}">
 
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+
+
+            </Grid>
             <Grid Grid.Column="2" Background="#36393f"/>
         </Grid>
     </Grid>

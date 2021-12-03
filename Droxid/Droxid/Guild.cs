@@ -37,6 +37,10 @@ namespace Droxid
             get => _id;
         }
 
+        public List<Channel> Channels {
+            get => _channels;
+        }
+
         public Guild(int id, string name, User owner, List<Role> roles, List<Permission> permissions, List<Channel> channels, List<User> users = null)
         {
             _id = id;
@@ -46,6 +50,10 @@ namespace Droxid
             _permissions = permissions;
             _channels = channels;
             _users = users;
+        }
+
+        public void AddChannel(string name){
+            _channels.Add(new Channel(1,name,new List<Permission>(),new List<Message>(),this));
         }
     }
 }

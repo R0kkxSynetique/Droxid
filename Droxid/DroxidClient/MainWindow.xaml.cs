@@ -26,13 +26,24 @@ namespace DroxidClient
         public MainWindow()
         {
             InitializeComponent();
-            _vm = (MainWindowViewModel) this.DataContext;
-            _vm.register(this);            
+            _vm = (MainWindowViewModel)this.DataContext;
+            _vm.register(this);
         }
 
         //Window events
-        private void BtnDroxidClick(object sender, RoutedEventArgs e){
+        private void BtnDroxidClick(object sender, RoutedEventArgs e)
+        {
             _vm.AddGuild(1, "test", new User(1, "tester"), new List<Role>(), new List<Permission>(), new List<Channel>());
+        }
+
+        private void BtnSelectServer(object sender, RoutedEventArgs e)
+        {
+            if(sender is Button && sender is not null)
+            {
+                Button button = (Button)sender;
+                _vm.CurrentGuild = (Guild)button.DataContext;
+                
+            }
         }
     }
 }
