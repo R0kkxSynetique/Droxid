@@ -15,7 +15,7 @@ DROP SCHEMA IF EXISTS `droxid` ;
 -- -----------------------------------------------------
 -- Schema droxid
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `droxid` DEFAULT CHARACTER SET utf8 ;
+CREATE SCHEMA IF NOT EXISTS `droxid` DEFAULT CHARACTER SET utf16 ;
 USE `droxid` ;
 
 -- -----------------------------------------------------
