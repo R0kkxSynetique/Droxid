@@ -13,7 +13,7 @@ using DroxidClient;
 
 namespace DroxidClient.ViewModels
 {
-    public class MainWindowViewModel
+    public class MainWindowViewModel : INotifyPropertyChanged
     {
         private MainWindow? _view;
         private ObservableCollection<Guild> _guilds;
@@ -65,6 +65,8 @@ namespace DroxidClient.ViewModels
             set
             {
                 _currentGuild = value;
+                NotifyPropertyChanged(nameof(CurrentGuild));
+                NotifyPropertyChanged(nameof(CurrentChannels));
             }
         }
 
@@ -79,16 +81,15 @@ namespace DroxidClient.ViewModels
             _guilds.Add(new Guild(id, name, owner, roles, permissions, channels, users));
         }
 
-
-    }
-
-    public class ObservableGuild : Guild, INotifyPropertyChanged
-    {
-        public ObservableGuild(int id, string name, User owner, List<Role> roles, List<Permission> permissions, List<Channel> channels, List<User> users = null) : base(id, name, owner, roles, permissions, channels, users)
-        {
-        }
+        //Property changed dependencies
 
         public event PropertyChangedEventHandler? PropertyChanged;
+
+        public void NotifyPropertyChanged(string propName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+        }
+
     }
 
 }
