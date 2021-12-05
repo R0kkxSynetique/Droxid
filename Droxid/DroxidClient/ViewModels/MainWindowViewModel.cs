@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,12 +16,13 @@ namespace DroxidClient.ViewModels
     public class MainWindowViewModel
     {
         private MainWindow? _view;
-        private ServerList _guilds;
+        private ObservableCollection<Guild> _guilds;
+        private Guild? _currentGuild;
         private ObservableCollection<Channel> _currentChannels;
 
         public MainWindowViewModel()
         {
-            _guilds = new ServerList();
+            _guilds = new ObservableCollection<Guild>();
             _currentChannels = new ObservableCollection<Channel>();
             _guilds.Add(new Guild(1, "MonCorp", new User(1, "Mon"), new List<Role>(), new List<Permission>(), new List<Channel>()));
             _guilds.Add(new Guild(2, "SynthetiqueClub", new User(2, "R0kkxSynthetique"), new List<Role>(), new List<Permission>(), new List<Channel>()));
@@ -31,6 +31,7 @@ namespace DroxidClient.ViewModels
             _guilds[0].AddChannel("Github");
             _guilds[1].AddChannel("Accueil");
             _guilds[1].AddChannel("Saloon");
+            _currentGuild = _guilds[0];
         }
 
         public ObservableCollection<Guild> Guilds
@@ -53,17 +54,17 @@ namespace DroxidClient.ViewModels
             get
             {
                 List<Channel> channels = new List<Channel>();
-                if (_guilds.SelectedGuild is not null && _guilds.SelectedGuild.Channels is not null) channels = _guilds.SelectedGuild.Channels;
+                if (!(_currentGuild is null) && !(_currentGuild.Channels is null)) channels = _currentGuild.Channels;
                 return new ObservableCollection<Channel>(channels);
             }
         }
 
         public Guild CurrentGuild
         {
-            get => _guilds.SelectedGuild;
+            get => _currentGuild;
             set
             {
-                _guilds.SelectedGuild = value;
+                _currentGuild = value;
             }
         }
 
@@ -81,20 +82,13 @@ namespace DroxidClient.ViewModels
 
     }
 
-    public class ServerList : ObservableCollection<Guild>
+    public class ObservableGuild : Guild, INotifyPropertyChanged
     {
-        Guild? _selectedGuild;
-
-        public Guild SelectedGuild
+        public ObservableGuild(int id, string name, User owner, List<Role> roles, List<Permission> permissions, List<Channel> channels, List<User> users = null) : base(id, name, owner, roles, permissions, channels, users)
         {
-            get => _selectedGuild;
-            set
-            {
-                _selectedGuild = value;
-                
-            }
         }
-    }
 
+        public event PropertyChangedEventHandler? PropertyChanged;
+    }
 
 }
