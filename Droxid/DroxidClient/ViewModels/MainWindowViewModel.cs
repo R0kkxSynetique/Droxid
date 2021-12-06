@@ -16,50 +16,58 @@ namespace DroxidClient.ViewModels
     public class MainWindowViewModel : INotifyPropertyChanged
     {
         private MainWindow? _view;
-        private ObservableCollection<Guild> _guilds;
         private Guild? _currentGuild;
-        private ObservableCollection<Channel> _currentChannels;
+        private User _client;
 
         public MainWindowViewModel()
         {
-            _guilds = new ObservableCollection<Guild>();
-            _currentChannels = new ObservableCollection<Channel>();
-            _guilds.Add(new Guild(1, "MonCorp", new User(1, "Mon"), new List<Role>(), new List<Permission>(), new List<Channel>()));
-            _guilds.Add(new Guild(2, "SynthetiqueClub", new User(2, "R0kkxSynthetique"), new List<Role>(), new List<Permission>(), new List<Channel>()));
-            _guilds[0].AddChannel("General");
-            _guilds[0].AddChannel("Ranks");
-            _guilds[0].AddChannel("Github");
-            _guilds[1].AddChannel("Accueil");
-            _guilds[1].AddChannel("Saloon");
-            _currentGuild = _guilds[0];
+            _client = new User(-1,"tmp");
+            GenerateTestData();
+        }
+
+        private void GenerateTestData()
+        {
+            List<Guild> guilds = new List<Guild>();
+            guilds.Add(new Guild(1, "MonCorp", new User(1, "Mon"), new List<Role>(), new List<Permission>(), new List<Channel>()));
+            guilds.Add(new Guild(2, "SynthetiqueClub", new User(2, "R0kkxSynthetique"), new List<Role>(), new List<Permission>(), new List<Channel>()));
+            guilds[0].AddChannel("General");
+            guilds[0].AddChannel("Ranks");
+            guilds[0].AddChannel("Github");
+            guilds[1].AddChannel("Accueil");
+            guilds[1].AddChannel("Saloon");
+            _client = new User(0, "mon", guilds);
+            _currentGuild = guilds[0];
+            NotifyPropertyChanged(nameof(Guilds));
+            NotifyPropertyChanged(nameof(Channels));
+            NotifyPropertyChanged(nameof(CurrentChannels));
         }
 
         public ObservableCollection<Guild> Guilds
         {
-            get { return _guilds; }
+            get { return new ObservableCollection<Guild>(_client.Guilds); }
         }
 
-        public ObservableCollection<Channel> Channels
+        public List<Channel> Channels
         {
             get
             {
                 List<Channel> channels = new List<Channel>();
-                foreach (Guild guild in _guilds) channels.AddRange(guild.Channels);
-                return new ObservableCollection<Channel>(channels);
+                foreach (Guild guild in Guilds) channels.AddRange(guild.Channels);
+                return channels;
             }
         }
 
-        public ObservableCollection<Channel> CurrentChannels
+        public List<Channel> CurrentChannels
         {
             get
             {
                 List<Channel> channels = new List<Channel>();
                 if (!(_currentGuild is null) && !(_currentGuild.Channels is null)) channels = _currentGuild.Channels;
-                return new ObservableCollection<Channel>(channels);
+                return channels;
             }
         }
 
-        public Guild CurrentGuild
+        public Guild? CurrentGuild
         {
             get => _currentGuild;
             set
@@ -76,16 +84,17 @@ namespace DroxidClient.ViewModels
             _view = mainWindow;
         }
 
-        public void AddGuild(int id, string name, User owner, List<Role> roles, List<Permission> permissions, List<Channel> channels, List<User> users = null)
+        public void AddGuild(int id, string name, User owner, List<Role> roles, List<Permission> permissions, List<Channel> channels, List<User>? users = null)
         {
-            _guilds.Add(new Guild(id, name, owner, roles, permissions, channels, users));
+            _client.Guilds.Add(new Guild(id, name, owner, roles, permissions, channels, users));
+            NotifyPropertyChanged(nameof(Guilds));
         }
 
         //Property changed dependencies
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public void NotifyPropertyChanged(string propName)
+        private void NotifyPropertyChanged(string propName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }

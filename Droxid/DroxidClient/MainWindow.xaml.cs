@@ -42,7 +42,6 @@ namespace DroxidClient
             {
                 Button button = (Button)sender;
                 _vm.CurrentGuild = (Guild)button.DataContext;
-                
             }
         }
     }
