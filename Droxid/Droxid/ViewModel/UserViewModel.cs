@@ -39,7 +39,7 @@ namespace Droxid.ViewModel
                 Console.WriteLine("No rows found.");
             }
 
-            user = new User(reader.GetInt32(0), reader.GetString(1));
+            user = new User(reader.GetString(1));
 
             reader.Close();
 

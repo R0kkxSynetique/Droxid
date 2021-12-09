@@ -47,7 +47,7 @@ namespace Droxid
         }
 
         public void AddChannel(string name){
-            _channels.Add(new Channel(1,name,new List<Permission>(),new List<Message>(),this));
+            _channels.Add(new Channel(name,new List<Permission>(),new List<Message>(),this));
         }
     }
 }
