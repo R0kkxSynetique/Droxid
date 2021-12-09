@@ -8,7 +8,6 @@ namespace Droxid
 {
     public class Guild
     {
-        private int _id;
         private string _name;
         private List<User> _users = new List<User>();
         private User _owner;
@@ -32,14 +31,9 @@ namespace Droxid
         {
             get => _name;
         }
-        public int Id
-        {
-            get => _id;
-        }
 
-        public Guild(int id, string name, User owner, List<Role> roles, List<Permission> permissions, List<Channel> channels, List<User> users = null)
+        public Guild(string name, User owner, List<Role> roles, List<Permission> permissions, List<Channel> channels, List<User> users = null)
         {
-            _id = id;
             _name = name;
             _owner = owner;
             _roles = roles;

@@ -8,16 +8,11 @@ namespace Droxid
 {
     public class Channel
     {
-        private int _id;
         private string _name;
         private List<Permission> _permissions = new List<Permission>();
         private List<Message> _messages = new List<Message>();
         private Guild _guild;
 
-        public int Id
-        {
-            get => _id;
-        }
         public string Name
         {
             get => _name;
@@ -35,9 +30,8 @@ namespace Droxid
             get => _guild;
         }
 
-        public Channel(int id, string name, List<Permission> permissions, List<Message> messages, Guild guild)
+        public Channel(string name, List<Permission> permissions, List<Message> messages, Guild guild)
         {
-            _id = id;
             _name = name;
             _permissions = permissions;
             _messages = messages;
