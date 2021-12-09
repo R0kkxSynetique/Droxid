@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Droxid;
 using DroxidClient.ViewModels;
+using DroxidClient.Debug;
 
 namespace DroxidClient
 {
@@ -33,7 +34,7 @@ namespace DroxidClient
         //Window events
         private void BtnDroxidClick(object sender, RoutedEventArgs e)
         {
-            _vm.AddGuild("test", new User("tester"), new List<Role>(), new List<Permission>(), new List<Channel>());
+            _vm.AddGuild(MainWindowTestData.GenerateGuild());
         }
 
         private void BtnSelectServer(object sender, RoutedEventArgs e)
@@ -41,7 +42,16 @@ namespace DroxidClient
             if (sender is Button && sender is not null)
             {
                 Button button = (Button)sender;
-                _vm.CurrentGuild = (Guild)button.DataContext;
+                _vm.SelectedGuild = (Guild)button.DataContext;
+            }
+        }
+
+        private void BtnSelectChannel(object sender, RoutedEventArgs e)
+        {
+            if(sender is Button && sender is not null)
+            {
+                Button button = (Button)sender;
+                _vm.SelectedChannel = (Channel)button.DataContext;
             }
         }
     }

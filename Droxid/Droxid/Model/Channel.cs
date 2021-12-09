@@ -37,5 +37,11 @@ namespace Droxid
             _messages = messages;
             _guild = guild;
         }
+
+        public int AddMessage(string content, User sender)
+        {
+            _messages.Add(new Message(content, sender, this));
+            return _messages.Count - 1;
+        }
     }
 }

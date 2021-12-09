@@ -10,14 +10,16 @@ using Microsoft.Toolkit.Mvvm.Input;
 using System.Windows.Input;
 using Droxid;
 using DroxidClient;
+using DroxidClient.Debug;
 
 namespace DroxidClient.ViewModels
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
         private MainWindow? _view;
-        private Guild? _currentGuild;
         private User _client;
+        private Guild? _selectedGuild;
+        private Channel? _selectedChannel;
 
         public MainWindowViewModel()
         {
@@ -28,18 +30,13 @@ namespace DroxidClient.ViewModels
         private void GenerateTestData()
         {
             List<Guild> guilds = new List<Guild>();
-            guilds.Add(new Guild("MonCorp", new User("Mon"), new List<Role>(), new List<Permission>(), new List<Channel>()));
-            guilds.Add(new Guild("SynthetiqueClub", new User("R0kkxSynthetique"), new List<Role>(), new List<Permission>(), new List<Channel>()));
-            guilds[0].AddChannel("General");
-            guilds[0].AddChannel("Ranks");
-            guilds[0].AddChannel("Github");
-            guilds[1].AddChannel("Accueil");
-            guilds[1].AddChannel("Saloon");
+            guilds = MainWindowTestData.GenerateGuilds();
             _client = new User("mon", guilds);
-            _currentGuild = guilds[0];
+            _selectedGuild = guilds[0];
+            _selectedChannel = guilds[0].Channels[0];
             NotifyPropertyChanged(nameof(Guilds));
             NotifyPropertyChanged(nameof(Channels));
-            NotifyPropertyChanged(nameof(CurrentChannels));
+            NotifyPropertyChanged(nameof(SelectedChannels));
         }
 
         public ObservableCollection<Guild> Guilds
@@ -57,37 +54,66 @@ namespace DroxidClient.ViewModels
             }
         }
 
-        public List<Channel> CurrentChannels
+        public Guild? SelectedGuild
+        {
+            get => _selectedGuild;
+            set
+            {
+                _selectedGuild = value;
+                NotifyPropertyChanged(nameof(SelectedGuild));
+                NotifyPropertyChanged(nameof(SelectedChannels));
+                if(SelectedChannels.Count > 0)
+                {
+                    _selectedChannel = SelectedChannels[0];
+                } else
+                {
+                    _selectedChannel = null;
+                }
+                NotifyPropertyChanged(nameof(SelectedChannel));
+            }
+        }
+
+        public List<Channel> SelectedChannels
         {
             get
             {
                 List<Channel> channels = new List<Channel>();
-                if (!(_currentGuild is null) && !(_currentGuild.Channels is null)) channels = _currentGuild.Channels;
+                if (!(_selectedGuild is null) && !(_selectedGuild.Channels is null)) channels = _selectedGuild.Channels;
                 return channels;
             }
         }
 
-        public Guild? CurrentGuild
+        public Channel? SelectedChannel
         {
-            get => _currentGuild;
+            get => _selectedChannel;
             set
             {
-                _currentGuild = value;
-                NotifyPropertyChanged(nameof(CurrentGuild));
-                NotifyPropertyChanged(nameof(CurrentChannels));
+                _selectedChannel = value;
+                NotifyPropertyChanged(nameof(SelectedChannel));
+                NotifyPropertyChanged(nameof(Messages));
             }
         }
 
-
-        public void register(MainWindow mainWindow)
+        public List<Message> Messages
         {
-            _view = mainWindow;
+            get => SelectedChannel?.Messages ?? new List<Message>();
         }
 
         public void AddGuild(string name, User owner, List<Role> roles, List<Permission> permissions, List<Channel> channels, List<User>? users = null)
         {
             _client.Guilds.Add(new Guild(name, owner, roles, permissions, channels, users));
             NotifyPropertyChanged(nameof(Guilds));
+        }
+
+        public void AddGuild(Guild guild)
+        {
+            _client.Guilds.Add(guild);
+            NotifyPropertyChanged(nameof(Guilds));
+        }
+
+        public void register(MainWindow mainWindow)
+        {
+            _view = mainWindow;
         }
 
         //Property changed dependencies

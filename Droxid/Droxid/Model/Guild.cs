@@ -32,7 +32,8 @@ namespace Droxid
             get => _name;
         }
 
-        public List<Channel> Channels {
+        public List<Channel> Channels
+        {
             get => _channels;
         }
 
@@ -46,8 +47,10 @@ namespace Droxid
             _users = users;
         }
 
-        public void AddChannel(string name){
-            _channels.Add(new Channel(name,new List<Permission>(),new List<Message>(),this));
+        public int AddChannel(string name)
+        {
+            _channels.Add(new Channel(name, new List<Permission>(), new List<Message>(), this));
+            return _channels.Count - 1;
         }
     }
 }

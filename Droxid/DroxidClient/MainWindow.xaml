@@ -73,14 +73,17 @@
                     <RowDefinition Height="40"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Foreground="white" Text="{Binding CurrentGuild.Name}" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    
+                <!--Server banner-->
+                <TextBlock Foreground="white" Text="{Binding SelectedGuild.Name}" HorizontalAlignment="Center" VerticalAlignment="Center">
+
                 </TextBlock>
+                
+                <!--Channels-->
                 <StackPanel Grid.Row="1">
-                    <ItemsControl ItemsSource="{Binding CurrentChannels}">
+                    <ItemsControl ItemsSource="{Binding SelectedChannels}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Button Content="{Binding Name}">
+                                <Button Content="{Binding Name}" Click="BtnSelectChannel">
 
                                 </Button>
                             </DataTemplate>
@@ -88,9 +91,42 @@
                     </ItemsControl>
                 </StackPanel>
 
-
             </Grid>
-            <Grid Grid.Column="2" Background="#36393f"/>
+            <Grid Grid.Column="2" Background="#36393f">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="60"/>
+                </Grid.RowDefinitions>
+                <!--Channel name-->
+                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <TextBlock Foreground="White" Text="{Binding SelectedChannel.Name}" Width="auto" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                </StackPanel>
+                <!--Messages-->
+                <StackPanel Grid.Row="1">
+                    <ItemsControl ItemsSource="{Binding Messages}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="60"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding Sender.Username}" Margin="10,0" Foreground="White"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding Content}" Foreground="White" TextWrapping="Wrap"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+                <!--Input-->
+                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                    
+                </StackPanel>
+            </Grid>
         </Grid>
     </Grid>
 </Window>
