@@ -5,14 +5,9 @@ namespace Droxid
 {
     public class User
     {
-        private int _id;
         private string _username;
         private List<Guild> _guilds = new List<Guild>();
 
-        public int Id
-        {
-            get => _id;
-        }
 
         public string Username
         {
@@ -23,10 +18,14 @@ namespace Droxid
             get => _guilds;
         }
 
-        public User(int id, string username, List<Guild> guilds = null){
-            _id = id;
+        public User(string username, List<Guild> guilds = null){
             _username = username;
             _guilds = guilds;
+        }
+
+        public User(string username)
+        {
+            _username = username;
         }
 
         public void SendMessage(Message message)

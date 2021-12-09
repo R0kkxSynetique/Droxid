@@ -8,15 +8,10 @@ namespace Droxid
 {
     public class Message
     {
-        private int _id;
         private string _content;
         private User _sender;
         private Channel _channel;
 
-        public int Id
-        {
-            get => _id;
-        }
         public string Content
         {
             get => _content;
@@ -30,9 +25,8 @@ namespace Droxid
             get => _channel;
         }
 
-        public Message(int id, string content, User sender, Channel channel)
+        public Message(string content, User sender, Channel channel)
         {
-            _id = id;
             _content = content;
             _sender = sender;
             _channel = channel;
