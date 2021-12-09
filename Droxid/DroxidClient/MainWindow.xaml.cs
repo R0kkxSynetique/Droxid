@@ -33,12 +33,12 @@ namespace DroxidClient
         //Window events
         private void BtnDroxidClick(object sender, RoutedEventArgs e)
         {
-            _vm.AddGuild(1, "test", new User(1, "tester"), new List<Role>(), new List<Permission>(), new List<Channel>());
+            _vm.AddGuild("test", new User("tester"), new List<Role>(), new List<Permission>(), new List<Channel>());
         }
 
         private void BtnSelectServer(object sender, RoutedEventArgs e)
         {
-            if(sender is Button && sender is not null)
+            if (sender is Button && sender is not null)
             {
                 Button button = (Button)sender;
                 _vm.CurrentGuild = (Guild)button.DataContext;

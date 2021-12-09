@@ -21,21 +21,21 @@ namespace DroxidClient.ViewModels
 
         public MainWindowViewModel()
         {
-            _client = new User(-1,"tmp");
+            _client = new User("tmp");
             GenerateTestData();
         }
 
         private void GenerateTestData()
         {
             List<Guild> guilds = new List<Guild>();
-            guilds.Add(new Guild(1, "MonCorp", new User(1, "Mon"), new List<Role>(), new List<Permission>(), new List<Channel>()));
-            guilds.Add(new Guild(2, "SynthetiqueClub", new User(2, "R0kkxSynthetique"), new List<Role>(), new List<Permission>(), new List<Channel>()));
+            guilds.Add(new Guild("MonCorp", new User("Mon"), new List<Role>(), new List<Permission>(), new List<Channel>()));
+            guilds.Add(new Guild("SynthetiqueClub", new User("R0kkxSynthetique"), new List<Role>(), new List<Permission>(), new List<Channel>()));
             guilds[0].AddChannel("General");
             guilds[0].AddChannel("Ranks");
             guilds[0].AddChannel("Github");
             guilds[1].AddChannel("Accueil");
             guilds[1].AddChannel("Saloon");
-            _client = new User(0, "mon", guilds);
+            _client = new User("mon", guilds);
             _currentGuild = guilds[0];
             NotifyPropertyChanged(nameof(Guilds));
             NotifyPropertyChanged(nameof(Channels));
@@ -84,9 +84,9 @@ namespace DroxidClient.ViewModels
             _view = mainWindow;
         }
 
-        public void AddGuild(int id, string name, User owner, List<Role> roles, List<Permission> permissions, List<Channel> channels, List<User>? users = null)
+        public void AddGuild(string name, User owner, List<Role> roles, List<Permission> permissions, List<Channel> channels, List<User>? users = null)
         {
-            _client.Guilds.Add(new Guild(id, name, owner, roles, permissions, channels, users));
+            _client.Guilds.Add(new Guild(name, owner, roles, permissions, channels, users));
             NotifyPropertyChanged(nameof(Guilds));
         }
 
