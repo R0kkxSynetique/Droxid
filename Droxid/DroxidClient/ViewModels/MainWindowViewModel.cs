@@ -10,7 +10,7 @@ using Microsoft.Toolkit.Mvvm.Input;
 using System.Windows.Input;
 using Droxid;
 using DroxidClient;
-using DroxidClient.Debug;
+using DroxidClient.DummyData;
 
 namespace DroxidClient.ViewModels
 {

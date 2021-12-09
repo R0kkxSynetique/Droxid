@@ -14,7 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Droxid;
 using DroxidClient.ViewModels;
-using DroxidClient.Debug;
+using DroxidClient.DummyData;
 
 namespace DroxidClient
 {
