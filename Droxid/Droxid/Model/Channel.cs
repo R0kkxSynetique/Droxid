@@ -37,5 +37,10 @@ namespace Droxid
             _messages = messages;
             _guild = guild;
         }
+        
+        public Channel (string name)
+        {
+            _name = name;
+        }
     }
 }

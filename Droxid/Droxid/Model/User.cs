@@ -5,6 +5,7 @@ namespace Droxid
 {
     public class User
     {
+        private int _id;
         private string _username;
         private List<Guild> _guilds = new List<Guild>();
 
@@ -25,6 +26,11 @@ namespace Droxid
 
         public User(string username)
         {
+            _username = username;
+        }
+        public User(string username, int id)
+        {
+            _id = id;
             _username = username;
         }
 
