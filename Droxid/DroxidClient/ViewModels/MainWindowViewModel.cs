@@ -70,6 +70,7 @@ namespace DroxidClient.ViewModels
                     _selectedChannel = null;
                 }
                 NotifyPropertyChanged(nameof(SelectedChannel));
+                NotifyPropertyChanged(nameof(Messages));
             }
         }
 
