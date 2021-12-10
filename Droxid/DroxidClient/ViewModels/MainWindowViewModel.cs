@@ -16,6 +16,8 @@ namespace DroxidClient.ViewModels
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
+
+
         private MainWindow? _view;
         private User _client;
         private Guild? _selectedGuild;
@@ -35,8 +37,6 @@ namespace DroxidClient.ViewModels
             _selectedGuild = guilds[0];
             _selectedChannel = guilds[0].Channels[0];
             NotifyPropertyChanged(nameof(Guilds));
-            NotifyPropertyChanged(nameof(Channels));
-            NotifyPropertyChanged(nameof(SelectedChannels));
         }
 
         public ObservableCollection<Guild> Guilds
@@ -59,18 +59,19 @@ namespace DroxidClient.ViewModels
             get => _selectedGuild;
             set
             {
-                _selectedGuild = value;
-                NotifyPropertyChanged(nameof(SelectedGuild));
-                NotifyPropertyChanged(nameof(SelectedChannels));
-                if(SelectedChannels.Count > 0)
+                if (_selectedGuild != value)
                 {
-                    _selectedChannel = SelectedChannels[0];
-                } else
-                {
-                    _selectedChannel = null;
+                    _selectedGuild = value;
+                    if (SelectedChannels.Count > 0)
+                    {
+                        _selectedChannel = SelectedChannels[0];
+                    }
+                    else
+                    {
+                        _selectedChannel = null;
+                    }
+                    NotifyPropertyChanged(nameof(SelectedGuild));
                 }
-                NotifyPropertyChanged(nameof(SelectedChannel));
-                NotifyPropertyChanged(nameof(Messages));
             }
         }
 
@@ -91,7 +92,6 @@ namespace DroxidClient.ViewModels
             {
                 _selectedChannel = value;
                 NotifyPropertyChanged(nameof(SelectedChannel));
-                NotifyPropertyChanged(nameof(Messages));
             }
         }
 
@@ -124,6 +124,18 @@ namespace DroxidClient.ViewModels
         private void NotifyPropertyChanged(string propName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+            switch (propName)
+            {
+                case nameof(SelectedChannel):
+                    NotifyPropertyChanged(nameof(Messages));
+                    break;
+                case nameof(SelectedGuild):
+                    NotifyPropertyChanged(nameof(SelectedChannels));
+                    break;
+                case nameof(SelectedChannels):
+                    NotifyPropertyChanged(nameof(SelectedChannel));
+                    break;
+            }
         }
 
     }

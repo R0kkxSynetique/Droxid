@@ -8,11 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
+    <Compile Remove="Model\**" />
+    <EmbeddedResource Remove="Model\**" />
+    <None Remove="Model\**" />
+    <Page Remove="Model\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Model\" />
+    <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
   </ItemGroup>
 
   <ItemGroup>
