@@ -38,10 +38,17 @@ namespace Droxid
             _guild = guild;
         }
 
+        public Channel (string name)
+        {
+            _name = name;
+
+        }
+
         public int AddMessage(string content, User sender)
         {
             _messages.Add(new Message(content, sender, this));
             return _messages.Count - 1;
         }
+        
     }
 }

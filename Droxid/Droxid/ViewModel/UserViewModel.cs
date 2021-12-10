@@ -9,10 +9,11 @@ using MySql.Data.MySqlClient;
 
 namespace Droxid.ViewModel
 {
+    // send query(data comes from each model) to dbmanager
     public class UserViewModel
     {
-        private DBManager _dBManager = new DBManager();
-        private List<MySqlParameter> _parameters = new List<MySqlParameter>();
+        private DBManager _dBManager = new ();
+        private List<MySqlParameter> _parameters = new ();
 
         public User GetUserByUsername(string username)
         {
@@ -39,54 +40,13 @@ namespace Droxid.ViewModel
                 Console.WriteLine("No rows found.");
             }
 
-            user = new User(reader.GetString(1));
+            List<Guild> guilds = new ();
+
+            user = new User(reader[0].ToString(), guilds);
 
             reader.Close();
 
             return user;
-        }
-
-        public List<int> GetUserGuildsId(int id)
-        {
-            List<int> guildsId = new List<int>();
-
-            string query = "SELECT * FROM guilds_has_users WHERE users_id = @id";
-
-            _parameters.Clear();
-
-            _parameters.Add(new MySqlParameter("@id", id));
-
-            MySqlDataReader reader = _dBManager.Select(query, _parameters);
-
-            while (reader.Read())
-            {
-                ReadSingleRow((IDataRecord)reader);
-            }
-
-            reader.Close();
-
-            return guildsId;
-
-        }
-
-        public Guild GetGuildById(int id)
-        {
-            string query = "SELECT * FROM guilds WHERE id = \"@id\"";
-
-            _parameters.Clear();
-
-            _parameters.Add(new MySqlParameter("@id", id));
-
-            MySqlDataReader reader = _dBManager.Select(query, _parameters);
-
-            while (reader.Read())
-            {
-                ReadSingleRow((IDataRecord)reader);
-            }
-
-            reader.Close();
-
-            throw new NotImplementedException();
         }
 
         private static void ReadSingleRow(IDataRecord dataRecord)
