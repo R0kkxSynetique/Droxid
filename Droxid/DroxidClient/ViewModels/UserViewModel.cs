@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Droxid.DataBase;
+using Droxid.Models;
 using MySql.Data.MySqlClient;
 
 namespace Droxid.ViewModels
@@ -12,46 +13,40 @@ namespace Droxid.ViewModels
     // send query(data comes from each model) to dbmanager
     public class UserViewModel
     {
-        private DBManager _dBManager = new ();
-        private List<MySqlParameter> _parameters = new ();
 
-        public User GetUserByUsername(string username)
+        private static List<MySqlParameter> _parameters = new();
+
+        private static void ReadSingleRow(IDataRecord dataRecord)
+        {
+            Console.WriteLine(String.Format("{0}, {1}", dataRecord[0], dataRecord[1]));
+        }
+
+        private static void EndConnection(MySqlDataReader reader)
+        {
+            reader.Close();
+
+            reader.Dispose();
+
+            DBManager.CloseDBConnection();
+        }
+
+        public static User GetUserByUsername(string username)
         {
             string query = "SELECT * FROM users WHERE username = @username";
 
             _parameters.Clear();
 
-            _parameters.Add(new MySqlParameter("@username", username));
+            _parameters.Add(new MySqlParameter("@param", username));
 
-            MySqlDataReader reader = _dBManager.Select(query, _parameters);
+            MySqlDataReader reader = DBManager.Select(query, _parameters);
 
             User user;
 
+            user = new User(reader.GetString(1));
 
-            if (reader.HasRows)
-            {
-                while (reader.Read())
-                {
-                    ReadSingleRow((IDataRecord)reader);
-                }
-            }
-            else
-            {
-                Console.WriteLine("No rows found.");
-            }
-
-            List<Guild> guilds = new ();
-
-            user = new User(reader[0].ToString(), guilds);
-
-            reader.Close();
+            EndConnection(reader);
 
             return user;
-        }
-
-        private static void ReadSingleRow(IDataRecord dataRecord)
-        {
-            Console.WriteLine(String.Format("{0}, {1}", dataRecord[0], dataRecord[1]));
         }
     }
 }

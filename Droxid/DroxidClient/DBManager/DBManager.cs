@@ -11,41 +11,34 @@ namespace Droxid.DataBase
     // This class will only open connection to DB
     public class DBManager
     {
-        private MySqlConnection _connection;
+        // TODO Need to be in a config file NOT SECURED
+        //This may not work beacause of the static methods(May need an object to end a connection)
+        private static MySqlConnection _connection = new("Database=droxid;Server=localhost;user=Droxid;password=Droxid;");
 
-        public DBManager()
-        {
-            // check the config to change
-            string ConnectionSting = "Database=droxid;Server=localhost;user=Droxid;password=Droxid;";
-            _connection = new MySqlConnection(ConnectionSting);
-        }
-
-        public void OpenDBConnection()
+        public static void OpenDBConnection()
         {
             _connection.Open();
         }
-        public void CloseDBConnection()
+        public static void CloseDBConnection()
         {
             _connection.Close();
         }
 
-        public MySqlDataReader Select(string query)
+        public static MySqlDataReader Select(string query)
         {
             OpenDBConnection();
             MySqlCommand command = new MySqlCommand(query, _connection);
             MySqlDataReader reader = command.ExecuteReader();
-            CloseDBConnection();
             return reader;
         }
 
-        public MySqlDataReader Select(string query, List<MySqlParameter> parameters)
+        public static MySqlDataReader Select(string query, List<MySqlParameter> parameters)
         {
             OpenDBConnection();
             MySqlCommand command = new MySqlCommand(query, _connection);
             foreach (MySqlParameter param in parameters)
             {
                 command.Parameters.Add(param);
-                
             }
             Console.WriteLine(command.CommandText);
             MySqlDataReader reader = command.ExecuteReader();
