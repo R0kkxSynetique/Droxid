@@ -12,17 +12,46 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Droxid.ViewModels;
+using Droxid.DummyData;
 
-namespace DroxidClient
+namespace Droxid
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
+        private MainWindowViewModel _vm;
         public MainWindow()
         {
             InitializeComponent();
+            _vm = (MainWindowViewModel)this.DataContext;
+            _vm.register(this);
+        }
+
+        //Window events
+        private void BtnDroxidClick(object sender, RoutedEventArgs e)
+        {
+            _vm.AddGuild(MainWindowTestData.GenerateGuild());
+        }
+
+        private void BtnSelectServer(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button && sender is not null)
+            {
+                Button button = (Button)sender;
+                _vm.SelectedGuild = (Guild)button.DataContext;
+            }
+        }
+
+        private void BtnSelectChannel(object sender, RoutedEventArgs e)
+        {
+            if(sender is Button && sender is not null)
+            {
+                Button button = (Button)sender;
+                _vm.SelectedChannel = (Channel)button.DataContext;
+            }
         }
     }
 }
