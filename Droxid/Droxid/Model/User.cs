@@ -33,10 +33,5 @@ namespace Droxid
             _id = id;
             _username = username;
         }
-
-        public void SendMessage(Message message)
-        {
-            
-        }
     }
 }
