@@ -12,8 +12,8 @@ namespace Droxid.ViewModel
     // send query(data comes from each model) to dbmanager
     public class UserViewModel
     {
-        private DBManager _dBManager = new ();
-        private List<MySqlParameter> _parameters = new ();
+        private DBManager _dBManager = new();
+        private List<MySqlParameter> _parameters = new();
 
         public User GetUserByUsername(string username)
         {
@@ -28,19 +28,13 @@ namespace Droxid.ViewModel
             User user;
 
 
-            if (reader.HasRows)
+            while (reader.Read())
             {
-                while (reader.Read())
-                {
-                    ReadSingleRow((IDataRecord)reader);
-                }
-            }
-            else
-            {
-                Console.WriteLine("No rows found.");
+                ReadSingleRow((IDataRecord)reader);
             }
 
-            List<Guild> guilds = new ();
+
+            List<Guild> guilds = new();
 
             user = new User(reader[0].ToString(), guilds);
 
