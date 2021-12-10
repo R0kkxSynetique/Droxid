@@ -9,7 +9,7 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using System.Windows.Input;
 using Droxid;
-using Droxid;
+using Droxid.Models;
 using Droxid.DummyData;
 
 namespace Droxid.ViewModels
