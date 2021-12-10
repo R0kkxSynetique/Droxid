@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DroxidClient.DummyData
+namespace Droxid.DummyData
 {
     public static class MainWindowTestData
     {

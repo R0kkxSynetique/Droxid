@@ -9,10 +9,10 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using System.Windows.Input;
 using Droxid;
-using DroxidClient;
-using DroxidClient.DummyData;
+using Droxid;
+using Droxid.DummyData;
 
-namespace DroxidClient.ViewModels
+namespace Droxid.ViewModels
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
