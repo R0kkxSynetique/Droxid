@@ -31,9 +31,9 @@ namespace Droxid.Models
             _username = username;
         }
 
-        public User GetUserByUsername()
-        {
-            return UserViewModel.GetUserByUsername(_username);
-        }
+        //public User GetUserByUsername()
+        //{
+        //    return UserViewModel.GetUserByUsername(_username);
+        //}
     }
 }

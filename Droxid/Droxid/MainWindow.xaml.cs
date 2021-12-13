@@ -54,5 +54,18 @@ namespace Droxid
                 _vm.SelectedChannel = (Channel)button.DataContext;
             }
         }
+
+        private void txtb_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            string allusers = "";
+
+            //allusers += UserViewModel.Test();
+
+            //allusers = string.Join(",", UserViewModel.Test());
+
+            allusers += UserViewModel.GetUserByUsername("R0kkxSynetique");
+
+            txtb.Text = allusers;
+        }
     }
 }

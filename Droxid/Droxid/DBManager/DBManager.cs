@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using Droxid.Models;
+using Dapper;
 
 namespace Droxid.DataBase
 {
@@ -25,12 +26,17 @@ namespace Droxid.DataBase
             _connection.Close();
         }
 
-        public static MySqlDataReader Select(string query)
+        //public static MySqlDataReader Select(string query)
+        //{
+        //    OpenDBConnection();
+        //    MySqlCommand command = new MySqlCommand(query, _connection);
+        //    MySqlDataReader reader = command.ExecuteReader();
+        //    return reader;
+        //}
+
+        public static dynamic Select(string query, string username)
         {
-            OpenDBConnection();
-            MySqlCommand command = new MySqlCommand(query, _connection);
-            MySqlDataReader reader = command.ExecuteReader();
-            return reader;
+            return _connection.Query(query, new { username = username });
         }
 
         public static MySqlDataReader Select(string query, List<MySqlParameter> parameters)

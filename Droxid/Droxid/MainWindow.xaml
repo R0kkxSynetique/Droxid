@@ -18,7 +18,7 @@
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
-    
+
     <Grid Background="#202225">
         <Grid.RowDefinitions>
             <RowDefinition Height="20" />
@@ -58,7 +58,7 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Button Content="{Binding Name}" Click="BtnSelectServer">
-                                        
+
                                     </Button>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
@@ -77,7 +77,7 @@
                 <TextBlock Foreground="white" Text="{Binding SelectedGuild.Name}" HorizontalAlignment="Center" VerticalAlignment="Center">
 
                 </TextBlock>
-                
+
                 <!--Channels-->
                 <StackPanel Grid.Row="1">
                     <ItemsControl ItemsSource="{Binding SelectedChannels}">
@@ -90,6 +90,7 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </StackPanel>
+                <TextBlock x:Name="txtb" HorizontalAlignment="Left" Margin="10,206,0,0" Grid.Row="1" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Height="417" Width="200" MouseDown="txtb_MouseDown"/>
 
             </Grid>
             <Grid Grid.Column="2" Background="#36393f">
@@ -124,7 +125,7 @@
                 </StackPanel>
                 <!--Input-->
                 <StackPanel Grid.Row="2" Orientation="Horizontal">
-                    
+
                 </StackPanel>
             </Grid>
         </Grid>

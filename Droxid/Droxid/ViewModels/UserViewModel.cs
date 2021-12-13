@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Droxid.DataBase;
 using Droxid.Models;
 using MySql.Data.MySqlClient;
+using Dapper;
 
 namespace Droxid.ViewModels
 {
@@ -30,23 +31,47 @@ namespace Droxid.ViewModels
             DBManager.CloseDBConnection();
         }
 
-        public static User GetUserByUsername(string username)
+        //public static User GetUserByUsername(string username)
+        //{
+        //    string query = "SELECT * FROM users WHERE username = @username";
+
+        //    _parameters.Clear();
+
+        //    _parameters.Add(new MySqlParameter("@param", username));
+
+        //    MySqlDataReader reader = DBManager.Select(query, _parameters);
+
+        //    User user;
+
+        //    user = new User(reader.GetString(1));
+
+        //    EndConnection(reader);
+
+        //    return user;
+        //}
+
+        public static List<dynamic> GetUserByUsername(string username)
         {
             string query = "SELECT * FROM users WHERE username = @username";
 
             _parameters.Clear();
 
-            _parameters.Add(new MySqlParameter("@param", username));
+            _parameters.Add(new MySqlParameter("@username", username));
 
-            MySqlDataReader reader = DBManager.Select(query, _parameters);
+            List<dynamic> users =  DBManager.Select(query,username);
 
-            User user;
+            return users;
 
-            user = new User(reader.GetString(1));
+        }
 
-            EndConnection(reader);
+        public static dynamic Test()
+        {
+            string sql = "SELECT * FROM users";
 
-            return user;
+            using (var connection = new MySqlConnection("Database=droxid;Server=localhost;user=Droxid;password=Droxid;"))
+            {
+                return connection.Query(sql);
+            }
         }
     }
 }
