@@ -28,11 +28,13 @@
         </Setter>
     </Style>
 
-    <Style x:Key="stpServer" TargetType="{x:Type StackPanel}">
+    <Style x:Key="stpServers" TargetType="{x:Type StackPanel}">
         <Setter Property="Height" Value="auto"/>
+        <Setter Property="Width" Value="auto"/>
+        <Setter Property="Orientation" Value="Horizontal"/>
         <Style.Resources>
             <Style TargetType="{x:Type Button}">
-                <Setter Property="Margin" Value="0,4"/>
+                <Setter Property="Margin" Value="4,0"/>
                 <Setter Property="Height" Value="50"/>
                 <Setter Property="Width" Value="50"/>
                 <Setter Property="BorderThickness" Value="0"/>
@@ -67,6 +69,37 @@
         </Style.Resources>
     </Style>
 
+    <Style x:Key="stpChannels" TargetType="{x:Type StackPanel}">
+        <Style.Resources>
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Width" Value="auto"/>
+                <Setter Property="Height" Value="20"/>
+                <Setter Property="Margin" Value="4,3"/>
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                <Setter Property="Foreground" Value="#ffffff"/>
+                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Grid>
+                                <Border Name="border" Background="Transparent">
+                                    <ContentPresenter x:Name="contentPresenter" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                </Border>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="#34373c"/>
+                                    <Setter TargetName="border" Property="CornerRadius" Value="5"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Style.Resources>
+    </Style>
+
     <Style TargetType="{x:Type ScrollBar}">
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="OverridesDefaultStyle" Value="True"/>
@@ -85,7 +118,7 @@
                         <Track x:Name="Track" Grid.Row="1" IsDirectionReversed="True">
                             <Track.Thumb>
                                 <Thumb Margin="1,0" Background="#ffffff" OverridesDefaultStyle="True">
-                                    
+
                                 </Thumb>
                             </Track.Thumb>
                         </Track>
