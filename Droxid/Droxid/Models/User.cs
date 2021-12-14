@@ -10,6 +10,10 @@ namespace Droxid.Models
         private string _username;
         private List<Guild> _guilds = new List<Guild>();
 
+        public int Id
+        {
+            get => _id;
+        }
 
         public string Username
         {
@@ -30,10 +34,5 @@ namespace Droxid.Models
             _id = id;
             _username = username;
         }
-
-        //public User GetUserByUsername()
-        //{
-        //    return UserViewModel.GetUserByUsername(_username);
-        //}
     }
 }

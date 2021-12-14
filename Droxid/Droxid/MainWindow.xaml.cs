@@ -57,15 +57,7 @@ namespace Droxid
 
         private void txtb_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            string allusers = "";
-
-            //allusers += UserViewModel.Test();
-
-            //allusers = string.Join(",", UserViewModel.Test());
-
-            allusers += UserViewModel.GetUserByUsername("R0kkxSynetique");
-
-            txtb.Text = allusers;
+           txtb.Text = UserViewModel.GetUserById("11").Username + " " + UserViewModel.GetUserById("11").Id;
         }
     }
 }

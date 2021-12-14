@@ -8,6 +8,7 @@ using Droxid.DataBase;
 using Droxid.Models;
 using MySql.Data.MySqlClient;
 using Dapper;
+using System.Collections;
 
 namespace Droxid.ViewModels
 {
@@ -17,61 +18,22 @@ namespace Droxid.ViewModels
 
         private static List<MySqlParameter> _parameters = new();
 
-        private static void ReadSingleRow(IDataRecord dataRecord)
+        public static User GetUserByUsername(string username)
         {
-            Console.WriteLine(String.Format("{0}, {1}", dataRecord[0], dataRecord[1]));
+            string query = $"SELECT * FROM users WHERE username = \"{username}\"";
+
+            User user = DBManager.SelectUser(query);
+
+            return user;
         }
 
-        private static void EndConnection(MySqlDataReader reader)
+        public static User GetUserById(string id)
         {
-            reader.Close();
+            string query = $"SELECT * FROM users WHERE id = \"{id}\"";
 
-            reader.Dispose();
+            User user = DBManager.SelectUser(query);
 
-            DBManager.CloseDBConnection();
-        }
-
-        //public static User GetUserByUsername(string username)
-        //{
-        //    string query = "SELECT * FROM users WHERE username = @username";
-
-        //    _parameters.Clear();
-
-        //    _parameters.Add(new MySqlParameter("@param", username));
-
-        //    MySqlDataReader reader = DBManager.Select(query, _parameters);
-
-        //    User user;
-
-        //    user = new User(reader.GetString(1));
-
-        //    EndConnection(reader);
-
-        //    return user;
-        //}
-
-        public static List<dynamic> GetUserByUsername(string username)
-        {
-            string query = "SELECT * FROM users WHERE username = @username";
-
-            _parameters.Clear();
-
-            _parameters.Add(new MySqlParameter("@username", username));
-
-            List<dynamic> users =  DBManager.Select(query,username);
-
-            return users;
-
-        }
-
-        public static dynamic Test()
-        {
-            string sql = "SELECT * FROM users";
-
-            using (var connection = new MySqlConnection("Database=droxid;Server=localhost;user=Droxid;password=Droxid;"))
-            {
-                return connection.Query(sql);
-            }
+            return user;
         }
     }
 }
