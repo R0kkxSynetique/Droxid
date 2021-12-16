@@ -14,7 +14,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Droxid.ViewModels;
 using Droxid.Models;
-using Droxid.DummyData;
 
 namespace Droxid
 {
@@ -34,7 +33,7 @@ namespace Droxid
         //Window events
         private void BtnDroxidClick(object sender, RoutedEventArgs e)
         {
-            _vm.AddGuild(MainWindowTestData.GenerateGuild());
+            
         }
 
         private void BtnSelectServer(object sender, RoutedEventArgs e)
