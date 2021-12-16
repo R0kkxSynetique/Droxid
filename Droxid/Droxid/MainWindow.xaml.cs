@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Droxid.ViewModels;
+using Droxid.Models;
 using Droxid.DummyData;
 
 namespace Droxid

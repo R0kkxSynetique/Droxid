@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Droxid.ViewModels;
+using System;
 using System.Collections.Generic;
 
-namespace Droxid
+namespace Droxid.Models
 {
     public class User
     {
@@ -9,6 +10,10 @@ namespace Droxid
         private string _username;
         private List<Guild> _guilds = new List<Guild>();
 
+        public int Id
+        {
+            get => _id;
+        }
 
         public string Username
         {
@@ -24,10 +29,6 @@ namespace Droxid
             _guilds = guilds;
         }
 
-        public User(string username)
-        {
-            _username = username;
-        }
         public User(string username, int id)
         {
             _id = id;

@@ -9,7 +9,7 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using System.Windows.Input;
 using Droxid;
-using Droxid;
+using Droxid.Models;
 using Droxid.DummyData;
 
 namespace Droxid.ViewModels
@@ -100,9 +100,9 @@ namespace Droxid.ViewModels
             get => SelectedChannel?.Messages ?? new List<Message>();
         }
 
-        public void AddGuild(string name, User owner, List<Role> roles, List<Permission> permissions, List<Channel> channels, List<User>? users = null)
+        public void AddGuild(string name, User owner, List<Role> roles, List<Channel> channels, List<User>? users = null)
         {
-            _client.Guilds.Add(new Guild(name, owner, roles, permissions, channels, users));
+            _client.Guilds.Add(new Guild(name, owner, roles, channels, users));
             NotifyPropertyChanged(nameof(Guilds));
         }
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Droxid
+namespace Droxid.Models
 {
     public class Role
     {
@@ -21,7 +21,7 @@ namespace Droxid
             get => _users;
         }
 
-        public Role(string name, List<User> users)
+        public Role(string name, List<User> users = null)
         {
             _name = name;
             _users = users;

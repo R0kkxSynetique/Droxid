@@ -1,4 +1,4 @@
-﻿using Droxid;
+﻿using Droxid.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +18,7 @@ namespace Droxid.DummyData
 
         public static Guild GenerateGuild()
         {
-            Guild guild = new Guild(RandomString(random.Next(1, 4)), GenerateUser(), new List<Role>(), new List<Permission>(), new List<Channel>(), new List<User>());
+            Guild guild = new Guild(RandomString(random.Next(1, 4)), GenerateUser(), new List<Role>(), new List<Channel>(), new List<User>());
             for (int i = 0; i < random.Next(1, 25); i++)
             {
                 GenerateChannel(guild);

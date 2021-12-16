@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Droxid
+namespace Droxid.Models
 {
     public class Permission
     {
@@ -25,7 +25,7 @@ namespace Droxid
             get => _roles;
         }
 
-        public Permission(string name, string description, List<Role> roles)
+        public Permission(string name, string description, List<Role> roles = null)
         {
             _name = name;
             _description = description;
