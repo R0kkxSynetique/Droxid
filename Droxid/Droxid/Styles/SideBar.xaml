@@ -42,7 +42,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListView}">
                     <Border Name="Border" Background="Transparent" Width="auto">
-                        <ItemsPresenter/>
+                            <ItemsPresenter/>
                     </Border>
                     <ControlTemplate.Resources>
                         <Style TargetType="{x:Type ListViewItem}">
