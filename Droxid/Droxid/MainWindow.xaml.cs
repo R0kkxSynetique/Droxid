@@ -54,10 +54,5 @@ namespace Droxid
                 _vm.SelectedChannel = listView.SelectedItem as Channel;
             }
         }
-
-        private void txtb_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-           txtb.Text = UserViewModel.GetUserById("11").Username + " " + UserViewModel.GetUserById("11").Id;
-        }
     }
 }
