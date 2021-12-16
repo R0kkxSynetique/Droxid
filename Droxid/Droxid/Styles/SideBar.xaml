@@ -28,11 +28,13 @@
         </Setter>
     </Style>
 
-    <Style x:Key="stpServer" TargetType="{x:Type StackPanel}">
+    <Style x:Key="stpServers" TargetType="{x:Type StackPanel}">
         <Setter Property="Height" Value="auto"/>
+        <Setter Property="Width" Value="auto"/>
+        <Setter Property="Orientation" Value="Horizontal"/>
         <Style.Resources>
             <Style TargetType="{x:Type Button}">
-                <Setter Property="Margin" Value="0,4"/>
+                <Setter Property="Margin" Value="4,0"/>
                 <Setter Property="Height" Value="50"/>
                 <Setter Property="Width" Value="50"/>
                 <Setter Property="BorderThickness" Value="0"/>
@@ -67,6 +69,89 @@
         </Style.Resources>
     </Style>
 
+    <Style x:Key="lstvChannels" TargetType="{x:Type ListView}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Width" Value="auto"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListView}">
+                    <Border Name="Border" Background="Transparent" Width="auto">
+                        <StackPanel Name="Stackpanel">
+                            <ItemsPresenter HorizontalAlignment="Stretch"/>
+                        </StackPanel>
+                    </Border>
+                    <ControlTemplate.Resources>
+                        <Style TargetType="{x:Type ListViewItem}">
+                            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                        <Border Name="Border" Margin="4,1" Height="auto" Background="Transparent">
+                                            <Grid Name="Grid" Width="auto" Height="20" Margin="0,3">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="20"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Name="ChannelType" Foreground="#72767d" Grid.Column="0" Text="#" Margin="2,0" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16"/>
+                                                <TextBlock Name="ChannelName" Foreground="#72767d" Grid.Column="1" Text="{Binding Name}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="CornerRadius" Value="5"/>
+                                                <Setter TargetName="Border" Property="Background" Value="#34373c"/>
+                                                <Setter TargetName="ChannelType" Property="Foreground" Value="#bcbdbf"/>
+                                                <Setter TargetName="ChannelName" Property="Foreground" Value="#bcbdbf"/>
+                                            </Trigger>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Border" Property="CornerRadius" Value="5"/>
+                                                <Setter TargetName="Border" Property="Background" Value="#393c43"/>
+                                                <Setter TargetName="ChannelType" Property="Foreground" Value="#ffffff"/>
+                                                <Setter TargetName="ChannelName" Property="Foreground" Value="#ffffff"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                        <Style TargetType="{x:Type StackPanel}">
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                        </Style>
+
+                    </ControlTemplate.Resources>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+
+    <Style x:Key="btnSelectedChannel" TargetType="{x:Type Button}">
+        <Setter Property="Width" Value="auto"/>
+        <Setter Property="Height" Value="20"/>
+        <Setter Property="Margin" Value="4,3"/>
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Foreground" Value="#ffffff"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Border Name="border" Background="#565b65" CornerRadius="5">
+                            <ContentPresenter x:Name="contentPresenter" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#34373c"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style TargetType="{x:Type ScrollBar}">
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="OverridesDefaultStyle" Value="True"/>
@@ -85,7 +170,7 @@
                         <Track x:Name="Track" Grid.Row="1" IsDirectionReversed="True">
                             <Track.Thumb>
                                 <Thumb Margin="1,0" Background="#ffffff" OverridesDefaultStyle="True">
-                                    
+
                                 </Thumb>
                             </Track.Thumb>
                         </Track>

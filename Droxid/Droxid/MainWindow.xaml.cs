@@ -46,12 +46,12 @@ namespace Droxid
             }
         }
 
-        private void BtnSelectChannel(object sender, RoutedEventArgs e)
+        private void lstvSelectChannel(object sender, SelectionChangedEventArgs e)
         {
-            if(sender is Button && sender is not null)
+            if(sender is ListView)
             {
-                Button button = (Button)sender;
-                _vm.SelectedChannel = (Channel)button.DataContext;
+                ListView listView = (ListView)sender;
+                _vm.SelectedChannel = listView.SelectedItem as Channel;
             }
         }
 

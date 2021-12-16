@@ -5,7 +5,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:Droxid"
     xmlns:vm="clr-namespace:Droxid.ViewModels"
-    mc:Ignorable="d" Title="MainWindow" Height="750" Width="1300">
+    mc:Ignorable="d" Title="Droxid" Height="750" Width="1300">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -21,77 +21,58 @@
 
     <Grid Background="#202225">
         <Grid.RowDefinitions>
-            <RowDefinition Height="20" />
+            <RowDefinition Height="70" />
             <RowDefinition Height="100*" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" FontWeight="UltraBold" Foreground="#72767d" TextTrimming="None" FontSize="10">
-            Droxid
-        </TextBlock>
+        <Grid Grid.Row="0" Height="70">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="60" />
+                <ColumnDefinition Width="100*" />
+            </Grid.ColumnDefinitions>
+            <!--TODO:Replace icon with server/dm-->
+            <Button Grid.Column="0" x:Name="btnDroxid" Style="{StaticResource btnDroxid}" Click="BtnDroxidClick">
+                <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="path2" Fill="#dcddde">
+                    <Path.Data>
+                        <PathGeometry Figures="M23.0212 1.67671C21.3107 0.879656 19.5079 0.318797 17.6584 0C17.4062 0.461742 17.1749 0.934541 16.9708 1.4184C15.003 1.12145 12.9974 1.12145 11.0283 1.4184C10.819 0.934541 10.589 0.461744 10.3368 0.00546311C8.48074 0.324393 6.67795 0.885118 4.96746 1.68231C1.56727 6.77853 0.649666 11.7538 1.11108 16.652C3.10102 18.1418 5.3262 19.2743 7.69177 20C8.22338 19.2743 8.69519 18.4993 9.09812 17.691C8.32996 17.3997 7.58522 17.0424 6.87684 16.6135C7.06531 16.4762 7.24726 16.3387 7.42403 16.1847C11.5911 18.1749 16.408 18.1749 20.5763 16.1847C20.7531 16.3332 20.9351 16.4762 21.1171 16.6135C20.41 17.0369 19.6639 17.3997 18.897 17.691C19.3052 18.4993 19.7718 19.2689 20.3021 19.9945C22.6677 19.2689 24.8929 18.1364 26.8828 16.6466H26.8893C27.43 10.9731 25.9665 6.04728 23.0212 1.67671ZM9.68041 13.6383C8.39754 13.6383 7.34085 12.4453 7.34085 10.994C7.34085 9.54272 8.37155 8.34973 9.68041 8.34973C10.9893 8.34973 12.0395 9.54272 12.0187 10.994C12.0187 12.4453 10.9828 13.6383 9.68041 13.6383ZM18.3161 13.6383C17.0332 13.6383 15.9765 12.4453 15.9765 10.994C15.9765 9.54272 17.0124 8.34973 18.3161 8.34973C19.6184 8.34973 20.6751 9.54272 20.6543 10.994C20.6543 12.4453 19.6184 13.6383 18.3161 13.6383Z" FillRule="NonZero" />
+                    </Path.Data>
+                </Path>
+            </Button>
+            <!--TODO:Fix horizontal scroll-->
+            <ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Hidden">
+                <ItemsControl ItemsSource="{Binding Guilds}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Style="{StaticResource stpServers}"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Content="{Binding Name}" Click="BtnSelectServer"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+
+        </Grid>
 
         <Grid Grid.Row="1" Height="auto">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="70" />
                 <ColumnDefinition Width="240" />
                 <ColumnDefinition Width="100*" />
             </Grid.ColumnDefinitions>
 
-            <Grid Grid.Column="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="60" />
-                    <RowDefinition Height="100*" />
-                </Grid.RowDefinitions>
-
-                <Button x:Name="btnDroxid" Style="{StaticResource btnDroxid}" Click="BtnDroxidClick">
-                    <Button.Content>
-                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path2" Fill="#dcddde">
-                            <Path.Data>
-                                <PathGeometry Figures="M23.0212 1.67671C21.3107 0.879656 19.5079 0.318797 17.6584 0C17.4062 0.461742 17.1749 0.934541 16.9708 1.4184C15.003 1.12145 12.9974 1.12145 11.0283 1.4184C10.819 0.934541 10.589 0.461744 10.3368 0.00546311C8.48074 0.324393 6.67795 0.885118 4.96746 1.68231C1.56727 6.77853 0.649666 11.7538 1.11108 16.652C3.10102 18.1418 5.3262 19.2743 7.69177 20C8.22338 19.2743 8.69519 18.4993 9.09812 17.691C8.32996 17.3997 7.58522 17.0424 6.87684 16.6135C7.06531 16.4762 7.24726 16.3387 7.42403 16.1847C11.5911 18.1749 16.408 18.1749 20.5763 16.1847C20.7531 16.3332 20.9351 16.4762 21.1171 16.6135C20.41 17.0369 19.6639 17.3997 18.897 17.691C19.3052 18.4993 19.7718 19.2689 20.3021 19.9945C22.6677 19.2689 24.8929 18.1364 26.8828 16.6466H26.8893C27.43 10.9731 25.9665 6.04728 23.0212 1.67671ZM9.68041 13.6383C8.39754 13.6383 7.34085 12.4453 7.34085 10.994C7.34085 9.54272 8.37155 8.34973 9.68041 8.34973C10.9893 8.34973 12.0395 9.54272 12.0187 10.994C12.0187 12.4453 10.9828 13.6383 9.68041 13.6383ZM18.3161 13.6383C17.0332 13.6383 15.9765 12.4453 15.9765 10.994C15.9765 9.54272 17.0124 8.34973 18.3161 8.34973C19.6184 8.34973 20.6751 9.54272 20.6543 10.994C20.6543 12.4453 19.6184 13.6383 18.3161 13.6383Z" FillRule="NonZero" />
-                            </Path.Data>
-                        </Path>
-                    </Button.Content>
-                </Button>
-
-                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
-                    <StackPanel Style="{StaticResource stpServer}">
-                        <ItemsControl ItemsSource="{Binding Guilds}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Button Content="{Binding Name}" Click="BtnSelectServer">
-
-                                    </Button>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </StackPanel>
-                </ScrollViewer>
-
-            </Grid>
-
-            <Grid Grid.Column="1" Background="#FF2F3136" Width="240">
+            <Grid Grid.Column="0" Background="#FF2F3136" Width="240">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <!--Server banner-->
-                <TextBlock Foreground="white" Text="{Binding SelectedGuild.Name}" HorizontalAlignment="Center" VerticalAlignment="Center">
-
-                </TextBlock>
+                <TextBlock Foreground="white" Text="{Binding SelectedGuild.Name}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,12,0,0" Grid.RowSpan="2"/>
 
                 <!--Channels-->
-                <StackPanel Grid.Row="1">
-                    <ItemsControl ItemsSource="{Binding SelectedChannels}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Button Content="{Binding Name}" Click="BtnSelectChannel">
-
-                                </Button>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
-                <TextBlock x:Name="txtb" HorizontalAlignment="Left" Margin="10,206,0,0" Grid.Row="1" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Height="417" Width="200" MouseDown="txtb_MouseDown"/>
-
+                <ListView ItemsSource="{Binding SelectedChannels}" Style="{StaticResource lstvChannels}" Grid.Row="1" Grid.RowSpan="1" SelectionChanged="lstvSelectChannel">
+                </ListView>
             </Grid>
             <Grid Grid.Column="2" Background="#36393f">
                 <Grid.RowDefinitions>
@@ -104,29 +85,32 @@
                     <TextBlock Foreground="White" Text="{Binding SelectedChannel.Name}" Width="auto" VerticalAlignment="Center" Margin="5,0,0,0"/>
                 </StackPanel>
                 <!--Messages-->
-                <StackPanel Grid.Row="1">
-                    <ItemsControl ItemsSource="{Binding Messages}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="60"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="{Binding Sender.Username}" Margin="10,0" Foreground="White"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding Content}" Foreground="White" TextWrapping="Wrap"/>
-                                </Grid>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
-                <!--Input-->
-                <StackPanel Grid.Row="2" Orientation="Horizontal">
 
-                </StackPanel>
+                <ItemsControl ItemsSource="{Binding Messages}" Grid.Row="1">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="60"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="{Binding Sender.Username}" Margin="10,0" Foreground="White"/>
+                                <TextBlock Grid.Column="1" Text="{Binding Content}" Foreground="White" TextWrapping="Wrap"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!--Input-->
+                <StackPanel Grid.Row="2" Orientation="Horizontal"/>
             </Grid>
         </Grid>
     </Grid>
