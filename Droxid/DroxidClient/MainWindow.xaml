@@ -39,21 +39,7 @@
                 </Path>
             </Button>
             <!--TODO:Fix horizontal scroll-->
-            <ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Hidden">
-                <ItemsControl ItemsSource="{Binding Guilds}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Style="{StaticResource stpServers}"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Button Content="{Binding Name}" Click="BtnSelectServer"/>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
-
+            <ListView Grid.Column="1" Style="{StaticResource lstvServers}" ItemsSource="{Binding Guilds}" SelectionChanged="lstvSelectServer"/>
         </Grid>
 
         <Grid Grid.Row="1" Height="auto">

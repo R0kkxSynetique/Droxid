@@ -36,21 +36,21 @@ namespace Droxid
             _vm.AddGuild(MainWindowTestData.GenerateGuild());
         }
 
-        private void BtnSelectServer(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button && sender is not null)
-            {
-                Button button = (Button)sender;
-                _vm.SelectedGuild = (Guild)button.DataContext;
-            }
-        }
-
         private void lstvSelectChannel(object sender, SelectionChangedEventArgs e)
         {
             if(sender is ListView)
             {
                 ListView listView = (ListView)sender;
                 _vm.SelectedChannel = listView.SelectedItem as Channel;
+            }
+        }
+
+        private void lstvSelectServer(object sender, SelectionChangedEventArgs e)
+        {
+            if(sender is ListView)
+            {
+                ListView listView = ( ListView)sender as ListView;
+                _vm.SelectedGuild = listView.SelectedItem as Guild;
             }
         }
     }
