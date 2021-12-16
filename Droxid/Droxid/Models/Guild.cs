@@ -12,7 +12,6 @@ namespace Droxid.Models
         private List<User> _users = new List<User>();
         private User _owner;
         private List<Role> _roles = new List<Role>();
-        private List<Permission> _permissions = new List<Permission>();
         private List<Channel> _channels = new List<Channel>();
 
         public List<Role> Roles
@@ -37,12 +36,11 @@ namespace Droxid.Models
             get => _channels;
         }
 
-        public Guild(string name, User owner, List<Role> roles, List<Permission> permissions, List<Channel> channels, List<User> users = null)
+        public Guild(string name, User owner, List<Role> roles, List<Channel> channels, List<User> users = null)
         {
             _name = name;
             _owner = owner;
             _roles = roles;
-            _permissions = permissions;
             _channels = channels;
             _users = users;
         }

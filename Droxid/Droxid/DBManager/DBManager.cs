@@ -8,6 +8,7 @@ using MySql.Data.MySqlClient;
 using Droxid.Models;
 using Dapper;
 using System.Collections;
+using Droxid.ViewModels;
 
 namespace Droxid.DataBase
 {
@@ -31,7 +32,7 @@ namespace Droxid.DataBase
         {
             IDictionary<string,string> result = new Dictionary<string,string>();
 
-            User user = null;
+            User? user = null;
 
             IEnumerable queryResult = _connection.Query(query);
 
@@ -44,6 +45,82 @@ namespace Droxid.DataBase
             }
 
             return user;
+        }
+
+        public static dynamic SelectUserGuilds(string query)
+        {
+            IDictionary<string, string> result = new Dictionary<string, string>();
+
+            List<Guild>? guilds = null;
+
+            IEnumerable queryResult = _connection.Query(query);
+
+            foreach (dynamic sigleResult in queryResult)
+            {
+                result.Add("id", sigleResult.id.ToString());
+                result.Add("name", sigleResult.name);
+                result.Add("owner_id", sigleResult.owner_id);
+
+                guilds.Add(new(result["name"],UserViewModel.GetUserById(result["owner_id"]), UserViewModel.GetGuildRoles(result["id"]),UserViewModel.GetGuildChannels(result["id"])));
+            }
+
+            return guilds;
+        }
+
+        public static List<Role> SelectRoles(string query)
+        {
+
+            IDictionary<string, string> result = new Dictionary<string, string>();
+
+            List<Role>? roles = null;
+
+            IEnumerable queryResult = _connection.Query(query);
+
+            foreach (dynamic sigleResult in queryResult)
+            {
+                result.Add("name", sigleResult.name);
+
+                roles.Add(new(result["name"]));
+            }
+
+            return roles;
+
+        }
+
+        public static List<Channel> SelectChannels(string query)
+        {
+            IDictionary<string, string> result = new Dictionary<string, string>();
+
+            List<Channel>? channels = null;
+
+            IEnumerable queryResult = _connection.Query(query);
+
+            foreach (dynamic sigleResult in queryResult)
+            {
+                result.Add("name", sigleResult.name);
+
+                channels.Add(new(result["name"]));
+            }
+
+            return channels;
+        }
+
+        public static List<Permission> SelectPermissions(string query)
+        {
+            IDictionary<string, string> result = new Dictionary<string, string>();
+
+            List<Permission>? permissions = null;
+
+            IEnumerable queryResult = _connection.Query(query);
+
+            foreach (dynamic sigleResult in queryResult)
+            {
+                result.Add("name", sigleResult.name);
+
+                permissions.Add(new(result["name"],result["desciption"]));
+            }
+
+            return permissions;
         }
     }
 }

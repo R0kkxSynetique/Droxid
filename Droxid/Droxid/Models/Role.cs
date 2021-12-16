@@ -21,7 +21,7 @@ namespace Droxid.Models
             get => _users;
         }
 
-        public Role(string name, List<User> users)
+        public Role(string name, List<User> users = null)
         {
             _name = name;
             _users = users;
