@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Droxid.ViewModels;
 
 namespace Droxid.Models
 {
     public class Permission
     {
+        private int _id;
         private string _name;
         private string _description;
-        private List<Role> _roles;
 
         public string Name
         {
@@ -22,14 +23,13 @@ namespace Droxid.Models
         }
         public List<Role> Roles
         {
-            get => _roles;
+            get => throw new NotImplementedException();
         }
 
-        public Permission(string name, string description, List<Role> roles = null)
+        public Permission(int id, string name, string description)
         {
             _name = name;
             _description = description;
-            _roles = roles;
         }
     }
 }

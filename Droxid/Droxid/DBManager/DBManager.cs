@@ -30,76 +30,83 @@ namespace Droxid.DataBase
 
         public static User SelectUser(string query)
         {
-            IDictionary<string,string> result = new Dictionary<string,string>();
-
             User? user = null;
 
             IEnumerable queryResult = _connection.Query(query);
 
-            foreach (dynamic sigleResult in queryResult)
+            foreach (dynamic singleResult in queryResult)
             {
-                result.Add("id",sigleResult.id.ToString());
-                result.Add("username", sigleResult.username);
-
-                user = new(sigleResult.username, sigleResult.id);
+                user = new(singleResult.id, singleResult.username);
             }
 
             return user;
         }
 
-        public static dynamic SelectUserGuilds(string query)
+        public static List<User> SelectUsers(string query)
         {
-            IDictionary<string, string> result = new Dictionary<string, string>();
-
-            List<Guild>? guilds = null;
+            List<User>? users = new();
 
             IEnumerable queryResult = _connection.Query(query);
 
-            foreach (dynamic sigleResult in queryResult)
+            foreach (dynamic singleResult in queryResult)
             {
-                result.Add("id", sigleResult.id.ToString());
-                result.Add("name", sigleResult.name);
-                result.Add("owner_id", sigleResult.owner_id);
+                users.Add(new(singleResult.id, singleResult.username));
+            }
 
-                guilds.Add(new(result["name"],UserViewModel.GetUserById(result["owner_id"]), UserViewModel.GetGuildRoles(result["id"]),UserViewModel.GetGuildChannels(result["id"])));
+            return users;
+        }
+
+        public static List<Guild> SelectUserGuilds(string query)
+        {
+            List<Guild>? guilds = new();
+
+            IEnumerable queryResult = _connection.Query(query);
+
+            foreach (dynamic singleResult in queryResult)
+            {
+                guilds.Add(new(singleResult.id,singleResult.name,singleResult.owner_id));
             }
 
             return guilds;
         }
 
-        public static List<Role> SelectRoles(string query)
+        public static Guild SelectGuild(string query)
         {
-
-            IDictionary<string, string> result = new Dictionary<string, string>();
-
-            List<Role>? roles = null;
+            Guild? guild = null;
 
             IEnumerable queryResult = _connection.Query(query);
 
-            foreach (dynamic sigleResult in queryResult)
+            foreach (dynamic singleResult in queryResult)
             {
-                result.Add("name", sigleResult.name);
+                guild = new(singleResult.id, singleResult.name, singleResult.owner);
+            }
 
-                roles.Add(new(result["name"]));
+            return guild;
+        }
+
+        public static List<Role> SelectRoles(string query)
+        {
+            List<Role> roles = new();
+
+            IEnumerable queryResult = _connection.Query(query);
+
+            foreach (dynamic singleResult in queryResult)
+            {
+                roles.Add(new(singleResult.id, singleResult.name));
             }
 
             return roles;
-
         }
 
         public static List<Channel> SelectChannels(string query)
         {
-            IDictionary<string, string> result = new Dictionary<string, string>();
-
-            List<Channel>? channels = null;
+            List<Channel>? channels = new();
 
             IEnumerable queryResult = _connection.Query(query);
 
-            foreach (dynamic sigleResult in queryResult)
+            foreach (dynamic singleResult in queryResult)
             {
-                result.Add("name", sigleResult.name);
-
-                channels.Add(new(result["name"]));
+                channels.Add(new(singleResult.id, singleResult.name));
             }
 
             return channels;
@@ -107,20 +114,30 @@ namespace Droxid.DataBase
 
         public static List<Permission> SelectPermissions(string query)
         {
-            IDictionary<string, string> result = new Dictionary<string, string>();
-
-            List<Permission>? permissions = null;
+            List<Permission>? permissions = new();
 
             IEnumerable queryResult = _connection.Query(query);
 
-            foreach (dynamic sigleResult in queryResult)
+            foreach (dynamic singleResult in queryResult)
             {
-                result.Add("name", sigleResult.name);
-
-                permissions.Add(new(result["name"],result["desciption"]));
+                permissions.Add(new(singleResult.id, singleResult.name, singleResult.description));
             }
 
             return permissions;
+        }
+
+        public static List<Message> SelectMessages(string query)
+        {
+            List<Message>? messages = new();
+
+            IEnumerable queryResult = _connection.Query(query);
+
+            foreach (dynamic singleResult in queryResult)
+            {
+                messages.Add(new(singleResult.id,singleResult.content, singleResult.user_id, singleResult.channel_id));
+            }
+
+            return messages;
         }
     }
 }

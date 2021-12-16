@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Droxid.ViewModels;
 
 namespace Droxid.Models
 {
     public class Channel
     {
+        private int _id;
         private string _name;
-        private List<Permission> _permissions = new List<Permission>();
-        private List<Message> _messages = new List<Message>();
-        private Guild _guild;
 
         public string Name
         {
@@ -19,36 +18,28 @@ namespace Droxid.Models
         }
         public List<Permission> Permissions
         {
-            get => _permissions;
+            get => UserViewModel.GetChannelPermissions(_id);
         }
         public List<Message> Messages
         {
-            get => _messages;
+            get => UserViewModel.GetChannelMessages(_id);
         }
         public Guild Guild
         {
-            get => _guild;
+            get => UserViewModel.GetGuildByChannelId(_id);
         }
 
-        public Channel(string name, List<Permission> permissions, List<Message> messages, Guild guild)
+        public Channel(int id, string name)
         {
+            _id = id;
             _name = name;
-            _permissions = permissions;
-            _messages = messages;
-            _guild = guild;
         }
 
-        public Channel (string name)
-        {
-            _name = name;
-
-        }
-
-        public int AddMessage(string content, User sender)
-        {
-            _messages.Add(new Message(content, sender, this));
-            return _messages.Count - 1;
-        }
+        //public int AddMessage(string content, User sender)
+        //{
+        //    _messages.Add(new Message(content, sender, this));
+        //    return _messages.Count - 1;
+        //}
         
     }
 }

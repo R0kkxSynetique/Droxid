@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Droxid.ViewModels;
 
 namespace Droxid.Models
 {
     public class Message
     {
+        private int _id;
         private string _content;
-        private User _sender;
-        private Channel _channel;
+        private int _sender;
+        private int _channel;
 
         public string Content
         {
@@ -18,15 +20,16 @@ namespace Droxid.Models
         }
         public User Sender
         {
-            get => _sender;
+            get => UserViewModel.GetUserById(_sender);
         }
         public Channel Channel
         {
-            get => _channel;
+            get => throw new NotImplementedException();
         }
 
-        public Message(string content, User sender, Channel channel)
+        public Message(int id, string content, int sender, int channel)
         {
+            _id = id;
             _content = content;
             _sender = sender;
             _channel = channel;

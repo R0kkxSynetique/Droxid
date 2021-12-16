@@ -8,7 +8,7 @@ namespace Droxid.Models
     {
         private int _id;
         private string _username;
-        private List<Guild> _guilds = new List<Guild>();
+        private List<int> _guilds = new List<int>();
 
         public int Id
         {
@@ -21,15 +21,10 @@ namespace Droxid.Models
         }
 
         public List<Guild> Guilds{
-            get => _guilds;
+            get => UserViewModel.GetUserGuilds(_username);
         }
 
-        public User(string username, List<Guild> guilds = null){
-            _username = username;
-            _guilds = guilds;
-        }
-
-        public User(string username, int id)
+        public User(int id, string username)
         {
             _id = id;
             _username = username;
