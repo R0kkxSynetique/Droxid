@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.ComponentModel;
 using Droxid.ViewModels;
 using Droxid.Models;
 
@@ -28,6 +29,23 @@ namespace Droxid
             InitializeComponent();
             _vm = (MainWindowViewModel)this.DataContext;
             _vm.register(this);
+            _vm.PropertyChanged += viewmodelProperyChangedEventHandler;
+        }
+
+        //ViewModel events
+        private void viewmodelProperyChangedEventHandler(object? sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "SelectedChannel":
+                    updateInputVisibility();
+                    break;
+            }
+        }
+
+        private void updateInputVisibility()
+        {
+            grdInput.Visibility =_vm.SelectedChannel == null ? Visibility.Collapsed : Visibility.Visible;
         }
 
         //Window events

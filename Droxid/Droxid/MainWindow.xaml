@@ -99,7 +99,7 @@
                 </ScrollViewer>
 
                 <!--Input-->
-                <Grid Grid.Row="2">
+                <Grid Grid.Row="2" x:Name="grdInput" Visibility="Collapsed">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="60"/>
                         <ColumnDefinition Width="1*"/>
