@@ -11,6 +11,7 @@ using System.Windows.Input;
 using Droxid;
 using Droxid.Models;
 using System.Timers;
+using System.Windows.Threading;
 
 namespace Droxid.ViewModels
 {
@@ -22,21 +23,21 @@ namespace Droxid.ViewModels
         private User _client;
         private Guild? _selectedGuild;
         private Channel? _selectedChannel;
-        private Timer _timer;
+        private DispatcherTimer _timer;
 
 
         public MainWindowViewModel()
         {
             _client = UserViewModel.GetUserByUsername("R0kkxSynetique");
             NotifyPropertyChanged(nameof(Guilds));
-            _timer = new Timer(1000);
-            _timer.Elapsed += updateTimerEventHandler;
-            _timer.AutoReset = true;
-            _timer.Enabled = true;
+            _timer = new DispatcherTimer();
+            _timer.Interval = TimeSpan.FromSeconds(5);
+            _timer.Tick += updateTimerEventHandler;
+            //_timer.IsEnabled = true;
 
         }
 
-        private void updateTimerEventHandler(Object sender, ElapsedEventArgs e)
+        private void updateTimerEventHandler(Object? sender, EventArgs e)
         {
             Update();
         }
