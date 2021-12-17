@@ -106,6 +106,11 @@ namespace Droxid.ViewModels
             _view = mainWindow;
         }
 
+        public void SendMessage(string content)
+        {
+            _client.SendMessage(content, _selectedChannel.Id);
+        }
+
         //Property changed dependencies
 
         public event PropertyChangedEventHandler? PropertyChanged;
