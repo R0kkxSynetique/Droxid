@@ -13,6 +13,11 @@ namespace Droxid.Models
         private string _name;
         private int _owner;
 
+        public int Id
+        {
+            get => _id;
+        }
+
         public List<Role> Roles
         {
             get => UserViewModel.GetGuildRoles(_id);
@@ -40,6 +45,12 @@ namespace Droxid.Models
             _id = id;
             _name = name;
             _owner = owner;
+        }
+
+        public void copy(Guild guild)
+        {
+            _name = guild._name;
+            _owner = guild._owner;
         }
     }
 }

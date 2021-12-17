@@ -31,9 +31,9 @@ namespace Droxid.ViewModels
             _client = UserViewModel.GetUserByUsername("R0kkxSynetique");
             NotifyPropertyChanged(nameof(Guilds));
             _timer = new DispatcherTimer();
-            _timer.Interval = TimeSpan.FromSeconds(5);
+            _timer.Interval = TimeSpan.FromSeconds(2);
             _timer.Tick += updateTimerEventHandler;
-            //_timer.IsEnabled = true;
+            _timer.IsEnabled = true;
 
         }
 
