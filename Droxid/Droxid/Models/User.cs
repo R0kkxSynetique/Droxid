@@ -29,5 +29,10 @@ namespace Droxid.Models
             _id = id;
             _username = username;
         }
+
+        public void SendMessage(string content, int channel)
+        {
+            UserViewModel.SendMessage(content, _id, channel);
+        }
     }
 }

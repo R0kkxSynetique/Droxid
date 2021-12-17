@@ -15,7 +15,8 @@ namespace Droxid.ViewModels
     // send query(data comes from each model) to dbmanager
     public class UserViewModel
     {
-
+        
+        //Users
         public static User GetUserByUsername(string username)
         {
             string query = $"SELECT * FROM users WHERE username = \"{username}\";";
@@ -35,6 +36,21 @@ namespace Droxid.ViewModels
             string query = $"SELECT guilds.* FROM users INNER JOIN guilds_has_users ON users.id = guilds_has_users.users_id INNER JOIN guilds ON guilds.id = guilds_has_users.guilds_id WHERE username LIKE \"{username}\";";
 
             return DBManager.SelectUserGuilds(query);
+        }
+
+        //Guilds
+        public static Guild GetGuildById(int id)
+        {
+            string query = $"SELECT * FROM guilds WHERE id = {id};";
+
+            return DBManager.SelectGuild(query);
+        } 
+
+        public static Guild GetGuildByChannelId(int id)
+        {
+            string query = $"";
+
+            return DBManager.SelectGuild(query);
         }
 
         public static List<User> GetGuildUsers(int id)
@@ -58,6 +74,7 @@ namespace Droxid.ViewModels
             return DBManager.SelectChannels(query);
         }
 
+        //Roles
         public static List<Permission> GetRolePermissions(int id)
         {
             string query = $"SELECT permissions.* FROM roles INNER JOIN roles_has_permissions ON roles_has_permissions.roles_id = roles.id INNER JOIN permissions ON permissions.id = roles_has_permissions.permissions_id WHERE roles.id = {id};";
@@ -65,18 +82,12 @@ namespace Droxid.ViewModels
             return DBManager.SelectPermissions(query);
         }
 
+        //Channels
         public static List<Message> GetChannelMessages(int id)
         {
             string query = $"SELECT messages.* FROM channels INNER JOIN messages ON channels.id = messages.channel_id WHERE channels.id = {id};";
 
             return DBManager.SelectMessages(query);
-        }
-
-        public static Guild GetGuildById(int id)
-        {
-            string query = $"SELECT * FROM guilds WHERE id = {id};";
-
-            return DBManager.SelectGuild(query);
         }
 
         public static List<Permission> GetChannelPermissions(int id)
@@ -86,11 +97,12 @@ namespace Droxid.ViewModels
             return DBManager.SelectPermissions(query);
         }
 
-        public static Guild GetGuildByChannelId(int id)
+        //Messages
+        public static void SendMessage(string content, int userId, int channelId)
         {
-            string query = $"";
+            string query = $"INSERT INTO messages (content, channel_id, user_id) VALUES (\"{content}\", {channelId}, {userId})";
 
-            return DBManager.SelectGuild(query);
+            DBManager.InsertMessage(query);
         }
     }
 }

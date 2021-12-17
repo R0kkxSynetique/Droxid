@@ -139,5 +139,10 @@ namespace Droxid.DataBase
 
             return messages;
         }
+
+        public static int InsertMessage(string query)
+        {
+            return _connection.Execute(query);
+        }
     }
 }
