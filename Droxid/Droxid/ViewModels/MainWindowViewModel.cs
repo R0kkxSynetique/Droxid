@@ -9,8 +9,7 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using System.Windows.Input;
 using Droxid;
-using Droxid;
-using Droxid.DummyData;
+using Droxid.Models;
 
 namespace Droxid.ViewModels
 {
@@ -25,23 +24,13 @@ namespace Droxid.ViewModels
 
         public MainWindowViewModel()
         {
-            _client = new User("tmp");
-            GenerateTestData();
-        }
-
-        private void GenerateTestData()
-        {
-            List<Guild> guilds = new List<Guild>();
-            guilds = MainWindowTestData.GenerateGuilds();
-            _client = new User("mon", guilds);
-            _selectedGuild = guilds[0];
-            _selectedChannel = guilds[0].Channels[0];
+            _client = UserViewModel.GetUserByUsername("R0kkxSynetique");
             NotifyPropertyChanged(nameof(Guilds));
         }
 
         public ObservableCollection<Guild> Guilds
         {
-            get { return new ObservableCollection<Guild>(_client.Guilds); }
+            get { return new ObservableCollection<Guild>(_client?.Guilds ?? new()); }
         }
 
         public List<Channel> Channels
@@ -100,15 +89,15 @@ namespace Droxid.ViewModels
             get => SelectedChannel?.Messages ?? new List<Message>();
         }
 
-        public void AddGuild(string name, User owner, List<Role> roles, List<Permission> permissions, List<Channel> channels, List<User>? users = null)
-        {
-            _client.Guilds.Add(new Guild(name, owner, roles, permissions, channels, users));
-            NotifyPropertyChanged(nameof(Guilds));
-        }
+        //public void AddGuild(string name, User owner, List<Role> roles, List<Channel> channels, List<User>? users = null)
+        //{
+        //    _client.Guilds.Add(new Guild(name, owner, roles, channels, users));
+        //    NotifyPropertyChanged(nameof(Guilds));
+        //}
 
         public void AddGuild(Guild guild)
         {
-            _client.Guilds.Add(guild);
+            //_client.Guilds.Add(guild);
             NotifyPropertyChanged(nameof(Guilds));
         }
 
