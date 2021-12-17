@@ -10,7 +10,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Styles/SideBar.xaml"/>
+                <ResourceDictionary Source="Styles/MainWindow.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -39,7 +39,7 @@
                 </Path>
             </Button>
             <!--TODO:Fix horizontal scroll-->
-            <ListView Grid.Column="1" Style="{StaticResource lstvServers}" ItemsSource="{Binding Guilds}" SelectionChanged="lstvSelectServer"/>
+            <ListView Grid.Column="1" Style="{StaticResource lstvServers}" ItemsSource="{Binding Guilds}" SelectionChanged="lstvSelectServer" SelectionMode="Single"/>
         </Grid>
 
         <Grid Grid.Row="1" Height="auto">
@@ -99,7 +99,16 @@
                 </ScrollViewer>
 
                 <!--Input-->
-                <StackPanel Grid.Row="2" Orientation="Horizontal"/>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="100"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="1" Style="{StaticResource MessageInput}">
+                        
+                    </TextBox>
+                </Grid>
             </Grid>
         </Grid>
     </Grid>
