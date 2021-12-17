@@ -12,6 +12,10 @@ namespace Droxid.Models
         private int _id;
         private string _name;
 
+        public int Id
+        {
+            get => _id;
+        }
         public string Name
         {
             get => _name;
