@@ -77,13 +77,6 @@ namespace Droxid
             if(e.Key == Key.Enter)
             {
                 _vm.SendMessage(txtMessage.Text);
-            }
-        }
-
-        private void txtMessage_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
                 txtMessage.Clear();
             }
         }
