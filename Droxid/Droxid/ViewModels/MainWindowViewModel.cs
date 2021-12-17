@@ -10,6 +10,7 @@ using Microsoft.Toolkit.Mvvm.Input;
 using System.Windows.Input;
 using Droxid;
 using Droxid.Models;
+using System.Timers;
 
 namespace Droxid.ViewModels
 {
@@ -21,11 +22,28 @@ namespace Droxid.ViewModels
         private User _client;
         private Guild? _selectedGuild;
         private Channel? _selectedChannel;
+        private Timer _timer;
+
 
         public MainWindowViewModel()
         {
             _client = UserViewModel.GetUserByUsername("R0kkxSynetique");
             NotifyPropertyChanged(nameof(Guilds));
+            _timer = new Timer(1000);
+            _timer.Elapsed += updateTimerEventHandler;
+            _timer.AutoReset = true;
+            _timer.Enabled = true;
+
+        }
+
+        private void updateTimerEventHandler(Object sender, ElapsedEventArgs e)
+        {
+            Update();
+        }
+
+        public void Update()
+        {
+            NotifyPropertyChanged(nameof(_client));
         }
 
         public ObservableCollection<Guild> Guilds
@@ -115,14 +133,20 @@ namespace Droxid.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
             switch (propName)
             {
-                case nameof(SelectedChannel):
-                    NotifyPropertyChanged(nameof(Messages));
+                case nameof(_client):
+                    NotifyPropertyChanged(nameof(Guilds));
+                    break;
+                case nameof(Guilds):
+                    NotifyPropertyChanged(nameof(SelectedGuild));
                     break;
                 case nameof(SelectedGuild):
                     NotifyPropertyChanged(nameof(SelectedChannels));
                     break;
                 case nameof(SelectedChannels):
                     NotifyPropertyChanged(nameof(SelectedChannel));
+                    break;
+                case nameof(SelectedChannel):
+                    NotifyPropertyChanged(nameof(Messages));
                     break;
             }
         }
