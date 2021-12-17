@@ -24,6 +24,10 @@ namespace Droxid.ViewModels
         private Guild? _selectedGuild;
         private Channel? _selectedChannel;
         private DispatcherTimer _timer;
+        
+        //Caching
+        private List<Guild> _guilds = new List<Guild>();
+        private List<Channel> _channels = new List<Channel>();
 
 
         public MainWindowViewModel()
@@ -157,6 +161,39 @@ namespace Droxid.ViewModels
             }
         }
 
+    }
+
+    public static class MainViewModelHelper
+    {
+        public static List<Model> DynamicListUpdate(List<Model> original, List<Model> update)
+        {
+            //Compare cached with the new
+            for (int i = 0; i < original.Count; i++)
+            {
+                if (update.Find(updateItem => (updateItem.GetHashCode() == original[i].GetHashCode())) == null)
+                {
+                    Model updateItem = update.Find(item => item.Id == original[i].Id);
+                    if (dbGuild == null)
+                    {
+                        //Remove guild from cache if no reference is found in the database result
+                        _guilds.Remove(_guilds[i]);
+                    }
+                    else
+                    {
+                        //Update Content
+                        _guilds[i].copy(dbGuild);
+                    }
+                }
+
+            }
+            //Add uncached to cache
+            guilds.ForEach(guild =>
+            {
+                if (_guilds.Find(cachedGuild => cachedGuild.Id == guild.Id) == null) _guilds.Add(guild);
+            });
+            return _guilds;
+
+        }
     }
 
 }

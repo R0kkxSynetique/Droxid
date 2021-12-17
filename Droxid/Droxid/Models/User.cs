@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Droxid.Models
 {
-    public class User
+    public class User : Model
     {
         private int _id;
         private string _username;
@@ -63,6 +63,11 @@ namespace Droxid.Models
         public void SendMessage(string content, int channel)
         {
             UserViewModel.InsertMessage(content, _id, channel);
+        }
+
+        public override void Copy()
+        {
+            throw new NotImplementedException();
         }
     }
 }
