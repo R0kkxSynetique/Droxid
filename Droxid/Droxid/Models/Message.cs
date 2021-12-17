@@ -7,9 +7,8 @@ using Droxid.ViewModels;
 
 namespace Droxid.Models
 {
-    public class Message
+    public class Message : Model
     {
-        private int _id;
         private string _content;
         private int _sender;
         private int _channel;

@@ -7,15 +7,10 @@ using Droxid.ViewModels;
 
 namespace Droxid.Models
 {
-    public class Channel
+    public class Channel : Model
     {
-        private int _id;
         private string _name;
 
-        public int Id
-        {
-            get => _id;
-        }
         public string Name
         {
             get => _name;
@@ -39,16 +34,17 @@ namespace Droxid.Models
             _name = name;
         }
 
-        public void copy(Channel channel)
+        public void Copy(Channel channel)
         {
             _name = channel.Name;
         }
+
 
         //public int AddMessage(string content, User sender)
         //{
         //    _messages.Add(new Message(content, sender, this));
         //    return _messages.Count - 1;
         //}
-        
+
     }
 }

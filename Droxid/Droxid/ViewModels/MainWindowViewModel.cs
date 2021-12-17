@@ -12,6 +12,7 @@ using Droxid;
 using Droxid.Models;
 using System.Timers;
 using System.Windows.Threading;
+using System.Diagnostics;
 
 namespace Droxid.ViewModels
 {
@@ -51,9 +52,38 @@ namespace Droxid.ViewModels
             NotifyPropertyChanged(nameof(_client));
         }
 
+        //TODO : create a generic way to do this
         public ObservableCollection<Guild> Guilds
         {
-            get { return new ObservableCollection<Guild>(_client?.Guilds ?? new()); }
+            get {
+                List<Guild> guilds = UserViewModel.GetUserGuilds(_client.Username) ?? new();
+                //Compare cached with the new
+                for (int i = 0; i < _guilds.Count; i++)
+                {
+                    if (guilds.Find(dbGuild => (dbGuild.GetHashCode() == _guilds[i].GetHashCode())) == null)
+                    {
+                        Guild? dbGuild = guilds.Find(guild => guild.Id == _guilds[i].Id);
+                        if (dbGuild == null)
+                        {
+                            //Remove guild from cache if no reference is found in the database result
+                            _guilds.Remove(_guilds[i]);
+                        }
+                        else
+                        {
+                            //Update Content
+                            _guilds[i].Copy(dbGuild);
+                        }
+                    }
+
+                }
+                //Add uncached to cache
+                guilds.ForEach(guild =>
+                {
+                    if (_guilds.Find(cachedGuild => cachedGuild.Id == guild.Id) == null) _guilds.Add(guild);
+                });
+                return new(_guilds);
+
+            }
         }
 
         public List<Channel> Channels
@@ -87,13 +117,44 @@ namespace Droxid.ViewModels
             }
         }
 
-        public List<Channel> SelectedChannels
+        public ObservableCollection<Channel> SelectedChannels
         {
             get
             {
-                List<Channel> channels = new List<Channel>();
-                if (!(_selectedGuild is null) && !(_selectedGuild.Channels is null)) channels = _selectedGuild.Channels;
-                return channels;
+                if (SelectedGuild != null)
+                {
+                    List<Channel> dbChannels = UserViewModel.GetGuildChannels(SelectedGuild.Id);
+                    //Compare cache and DB
+                    for (int i = 0; i < _channels.Count; i++)
+                    {
+                        if (dbChannels.Find(dbChannel => (dbChannel.GetHashCode() == _channels[i].GetHashCode())) == null)
+                        {
+                            Channel? dbChannel = dbChannels.Find(channel => channel.Id == _channels[i].Id);
+                            if (dbChannel == null)
+                            {
+                                //Remove channel from cache if no reference is found in the database result
+                                _channels.Remove(_channels[i]);
+                            }
+                            else
+                            {
+                                //Update Content
+                                _channels[i].Copy(dbChannel);
+                            }
+                        }
+
+                    }
+                    //Add uncached to cache
+                    dbChannels.ForEach(dbChannel =>
+                    {
+                        if (_channels.Find(cachedChannel => cachedChannel.Id == dbChannel.Id) == null) _channels.Add(dbChannel);
+                    });
+                }
+                else
+                {
+                    _channels.Clear();
+                }
+                return new(_channels);
+
             }
         }
 
@@ -112,11 +173,6 @@ namespace Droxid.ViewModels
             get => SelectedChannel?.Messages ?? new List<Message>();
         }
 
-        //public void AddGuild(string name, User owner, List<Role> roles, List<Channel> channels, List<User>? users = null)
-        //{
-        //    _client.Guilds.Add(new Guild(name, owner, roles, channels, users));
-        //    NotifyPropertyChanged(nameof(Guilds));
-        //}
 
         public void AddGuild(Guild guild)
         {
@@ -161,39 +217,6 @@ namespace Droxid.ViewModels
             }
         }
 
-    }
-
-    public static class MainViewModelHelper
-    {
-        public static List<Model> DynamicListUpdate(List<Model> original, List<Model> update)
-        {
-            //Compare cached with the new
-            for (int i = 0; i < original.Count; i++)
-            {
-                if (update.Find(updateItem => (updateItem.GetHashCode() == original[i].GetHashCode())) == null)
-                {
-                    Model updateItem = update.Find(item => item.Id == original[i].Id);
-                    if (dbGuild == null)
-                    {
-                        //Remove guild from cache if no reference is found in the database result
-                        _guilds.Remove(_guilds[i]);
-                    }
-                    else
-                    {
-                        //Update Content
-                        _guilds[i].copy(dbGuild);
-                    }
-                }
-
-            }
-            //Add uncached to cache
-            guilds.ForEach(guild =>
-            {
-                if (_guilds.Find(cachedGuild => cachedGuild.Id == guild.Id) == null) _guilds.Add(guild);
-            });
-            return _guilds;
-
-        }
     }
 
 }

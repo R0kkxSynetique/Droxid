@@ -8,7 +8,10 @@ namespace Droxid.Models
 {
     public abstract class Model
     {
-        public int Id;
-        public abstract void Copy();        
+        protected int _id;
+        public int Id
+        {
+            get => _id;
+        }
     }
 }
