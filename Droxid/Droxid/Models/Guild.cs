@@ -13,6 +13,8 @@ namespace Droxid.Models
         private string _name;
         private int _owner;
 
+        private List<Channel> _channels = new List<Channel>();
+
         public int Id
         {
             get => _id;
@@ -37,7 +39,36 @@ namespace Droxid.Models
 
         public List<Channel> Channels
         {
-            get => UserViewModel.GetGuildChannels(_id);
+            get
+            {
+                List<Channel> dbChannels = UserViewModel.GetGuildChannels(_id);
+                //Compare cache and DB
+                for (int i = 0; i < _channels.Count; i++)
+                {
+                    if (dbChannels.Find(dbChannel => (dbChannel.GetHashCode() == _channels[i].GetHashCode())) == null)
+                    {
+                        Channel? dbChannel = dbChannels.Find(channel => channel.Id == _channels[i].Id);
+                        if (dbChannel == null)
+                        {
+                            //Remove channel from cache if no reference is found in the database result
+                            _channels.Remove(_channels[i]);
+                        }
+                        else
+                        {
+                            //Update Content
+                            _channels[i].copy(dbChannel);
+                        }
+                    }
+
+                }
+                //Add uncached to cache
+                dbChannels.ForEach(dbChannel =>
+                {
+                    if (_channels.Find(cachedChannel => cachedChannel.Id == dbChannel.Id) == null) _channels.Add(dbChannel);
+                });
+
+                return _channels;
+            }
         }
 
         public Guild(int id, string name, int owner)

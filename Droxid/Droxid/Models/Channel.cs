@@ -39,6 +39,11 @@ namespace Droxid.Models
             _name = name;
         }
 
+        public void copy(Channel channel)
+        {
+            _name = channel.Name;
+        }
+
         //public int AddMessage(string content, User sender)
         //{
         //    _messages.Add(new Message(content, sender, this));

@@ -78,6 +78,7 @@ namespace Droxid
             {
                 _vm.SendMessage(txtMessage.Text);
                 txtMessage.Clear();
+                _vm.Update();
             }
         }
     }
