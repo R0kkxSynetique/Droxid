@@ -32,7 +32,7 @@ namespace Droxid.Models
 
         public void SendMessage(string content, int channel)
         {
-            UserViewModel.SendMessage(content, _id, channel);
+            UserViewModel.InsertMessage(content, _id, channel);
         }
     }
 }

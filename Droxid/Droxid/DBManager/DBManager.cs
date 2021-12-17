@@ -64,7 +64,7 @@ namespace Droxid.DataBase
 
             foreach (dynamic singleResult in queryResult)
             {
-                guilds.Add(new(singleResult.id,singleResult.name,singleResult.owner_id));
+                guilds.Add(new(singleResult.id, singleResult.name, singleResult.owner_id));
             }
 
             return guilds;
@@ -134,15 +134,20 @@ namespace Droxid.DataBase
 
             foreach (dynamic singleResult in queryResult)
             {
-                messages.Add(new(singleResult.id,singleResult.content, singleResult.user_id, singleResult.channel_id));
+                messages.Add(new(singleResult.id, singleResult.content, singleResult.user_id, singleResult.channel_id));
             }
 
             return messages;
         }
 
-        public static int InsertMessage(string query)
+        public static int Insert(string query)
         {
             return _connection.Execute(query);
+        }
+
+        public static int InsertMultiple(string query, List<int> parameters)
+        {
+            return _connection.Execute(query, parameters);
         }
     }
 }
