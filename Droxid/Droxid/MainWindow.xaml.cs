@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.ComponentModel;
 using Droxid.ViewModels;
 using Droxid.Models;
+using Droxid.DataBase;
 
 namespace Droxid
 {
@@ -79,6 +80,14 @@ namespace Droxid
                 _vm.SendMessage(txtMessage.Text);
                 txtMessage.Clear();
                 _vm.Update();
+            }
+        }
+
+        private void btnCreateChannel_Click(object sender, RoutedEventArgs e)
+        {
+            if (_vm.SelectedGuild != null && !string.IsNullOrEmpty(txtInputChannel.Text))
+            {
+                _vm.CreateChannel(txtInputChannel.Text);
             }
         }
     }

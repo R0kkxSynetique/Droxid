@@ -199,6 +199,11 @@ namespace Droxid.ViewModels
             _client.SendMessage(content, _selectedChannel.Id);
         }
 
+        public void CreateChannel(string name)
+        {
+            _selectedGuild.AddChannel(name);
+        }
+
         //Property changed dependencies
 
         public event PropertyChangedEventHandler? PropertyChanged;
