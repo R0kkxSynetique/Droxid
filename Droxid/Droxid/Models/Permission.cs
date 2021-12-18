@@ -7,9 +7,8 @@ using Droxid.ViewModels;
 
 namespace Droxid.Models
 {
-    public class Permission
+    public class Permission : Model
     {
-        private int _id;
         private string _name;
         private string _description;
 
@@ -17,6 +16,7 @@ namespace Droxid.Models
         {
             get => _name;
         }
+
         public string Description
         {
             get => _description;
@@ -31,5 +31,6 @@ namespace Droxid.Models
             _name = name;
             _description = description;
         }
+
     }
 }

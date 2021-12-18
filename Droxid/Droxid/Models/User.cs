@@ -4,24 +4,23 @@ using System.Collections.Generic;
 
 namespace Droxid.Models
 {
-    public class User
+    public class User : Model
     {
-        private int _id;
         private string _username;
-        private List<int> _guilds = new List<int>();
 
-        public int Id
-        {
-            get => _id;
-        }
+        private List<Guild> _guilds = new List<Guild>();
 
         public string Username
         {
             get => _username;
         }
 
-        public List<Guild> Guilds{
-            get => UserViewModel.GetUserGuilds(_username);
+        public List<Guild> Guilds
+        {
+            get
+            {
+                return UserViewModel.GetUserGuilds(_username) ?? new();
+            }
         }
 
         public User(int id, string username)
@@ -34,5 +33,6 @@ namespace Droxid.Models
         {
             UserViewModel.InsertMessage(content, _id, channel);
         }
+
     }
 }

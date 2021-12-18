@@ -7,9 +7,8 @@ using Droxid.ViewModels;
 
 namespace Droxid.Models
 {
-    public class Role
+    public class Role : Model
     {
-        private int _id;
         private string _name;
 
         public string Name
@@ -27,5 +26,6 @@ namespace Droxid.Models
             _id = id;
             _name = name;
         }
+
     }
 }

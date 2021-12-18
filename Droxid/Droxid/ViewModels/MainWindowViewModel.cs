@@ -10,6 +10,9 @@ using Microsoft.Toolkit.Mvvm.Input;
 using System.Windows.Input;
 using Droxid;
 using Droxid.Models;
+using System.Timers;
+using System.Windows.Threading;
+using System.Diagnostics;
 
 namespace Droxid.ViewModels
 {
@@ -21,16 +24,106 @@ namespace Droxid.ViewModels
         private User _client;
         private Guild? _selectedGuild;
         private Channel? _selectedChannel;
+        private DispatcherTimer _timer;
+
+        //Caching
+        private List<Guild> _guilds = new List<Guild>();
+        private List<Channel> _channels = new List<Channel>();
+
 
         public MainWindowViewModel()
         {
             _client = UserViewModel.GetUserByUsername("R0kkxSynetique");
             NotifyPropertyChanged(nameof(Guilds));
+            _timer = new DispatcherTimer();
+            _timer.Interval = TimeSpan.FromSeconds(0.5);
+            _timer.Tick += updateTimerEventHandler;
+            _timer.IsEnabled = true;
+
         }
 
+        private void updateTimerEventHandler(Object? sender, EventArgs e)
+        {
+            Update();
+        }
+
+        public void Update()
+        {
+            //List<Guild> pastGuilds = new List<Guild>(_guilds);
+            //Guilds update
+            List<Guild> guilds = UserViewModel.GetUserGuilds(_client.Username) ?? new();
+            //Compare cached with the new
+            for (int i = 0; i < _guilds.Count; i++)
+            {
+                Guild? dbGuild = guilds.Find(guild => guild.Id == _guilds[i].Id);
+                if (dbGuild == null)
+                {
+                    //Remove guild from cache if no reference is found in the database result
+                    _guilds.Remove(_guilds[i]);
+                }
+                else
+                {
+                    if (!dbGuild.Equals(_guilds[i]))
+                    {
+                        //Update Content
+                        _guilds[i].Copy(dbGuild);
+                    }
+                }
+
+            }
+            //Add uncached to cache
+            guilds.ForEach(guild =>
+            {
+                if (_guilds.Find(cachedGuild => cachedGuild.Id == guild.Id) == null) _guilds.Add(guild);
+            });
+
+            //Channels update
+            if (SelectedGuild != null)
+            {
+                List<Channel> dbChannels = UserViewModel.GetGuildChannels(SelectedGuild.Id);
+                //Compare cache and DB
+                for (int i = 0; i < _channels.Count; i++)
+                {
+                    Channel? dbChannel = dbChannels.Find(channel => channel.Id == _channels[i].Id);
+                    if (dbChannel == null)
+                    {
+                        //Remove channel from cache if no reference is found in the database result
+                        _channels.Remove(_channels[i]);
+                    }
+                    else
+                    {
+                        if (!dbChannel.Equals(_channels[i]))
+                        {
+                            //Update Content
+                            _channels[i].Copy(dbChannel);
+                        }
+                    }
+
+                }
+                //Add uncached to cache
+                dbChannels.ForEach(dbChannel =>
+                {
+                    if (_channels.Find(cachedChannel => cachedChannel.Id == dbChannel.Id) == null) _channels.Add(dbChannel);
+                });
+            }
+            else
+            {
+                _channels.Clear();
+            }
+
+
+            NotifyPropertyChanged(nameof(_client));
+        }
+
+
+        //TODO : create a generic way to do this
         public ObservableCollection<Guild> Guilds
         {
-            get { return new ObservableCollection<Guild>(_client?.Guilds ?? new()); }
+            get
+            {
+                return new(_guilds);
+
+            }
         }
 
         public List<Channel> Channels
@@ -51,6 +144,7 @@ namespace Droxid.ViewModels
                 if (_selectedGuild != value)
                 {
                     _selectedGuild = value;
+                    _channels = UserViewModel.GetGuildChannels(SelectedGuild.Id);
                     if (SelectedChannels.Count > 0)
                     {
                         _selectedChannel = SelectedChannels[0];
@@ -64,13 +158,12 @@ namespace Droxid.ViewModels
             }
         }
 
-        public List<Channel> SelectedChannels
+        public ObservableCollection<Channel> SelectedChannels
         {
             get
             {
-                List<Channel> channels = new List<Channel>();
-                if (!(_selectedGuild is null) && !(_selectedGuild.Channels is null)) channels = _selectedGuild.Channels;
-                return channels;
+                return new(_channels);
+
             }
         }
 
@@ -89,11 +182,6 @@ namespace Droxid.ViewModels
             get => SelectedChannel?.Messages ?? new List<Message>();
         }
 
-        //public void AddGuild(string name, User owner, List<Role> roles, List<Channel> channels, List<User>? users = null)
-        //{
-        //    _client.Guilds.Add(new Guild(name, owner, roles, channels, users));
-        //    NotifyPropertyChanged(nameof(Guilds));
-        //}
 
         public void AddGuild(Guild guild)
         {
@@ -120,14 +208,20 @@ namespace Droxid.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
             switch (propName)
             {
-                case nameof(SelectedChannel):
-                    NotifyPropertyChanged(nameof(Messages));
+                case nameof(_client):
+                    NotifyPropertyChanged(nameof(Guilds));
+                    break;
+                case nameof(Guilds):
+                    NotifyPropertyChanged(nameof(SelectedGuild));
                     break;
                 case nameof(SelectedGuild):
                     NotifyPropertyChanged(nameof(SelectedChannels));
                     break;
                 case nameof(SelectedChannels):
                     NotifyPropertyChanged(nameof(SelectedChannel));
+                    break;
+                case nameof(SelectedChannel):
+                    NotifyPropertyChanged(nameof(Messages));
                     break;
             }
         }

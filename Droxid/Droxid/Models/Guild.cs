@@ -7,11 +7,12 @@ using Droxid.ViewModels;
 
 namespace Droxid.Models
 {
-    public class Guild
+    public class Guild : Model
     {
-        private int _id;
         private string _name;
         private int _owner;
+
+        private List<Channel> _channels = new List<Channel>();
 
         public List<Role> Roles
         {
@@ -32,7 +33,10 @@ namespace Droxid.Models
 
         public List<Channel> Channels
         {
-            get => UserViewModel.GetGuildChannels(_id);
+            get
+            {
+                return UserViewModel.GetGuildChannels(_id);
+            }
         }
 
         public Guild(int id, string name, int owner)
@@ -41,5 +45,12 @@ namespace Droxid.Models
             _name = name;
             _owner = owner;
         }
+
+        public void Copy(Guild guild)
+        {
+            _name = guild._name;
+            _owner = guild._owner;
+        }
+
     }
 }
