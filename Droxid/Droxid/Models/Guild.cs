@@ -52,5 +52,28 @@ namespace Droxid.Models
             _owner = guild._owner;
         }
 
+        public void CreateGuild()
+        {
+            ViewModel.InsertGuild(_name,_owner);
+        }
+
+        public void AddRoleToGuild(string name)
+        {
+            ViewModel.InsertRole(name, _id);
+        }
+
+        public void AddRolesToGuild(List<string> roles)
+        {
+            foreach (string role in roles)
+            {
+                AddRoleToGuild(role);
+            }
+        }
+
+        public void AddChannel(string name)
+        {
+            ViewModel.InsertChannel(name, _id);
+        }
+
     }
 }
