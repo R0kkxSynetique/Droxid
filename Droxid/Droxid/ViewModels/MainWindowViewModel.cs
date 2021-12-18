@@ -25,7 +25,7 @@ namespace Droxid.ViewModels
         private Guild? _selectedGuild;
         private Channel? _selectedChannel;
         private DispatcherTimer _timer;
-        
+
         //Caching
         private List<Guild> _guilds = new List<Guild>();
         private List<Channel> _channels = new List<Channel>();
@@ -49,38 +49,78 @@ namespace Droxid.ViewModels
 
         public void Update()
         {
-            NotifyPropertyChanged(nameof(_client));
-        }
-
-        //TODO : create a generic way to do this
-        public ObservableCollection<Guild> Guilds
-        {
-            get {
-                List<Guild> guilds = UserViewModel.GetUserGuilds(_client.Username) ?? new();
-                //Compare cached with the new
-                for (int i = 0; i < _guilds.Count; i++)
+            //List<Guild> pastGuilds = new List<Guild>(_guilds);
+            //Guilds update
+            List<Guild> guilds = UserViewModel.GetUserGuilds(_client.Username) ?? new();
+            //Compare cached with the new
+            for (int i = 0; i < _guilds.Count; i++)
+            {
+                Guild? dbGuild = guilds.Find(guild => guild.Id == _guilds[i].Id);
+                if (dbGuild == null)
                 {
-                    if (guilds.Find(dbGuild => (dbGuild.GetHashCode() == _guilds[i].GetHashCode())) == null)
+                    //Remove guild from cache if no reference is found in the database result
+                    _guilds.Remove(_guilds[i]);
+                }
+                else
+                {
+                    if (!dbGuild.Equals(_guilds[i]))
                     {
-                        Guild? dbGuild = guilds.Find(guild => guild.Id == _guilds[i].Id);
-                        if (dbGuild == null)
-                        {
-                            //Remove guild from cache if no reference is found in the database result
-                            _guilds.Remove(_guilds[i]);
-                        }
-                        else
+                        //Update Content
+                        _guilds[i].Copy(dbGuild);
+                    }
+                }
+
+            }
+            //Add uncached to cache
+            guilds.ForEach(guild =>
+            {
+                if (_guilds.Find(cachedGuild => cachedGuild.Id == guild.Id) == null) _guilds.Add(guild);
+            });
+
+            //Channels update
+            if (SelectedGuild != null)
+            {
+                List<Channel> dbChannels = UserViewModel.GetGuildChannels(SelectedGuild.Id);
+                //Compare cache and DB
+                for (int i = 0; i < _channels.Count; i++)
+                {
+                    Channel? dbChannel = dbChannels.Find(channel => channel.Id == _channels[i].Id);
+                    if (dbChannel == null)
+                    {
+                        //Remove channel from cache if no reference is found in the database result
+                        _channels.Remove(_channels[i]);
+                    }
+                    else
+                    {
+                        if (!dbChannel.Equals(_channels[i]))
                         {
                             //Update Content
-                            _guilds[i].Copy(dbGuild);
+                            _channels[i].Copy(dbChannel);
                         }
                     }
 
                 }
                 //Add uncached to cache
-                guilds.ForEach(guild =>
+                dbChannels.ForEach(dbChannel =>
                 {
-                    if (_guilds.Find(cachedGuild => cachedGuild.Id == guild.Id) == null) _guilds.Add(guild);
+                    if (_channels.Find(cachedChannel => cachedChannel.Id == dbChannel.Id) == null) _channels.Add(dbChannel);
                 });
+            }
+            else
+            {
+                _channels.Clear();
+            }
+
+
+            NotifyPropertyChanged(nameof(_client));
+        }
+
+
+        //TODO : create a generic way to do this
+        public ObservableCollection<Guild> Guilds
+        {
+            get
+            {
                 return new(_guilds);
 
             }
@@ -104,6 +144,7 @@ namespace Droxid.ViewModels
                 if (_selectedGuild != value)
                 {
                     _selectedGuild = value;
+                    _channels = UserViewModel.GetGuildChannels(SelectedGuild.Id);
                     if (SelectedChannels.Count > 0)
                     {
                         _selectedChannel = SelectedChannels[0];
@@ -121,38 +162,6 @@ namespace Droxid.ViewModels
         {
             get
             {
-                if (SelectedGuild != null)
-                {
-                    List<Channel> dbChannels = UserViewModel.GetGuildChannels(SelectedGuild.Id);
-                    //Compare cache and DB
-                    for (int i = 0; i < _channels.Count; i++)
-                    {
-                        if (dbChannels.Find(dbChannel => (dbChannel.GetHashCode() == _channels[i].GetHashCode())) == null)
-                        {
-                            Channel? dbChannel = dbChannels.Find(channel => channel.Id == _channels[i].Id);
-                            if (dbChannel == null)
-                            {
-                                //Remove channel from cache if no reference is found in the database result
-                                _channels.Remove(_channels[i]);
-                            }
-                            else
-                            {
-                                //Update Content
-                                _channels[i].Copy(dbChannel);
-                            }
-                        }
-
-                    }
-                    //Add uncached to cache
-                    dbChannels.ForEach(dbChannel =>
-                    {
-                        if (_channels.Find(cachedChannel => cachedChannel.Id == dbChannel.Id) == null) _channels.Add(dbChannel);
-                    });
-                }
-                else
-                {
-                    _channels.Clear();
-                }
                 return new(_channels);
 
             }
