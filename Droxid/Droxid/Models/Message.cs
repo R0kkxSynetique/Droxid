@@ -19,7 +19,7 @@ namespace Droxid.Models
         }
         public User Sender
         {
-            get => UserViewModel.GetUserById(_sender);
+            get => ViewModel.GetUserById(_sender);
         }
         public Channel Channel
         {

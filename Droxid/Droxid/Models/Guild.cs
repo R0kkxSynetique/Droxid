@@ -16,15 +16,15 @@ namespace Droxid.Models
 
         public List<Role> Roles
         {
-            get => UserViewModel.GetGuildRoles(_id);
+            get => ViewModel.GetGuildRoles(_id);
         }
         public List<User> Users
         {
-            get => UserViewModel.GetGuildUsers(_id);
+            get => ViewModel.GetGuildUsers(_id);
         }
         public User Owner
         {
-            get => UserViewModel.GetUserById(_owner);
+            get => ViewModel.GetUserById(_owner);
         }
         public string Name
         {
@@ -35,7 +35,7 @@ namespace Droxid.Models
         {
             get
             {
-                return UserViewModel.GetGuildChannels(_id);
+                return ViewModel.GetGuildChannels(_id);
             }
         }
 

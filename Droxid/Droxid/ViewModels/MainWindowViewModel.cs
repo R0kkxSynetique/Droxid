@@ -33,7 +33,7 @@ namespace Droxid.ViewModels
 
         public MainWindowViewModel()
         {
-            _client = UserViewModel.GetUserByUsername("R0kkxSynetique");
+            _client = ViewModel.GetUserByUsername("R0kkxSynetique");
             NotifyPropertyChanged(nameof(Guilds));
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromSeconds(0.5);
@@ -51,7 +51,7 @@ namespace Droxid.ViewModels
         {
             //List<Guild> pastGuilds = new List<Guild>(_guilds);
             //Guilds update
-            List<Guild> guilds = UserViewModel.GetUserGuilds(_client.Username) ?? new();
+            List<Guild> guilds = ViewModel.GetUserGuilds(_client.Username) ?? new();
             //Compare cached with the new
             for (int i = 0; i < _guilds.Count; i++)
             {
@@ -80,7 +80,7 @@ namespace Droxid.ViewModels
             //Channels update
             if (SelectedGuild != null)
             {
-                List<Channel> dbChannels = UserViewModel.GetGuildChannels(SelectedGuild.Id);
+                List<Channel> dbChannels = ViewModel.GetGuildChannels(SelectedGuild.Id);
                 //Compare cache and DB
                 for (int i = 0; i < _channels.Count; i++)
                 {
@@ -144,7 +144,7 @@ namespace Droxid.ViewModels
                 if (_selectedGuild != value)
                 {
                     _selectedGuild = value;
-                    _channels = UserViewModel.GetGuildChannels(SelectedGuild.Id);
+                    _channels = ViewModel.GetGuildChannels(SelectedGuild.Id);
                     if (SelectedChannels.Count > 0)
                     {
                         _selectedChannel = SelectedChannels[0];

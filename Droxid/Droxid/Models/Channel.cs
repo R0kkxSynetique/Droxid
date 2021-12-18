@@ -17,15 +17,15 @@ namespace Droxid.Models
         }
         public List<Permission> Permissions
         {
-            get => UserViewModel.GetChannelPermissions(_id);
+            get => ViewModel.GetChannelPermissions(_id);
         }
         public List<Message> Messages
         {
-            get => UserViewModel.GetChannelMessages(_id);
+            get => ViewModel.GetChannelMessages(_id);
         }
         public Guild Guild
         {
-            get => UserViewModel.GetGuildByChannelId(_id);
+            get => ViewModel.GetGuildByChannelId(_id);
         }
 
         public Channel(int id, string name)
