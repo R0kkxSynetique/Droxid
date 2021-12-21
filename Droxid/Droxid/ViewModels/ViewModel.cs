@@ -11,7 +11,7 @@ using System.Collections;
 namespace Droxid.ViewModels
 {
     // send query(data comes from each model) to dbmanager
-    public class UserViewModel
+    public class ViewModel
     {
         
         //Users

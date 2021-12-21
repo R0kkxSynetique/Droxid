@@ -19,7 +19,7 @@ namespace Droxid.Models
         {
             get
             {
-                return UserViewModel.GetUserGuilds(_username) ?? new();
+                return ViewModel.GetUserGuilds(_username) ?? new();
             }
         }
 
@@ -31,7 +31,7 @@ namespace Droxid.Models
 
         public void SendMessage(string content, int channel)
         {
-            UserViewModel.InsertMessage(content, _id, channel);
+            ViewModel.InsertMessage(content, _id, channel);
         }
 
     }
