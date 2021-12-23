@@ -43,6 +43,13 @@ namespace Droxid.ViewModels
             return DBManager.SelectUserGuilds(query);
         }
 
+        public static List<Guild> GetUserGuilds(int id,DateTime lastUpdated)
+        {
+            string query = $"SELECT guilds.* FROM users INNER JOIN guilds_has_users ON users.id = guilds_has_users.users_id INNER JOIN guilds ON guilds.id = guilds_has_users.guilds_id WHERE users.id = \"{id}\" AND guilds.updated_at > \"{lastUpdated.ToSqlString()}\";";
+
+            return DBManager.SelectUserGuilds(query);
+        }
+
         public static void InsertUser(string username)
         {
             string query = $"INSERT INTO users (username) VALUES (\"{username}\")";
@@ -96,6 +103,13 @@ namespace Droxid.ViewModels
         public static List<Channel> GetGuildChannels(int id)
         {
             string query = $"SELECT channels.* FROM guilds INNER JOIN channels ON guilds.id = channels.guild_id WHERE guilds.id = {id};";
+
+            return DBManager.SelectChannels(query);
+        }
+
+        public static List<Channel> GetGuildChannels(int id, DateTime lastUpdated)
+        {
+            string query = $"SELECT channels.* FROM guilds INNER JOIN channels ON guilds.id = channels.guild_id WHERE guilds.id = {id} AND channels.updated_at > \"{lastUpdated.ToSqlString()}\";";
 
             return DBManager.SelectChannels(query);
         }
