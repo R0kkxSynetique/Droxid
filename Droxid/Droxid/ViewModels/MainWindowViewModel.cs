@@ -57,10 +57,15 @@ namespace Droxid.ViewModels
                 Guild? cachedGuild = _guilds.Find(guild => guild.Id == dbGuild.Id);
                 if (cachedGuild != null)
                 {
+                    if (dbGuild.IsDeleted)
+                    {
+                        _guilds.Remove(cachedGuild);
+                    }else
+                    {
                     cachedGuild.Copy(dbGuild);
-                    //TODO remove guild if removed flag is true
+                    }
                 }
-                else
+                else if(!dbGuild.IsDeleted)
                 {
                     _guilds.Add(dbGuild);
                 }
@@ -73,13 +78,18 @@ namespace Droxid.ViewModels
                 //update content
                 foreach (Channel dbChannel in dbChannels)
                 {
-                    Channel? cachedGuild = _channels.Find(channel => channel.Id == dbChannel.Id);
-                    if (cachedGuild != null)
+                    Channel? cachedChannel = _channels.Find(channel => channel.Id == dbChannel.Id);
+                    if (cachedChannel != null)
                     {
-                        cachedGuild.Copy(dbChannel);
-                        //TODO remove channel if removed flag is true
+                        if (dbChannel.IsDeleted)
+                        {
+                            _channels.Remove(cachedChannel);
+                        } else
+                        {
+                        cachedChannel.Copy(dbChannel);
+                        }
                     }
-                    else
+                    else if(!dbChannel.IsDeleted)
                     {
                         _channels.Add(dbChannel);
                     }

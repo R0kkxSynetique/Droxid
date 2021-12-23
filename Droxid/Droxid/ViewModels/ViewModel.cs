@@ -17,28 +17,28 @@ namespace Droxid.ViewModels
         //Users
         public static User GetUserByUsername(string username)
         {
-            string query = $"SELECT * FROM users WHERE username = \"{username}\";";
+            string query = $"SELECT * FROM users WHERE username = \"{username}\" AND users.deleted = FALSE;";
 
             return DBManager.SelectUser(query);
         }
 
         public static User GetUserById(int id)
         {
-            string query = $"SELECT * FROM users WHERE id = \"{id}\";";
+            string query = $"SELECT * FROM users WHERE id = \"{id}\" AND users.deleted = FALSE;";
 
             return DBManager.SelectUser(query);
         }
 
         public static List<Guild> GetUserGuilds(string username)
         {
-            string query = $"SELECT guilds.* FROM users INNER JOIN guilds_has_users ON users.id = guilds_has_users.users_id INNER JOIN guilds ON guilds.id = guilds_has_users.guilds_id WHERE username LIKE \"{username}\";";
+            string query = $"SELECT guilds.* FROM users INNER JOIN guilds_has_users ON users.id = guilds_has_users.users_id INNER JOIN guilds ON guilds.id = guilds_has_users.guilds_id WHERE username LIKE \"{username}\" AND guilds.deleted = FALSE;";
 
             return DBManager.SelectUserGuilds(query);
         }
 
         public static List<Guild> GetUserGuilds(int id)
         {
-            string query = $"SELECT guilds.* FROM users INNER JOIN guilds_has_users ON users.id = guilds_has_users.users_id INNER JOIN guilds ON guilds.id = guilds_has_users.guilds_id WHERE users.id = \"{id}\";";
+            string query = $"SELECT guilds.* FROM users INNER JOIN guilds_has_users ON users.id = guilds_has_users.users_id INNER JOIN guilds ON guilds.id = guilds_has_users.guilds_id WHERE users.id = \"{id}\" AND guilds.deleted = FALSE;";
 
             return DBManager.SelectUserGuilds(query);
         }
@@ -74,7 +74,7 @@ namespace Droxid.ViewModels
         //Guilds
         public static Guild GetGuildById(int id)
         {
-            string query = $"SELECT * FROM guilds WHERE id = {id};";
+            string query = $"SELECT * FROM guilds WHERE id = {id} AND guilds.deleted = FALSE;";
 
             return DBManager.SelectGuild(query);
         } 
@@ -88,21 +88,21 @@ namespace Droxid.ViewModels
 
         public static List<User> GetGuildUsers(int id)
         {
-            string query = $"SELECT users.* FROM guilds_has_users INNER JOIN users ON guilds_has_users.users_id = users.id WHERE guilds_has_users.guilds_id = {id};";
+            string query = $"SELECT users.* FROM guilds_has_users INNER JOIN users ON guilds_has_users.users_id = users.id WHERE guilds_has_users.guilds_id = {id} AND users.deleted = FALSE;";
 
             return DBManager.SelectUsers(query);
         }
 
         public static List<Role> GetGuildRoles(int id)
         {
-            string query = $"SELECT roles.* FROM roles WHERE roles.guilds_id = {id};";
+            string query = $"SELECT roles.* FROM roles WHERE roles.guilds_id = {id} AND roles.deleted = FALSE;";
 
             return DBManager.SelectRoles(query);
         }
 
         public static List<Channel> GetGuildChannels(int id)
         {
-            string query = $"SELECT channels.* FROM guilds INNER JOIN channels ON guilds.id = channels.guild_id WHERE guilds.id = {id};";
+            string query = $"SELECT channels.* FROM guilds INNER JOIN channels ON guilds.id = channels.guild_id WHERE guilds.id = {id} AND channels.deleted = FALSE;";
 
             return DBManager.SelectChannels(query);
         }
@@ -131,7 +131,7 @@ namespace Droxid.ViewModels
         //Roles
         public static List<Permission> GetRolePermissions(int id)
         {
-            string query = $"SELECT permissions.* FROM roles INNER JOIN roles_has_permissions ON roles_has_permissions.roles_id = roles.id INNER JOIN permissions ON permissions.id = roles_has_permissions.permissions_id WHERE roles.id = {id};";
+            string query = $"SELECT permissions.* FROM roles INNER JOIN roles_has_permissions ON roles_has_permissions.roles_id = roles.id INNER JOIN permissions ON permissions.id = roles_has_permissions.permissions_id WHERE roles.id = {id}  AND permissions.deleted = FALSE;";
 
             return DBManager.SelectPermissions(query);
         }
@@ -160,7 +160,13 @@ namespace Droxid.ViewModels
         //Channels
         public static List<Message> GetChannelMessages(int id)
         {
-            string query = $"SELECT messages.* FROM channels INNER JOIN messages ON channels.id = messages.channel_id WHERE channels.id = {id};";
+            string query = $"SELECT messages.* FROM channels INNER JOIN messages ON channels.id = messages.channel_id WHERE channels.id = {id}  AND messages.deleted = FALSE;";
+
+            return DBManager.SelectMessages(query);
+        }
+        public static List<Message> GetChannelMessages(int id, DateTime lastUpdated)
+        {
+            string query = $"SELECT messages.* FROM channels INNER JOIN messages ON channels.id = messages.channel_id WHERE channels.id = {id}  AND messages.updated_at > \"{lastUpdated.ToSqlString()}\";";
 
             return DBManager.SelectMessages(query);
         }

@@ -40,6 +40,13 @@ namespace Droxid.Models
             _channel = channel;
         }
 
+        public Message(int id, string content, int sender, int channel, DateTime createdAt, DateTime updatedAt, bool deleted) : base(id, createdAt, updatedAt, deleted)
+        {
+            _content = content;
+            _sender = sender;
+            _channel = channel;
+        }
+
         public override bool Equals(object? obj)
         {
             bool result = base.Equals(obj);
@@ -52,7 +59,7 @@ namespace Droxid.Models
 
         public override int GetHashCode()
         {
-            return base.GetHashCode() ^ _content.GetHashCode() ^ _sender ^ _channel; 
+            return base.GetHashCode() ^ _content.GetHashCode() ^ _sender ^ _channel;
         }
 
 

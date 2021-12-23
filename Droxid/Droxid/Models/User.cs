@@ -16,6 +16,10 @@ namespace Droxid.Models
         {
             _username = username;
         }
+        public User(int id, string username, DateTime createdAt, DateTime updatedAt, bool deleted) : base(id, createdAt, updatedAt, deleted)
+        {
+            _username = username;
+        }
 
         public string Username
         {

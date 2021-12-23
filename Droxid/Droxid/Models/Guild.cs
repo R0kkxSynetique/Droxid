@@ -22,6 +22,11 @@ namespace Droxid.Models
             _name = name;
             _owner = owner;
         }
+        public Guild(int id, string name, int owner, DateTime createdAt, DateTime updatedAt, bool deleted) : base(id, createdAt, updatedAt, deleted)
+        {
+            _name = name;
+            _owner = owner;
+        }
 
         public List<Role> Roles
         {

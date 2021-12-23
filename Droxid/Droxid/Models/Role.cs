@@ -20,6 +20,11 @@ namespace Droxid.Models
             _name = name;
         }
 
+        public Role(int id, string name, DateTime createdAt, DateTime updatedAt, bool deleted) : base(id, createdAt, updatedAt, deleted)
+        {
+            _name = name;
+        }
+
         public string Name
         {
             get => _name;

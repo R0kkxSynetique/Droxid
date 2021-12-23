@@ -22,6 +22,11 @@ namespace Droxid.Models
             _name = name;
             _description = description;
         }
+        public Permission(int id, string name, string description, DateTime createdAt, DateTime updatedAt, bool deleted) : base(id, createdAt, updatedAt, deleted)
+        {
+            _name = name;
+            _description = description;
+        }
 
         public string Name
         {

@@ -11,12 +11,14 @@ namespace Droxid.Models
         protected int _id;
         protected DateTime _createdAt;
         protected DateTime _updatedAt;
+        protected bool _deleted;
 
         public Model(int id)
         {
             _id = id;
             _createdAt = DateTime.Now;
             _updatedAt = DateTime.Now;
+            _deleted = false;
         }
 
         public Model(int id, DateTime createdAt, DateTime updatedAt)
@@ -24,6 +26,15 @@ namespace Droxid.Models
             _id = id;
             _createdAt = createdAt;
             _updatedAt = updatedAt;
+            _deleted = false;
+        }
+
+        public Model(int id, DateTime createdAt, DateTime updatedAt, bool deleted)
+        {
+            _id = id;
+            _createdAt = createdAt;
+            _updatedAt = updatedAt;
+            _deleted = deleted;
         }
 
         public int Id
@@ -39,6 +50,11 @@ namespace Droxid.Models
         public DateTime UpdatedAt
         {
             get => _updatedAt;
+        }
+
+        public bool IsDeleted
+        {
+            get => _deleted;
         }
 
         protected void Copy(Model model)

@@ -36,7 +36,7 @@ namespace Droxid.DataBase
 
             foreach (dynamic singleResult in queryResult)
             {
-                user = new(singleResult.id, singleResult.username, singleResult.created_at,singleResult.updated_at);
+                user = new(singleResult.id, singleResult.username, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1));
             }
 
             return user;
@@ -50,7 +50,7 @@ namespace Droxid.DataBase
 
             foreach (dynamic singleResult in queryResult)
             {
-                users.Add(new(singleResult.id, singleResult.username, singleResult.created_at, singleResult.updated_at));
+                users.Add(new(singleResult.id, singleResult.username, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1)));
             }
 
             return users;
@@ -64,7 +64,7 @@ namespace Droxid.DataBase
 
             foreach (dynamic singleResult in queryResult)
             {
-                guilds.Add(new(singleResult.id, singleResult.name, singleResult.owner_id, singleResult.created_at, singleResult.updated_at));
+                guilds.Add(new(singleResult.id, singleResult.name, singleResult.owner_id, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1)));
             }
 
             return guilds;
@@ -78,7 +78,7 @@ namespace Droxid.DataBase
 
             foreach (dynamic singleResult in queryResult)
             {
-                guild = new(singleResult.id, singleResult.name, singleResult.owner, singleResult.created_at, singleResult.updated_at);
+                guild = new(singleResult.id, singleResult.name, singleResult.owner, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1));
             }
 
             return guild;
@@ -92,7 +92,7 @@ namespace Droxid.DataBase
 
             foreach (dynamic singleResult in queryResult)
             {
-                roles.Add(new(singleResult.id, singleResult.name, singleResult.created_at, singleResult.updated_at));
+                roles.Add(new(singleResult.id, singleResult.name, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1)));
             }
 
             return roles;
@@ -106,7 +106,7 @@ namespace Droxid.DataBase
 
             foreach (dynamic singleResult in queryResult)
             {
-                channels.Add(new(singleResult.id, singleResult.name, singleResult.created_at, singleResult.updated_at));
+                channels.Add(new(singleResult.id, singleResult.name, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1)));
             }
 
             return channels;
@@ -120,7 +120,7 @@ namespace Droxid.DataBase
 
             foreach (dynamic singleResult in queryResult)
             {
-                permissions.Add(new(singleResult.id, singleResult.name, singleResult.description, singleResult.created_at, singleResult.updated_at));
+                permissions.Add(new(singleResult.id, singleResult.name, singleResult.description, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1)));
             }
 
             return permissions;
@@ -134,7 +134,7 @@ namespace Droxid.DataBase
 
             foreach (dynamic singleResult in queryResult)
             {
-                messages.Add(new(singleResult.id, singleResult.content, singleResult.user_id, singleResult.channel_id, singleResult.created_at, singleResult.updated_at));
+                messages.Add(new(singleResult.id, singleResult.content, singleResult.user_id, singleResult.channel_id, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1)));
             }
 
             return messages;
