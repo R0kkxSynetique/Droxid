@@ -36,6 +36,13 @@ namespace Droxid.ViewModels
             return DBManager.SelectUserGuilds(query);
         }
 
+        public static List<Guild> GetUserGuilds(int id)
+        {
+            string query = $"SELECT guilds.* FROM users INNER JOIN guilds_has_users ON users.id = guilds_has_users.users_id INNER JOIN guilds ON guilds.id = guilds_has_users.guilds_id WHERE users.id = \"{id}\";";
+
+            return DBManager.SelectUserGuilds(query);
+        }
+
         public static void InsertUser(string username)
         {
             string query = $"INSERT INTO users (username) VALUES (\"{username}\")";

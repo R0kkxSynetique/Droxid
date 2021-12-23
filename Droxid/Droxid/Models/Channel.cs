@@ -11,6 +11,16 @@ namespace Droxid.Models
     {
         private string _name;
 
+        public Channel(int id, string name) : base(id)
+        {
+            _name = name;
+        }
+
+        public Channel(int id, string name, DateTime createdAt, DateTime updatedAt) : base(id, createdAt, updatedAt)
+        {
+            _name = name;
+        }
+
         public string Name
         {
             get => _name;
@@ -28,15 +38,25 @@ namespace Droxid.Models
             get => ViewModel.GetGuildByChannelId(_id);
         }
 
-        public Channel(int id, string name)
-        {
-            _id = id;
-            _name = name;
-        }
-
         public void Copy(Channel channel)
         {
+            base.Copy(channel);
             _name = channel.Name;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            bool result = base.Equals(obj);
+            if (result && obj is Channel other)
+            {
+                result = (other._name == _name);
+            }
+            return result;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode() ^ _name.GetHashCode();
         }
 
 
