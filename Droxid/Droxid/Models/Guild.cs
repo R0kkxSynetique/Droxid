@@ -12,7 +12,21 @@ namespace Droxid.Models
         private string _name;
         private int _owner;
 
-        private List<Channel> _channels = new List<Channel>();
+        public Guild(int id, string name, int owner) : base(id)
+        {
+            _name = name;
+            _owner = owner;
+        }
+        public Guild(int id, string name, int owner, DateTime createdAt, DateTime updatedAt) : base(id, createdAt, updatedAt)
+        {
+            _name = name;
+            _owner = owner;
+        }
+        public Guild(int id, string name, int owner, DateTime createdAt, DateTime updatedAt, bool deleted) : base(id, createdAt, updatedAt, deleted)
+        {
+            _name = name;
+            _owner = owner;
+        }
 
         public List<Role> Roles
         {
@@ -30,27 +44,33 @@ namespace Droxid.Models
         {
             get => _name;
         }
-
         public List<Channel> Channels
         {
-            get
-            {
-                return ViewModel.GetGuildChannels(_id);
-            }
-        }
-
-        public Guild(int id, string name, int owner)
-        {
-            _id = id;
-            _name = name;
-            _owner = owner;
+            get =>ViewModel.GetGuildChannels(_id);
         }
 
         public void Copy(Guild guild)
         {
+            base.Copy(guild);
             _name = guild._name;
             _owner = guild._owner;
         }
+
+        public override bool Equals(object? obj)
+        {
+            bool result = base.Equals(obj);
+            if (result && obj is Guild other)
+            {
+                result = (_name == other._name) && (_owner == other._owner);
+            }
+            return result;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode() ^ _name.GetHashCode() ^ _owner; 
+        }
+
 
     }
 }

@@ -11,20 +11,42 @@ namespace Droxid.Models
     {
         private string _name;
 
+        public Role(int id, string name) : base(id)
+        {
+            _name = name;
+        }
+        public Role(int id, string name, DateTime createdAt, DateTime updatedAt) : base(id, createdAt, updatedAt)
+        {
+            _name = name;
+        }
+
+        public Role(int id, string name, DateTime createdAt, DateTime updatedAt, bool deleted) : base(id, createdAt, updatedAt, deleted)
+        {
+            _name = name;
+        }
+
         public string Name
         {
             get => _name;
         }
-
         public List<User> Users
         {
             get => throw new NotImplementedException();
         }
 
-        public Role(int id, string name)
+        public override bool Equals(object? obj)
         {
-            _id = id;
-            _name = name;
+            bool result = base.Equals(obj);
+            if (result && obj is Role other)
+            {
+                result = (_name == other._name);
+            }
+            return result;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode() ^ _name.GetHashCode();
         }
 
     }

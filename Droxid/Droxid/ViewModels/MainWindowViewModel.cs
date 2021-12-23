@@ -49,62 +49,52 @@ namespace Droxid.ViewModels
 
         public void Update()
         {
-            //List<Guild> pastGuilds = new List<Guild>(_guilds);
             //Guilds update
-            List<Guild> guilds = ViewModel.GetUserGuilds(_client.Username) ?? new();
-            //Compare cached with the new
-            for (int i = 0; i < _guilds.Count; i++)
+            List<Guild> dbGuilds = ViewModel.GetUserGuilds(_client.Id, _guilds.OrderBy(guild => guild.UpdatedAt).DefaultIfEmpty(null).First()?.UpdatedAt ?? new DateTime(0)) ?? new();
+            //update content
+            foreach (Guild dbGuild in dbGuilds)
             {
-                Guild? dbGuild = guilds.Find(guild => guild.Id == _guilds[i].Id);
-                if (dbGuild == null)
+                Guild? cachedGuild = _guilds.Find(guild => guild.Id == dbGuild.Id);
+                if (cachedGuild != null)
                 {
-                    //Remove guild from cache if no reference is found in the database result
-                    _guilds.Remove(_guilds[i]);
-                }
-                else
-                {
-                    if (!dbGuild.Equals(_guilds[i]))
+                    if (dbGuild.IsDeleted)
                     {
-                        //Update Content
-                        _guilds[i].Copy(dbGuild);
+                        _guilds.Remove(cachedGuild);
+                    }else
+                    {
+                    cachedGuild.Copy(dbGuild);
                     }
                 }
-
+                else if(!dbGuild.IsDeleted)
+                {
+                    _guilds.Add(dbGuild);
+                }
             }
-            //Add uncached to cache
-            guilds.ForEach(guild =>
-            {
-                if (_guilds.Find(cachedGuild => cachedGuild.Id == guild.Id) == null) _guilds.Add(guild);
-            });
 
             //Channels update
             if (SelectedGuild != null)
             {
-                List<Channel> dbChannels = ViewModel.GetGuildChannels(SelectedGuild.Id);
-                //Compare cache and DB
-                for (int i = 0; i < _channels.Count; i++)
+                List<Channel> dbChannels = ViewModel.GetGuildChannels(SelectedGuild.Id, _channels.OrderBy(channel => channel.UpdatedAt).DefaultIfEmpty(null).First()?.UpdatedAt ?? new DateTime(0)) ?? new();
+                //update content
+                foreach (Channel dbChannel in dbChannels)
                 {
-                    Channel? dbChannel = dbChannels.Find(channel => channel.Id == _channels[i].Id);
-                    if (dbChannel == null)
+                    Channel? cachedChannel = _channels.Find(channel => channel.Id == dbChannel.Id);
+                    if (cachedChannel != null)
                     {
-                        //Remove channel from cache if no reference is found in the database result
-                        _channels.Remove(_channels[i]);
-                    }
-                    else
-                    {
-                        if (!dbChannel.Equals(_channels[i]))
+                        if (dbChannel.IsDeleted)
                         {
-                            //Update Content
-                            _channels[i].Copy(dbChannel);
+                            _channels.Remove(cachedChannel);
+                        } else
+                        {
+                        cachedChannel.Copy(dbChannel);
                         }
                     }
-
+                    else if(!dbChannel.IsDeleted)
+                    {
+                        _channels.Add(dbChannel);
+                    }
                 }
-                //Add uncached to cache
-                dbChannels.ForEach(dbChannel =>
-                {
-                    if (_channels.Find(cachedChannel => cachedChannel.Id == dbChannel.Id) == null) _channels.Add(dbChannel);
-                });
+
             }
             else
             {
