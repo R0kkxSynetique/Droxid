@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.ComponentModel;
 using Droxid.ViewModels;
 using Droxid.Models;
+using Droxid.Views;
 
 namespace Droxid
 {
@@ -26,10 +27,13 @@ namespace Droxid
         private MainWindowViewModel _vm;
         public MainWindow()
         {
-            InitializeComponent();
-            _vm = (MainWindowViewModel)this.DataContext;
-            _vm.register(this);
+            StartupWindow diag = new StartupWindow();
+            diag.ShowDialog();
+            if(!diag.Success) Close();
+            _vm = new MainWindowViewModel(diag.Username);
             _vm.PropertyChanged += viewmodelProperyChangedEventHandler;
+            this.DataContext = _vm;
+            InitializeComponent();
         }
 
         //ViewModel events

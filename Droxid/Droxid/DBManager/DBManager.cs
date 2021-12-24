@@ -28,6 +28,13 @@ namespace Droxid.DataBase
             _connection.Close();
         }
 
+        public static void Connect(string server, string database, string user, string password)
+        {
+            _connection = new($"Database={database};Server={server};user={user};password={password};");
+            OpenDBConnection();
+            CloseDBConnection();
+        }
+
         public static User SelectUser(string query)
         {
             User? user = null;

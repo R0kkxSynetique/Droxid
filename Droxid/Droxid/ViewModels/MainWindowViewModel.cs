@@ -13,14 +13,13 @@ using Droxid.Models;
 using System.Timers;
 using System.Windows.Threading;
 using System.Diagnostics;
+using Droxid.DataBase;
 
 namespace Droxid.ViewModels
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
 
-
-        private MainWindow? _view;
         private User _client;
         private Guild? _selectedGuild;
         private Channel? _selectedChannel;
@@ -31,15 +30,14 @@ namespace Droxid.ViewModels
         private List<Channel> _channels = new List<Channel>();
 
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(string username)
         {
-            _client = ViewModel.GetUserByUsername("R0kkxSynetique");
+            _client = ViewModel.GetUserByUsername(username);
             NotifyPropertyChanged(nameof(Guilds));
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromSeconds(0.5);
             _timer.Tick += updateTimerEventHandler;
             _timer.IsEnabled = true;
-
         }
 
         private void updateTimerEventHandler(Object? sender, EventArgs e)
@@ -60,12 +58,13 @@ namespace Droxid.ViewModels
                     if (dbGuild.IsDeleted)
                     {
                         _guilds.Remove(cachedGuild);
-                    }else
+                    }
+                    else
                     {
-                    cachedGuild.Copy(dbGuild);
+                        cachedGuild.Copy(dbGuild);
                     }
                 }
-                else if(!dbGuild.IsDeleted)
+                else if (!dbGuild.IsDeleted)
                 {
                     _guilds.Add(dbGuild);
                 }
@@ -84,12 +83,13 @@ namespace Droxid.ViewModels
                         if (dbChannel.IsDeleted)
                         {
                             _channels.Remove(cachedChannel);
-                        } else
+                        }
+                        else
                         {
-                        cachedChannel.Copy(dbChannel);
+                            cachedChannel.Copy(dbChannel);
                         }
                     }
-                    else if(!dbChannel.IsDeleted)
+                    else if (!dbChannel.IsDeleted)
                     {
                         _channels.Add(dbChannel);
                     }
@@ -177,11 +177,6 @@ namespace Droxid.ViewModels
         {
             //_client.Guilds.Add(guild);
             NotifyPropertyChanged(nameof(Guilds));
-        }
-
-        public void register(MainWindow mainWindow)
-        {
-            _view = mainWindow;
         }
 
         public void SendMessage(string content)

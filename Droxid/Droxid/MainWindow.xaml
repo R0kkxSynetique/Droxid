@@ -15,10 +15,6 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Window.DataContext>
-        <vm:MainWindowViewModel/>
-    </Window.DataContext>
-
     <Grid Background="#202225">
         <Grid.RowDefinitions>
             <RowDefinition Height="70" />
