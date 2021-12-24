@@ -50,22 +50,34 @@ namespace Droxid.Models
         {
             get => _id;
         }
-
+        /// <summary>
+        /// Creation datetime, mainly used as info and history
+        /// </summary>
+        /// <value>creation datetime</value>
         public DateTime CreatedAt
         {
             get => _createdAt;
         }
-
+        /// <summary>
+        /// Last update datetime, used to query newer data from the database
+        /// </summary>
+        /// <value>last update datetime</value>
         public DateTime UpdatedAt
         {
             get => _updatedAt;
         }
-
+        /// <summary>
+        /// Whether the entry is considered as deleted in the database
+        /// </summary>
+        /// <value>deleted flag</value>
         public bool IsDeleted
         {
             get => _deleted;
         }
-
+        /// <summary>
+        /// Updates the instance's values with a given model. used in order to keep the reference in memory of the current instance
+        /// </summary>
+        /// <param name="model">Model to copy</param>
         protected void Copy(Model model)
         {
             _id = model.Id;
