@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Droxid.Models
 {
+    /// <summary>
+    /// Abstract class representing any object from the database
+    /// </summary>
     public abstract class Model
     {
         protected int _id;
@@ -13,22 +16,25 @@ namespace Droxid.Models
         protected DateTime _updatedAt;
         protected bool _deleted;
 
-        public Model(int id)
-        {
-            _id = id;
-            _createdAt = DateTime.Now;
-            _updatedAt = DateTime.Now;
-            _deleted = false;
-        }
-
-        public Model(int id, DateTime createdAt, DateTime updatedAt)
-        {
-            _id = id;
-            _createdAt = createdAt;
-            _updatedAt = updatedAt;
-            _deleted = false;
-        }
-
+        /// <summary>
+        /// Creates a new model with a given id, defaults the createdAt and updatedAt to now and the deleted flag to false
+        /// </summary>
+        /// <param name="id">The id of the entry in the database</param>
+        public Model(int id) : this(id, DateTime.Now, DateTime.Now, false) { }
+        /// <summary>
+        /// Creates a new model with a given id, createdAt datetime, updatedAt datetime and defaults the deleted flag to false
+        /// </summary>
+        /// <param name="id">The id of the entry in the database</param>
+        /// <param name="createdAt">creation date of the entry</param>
+        /// <param name="updatedAt">update date of the entry</param>
+        public Model(int id, DateTime createdAt, DateTime updatedAt) : this(id, createdAt, updatedAt, false) { }
+        /// <summary>
+        /// Create a new model with a given id, createdAt datetime, updatedAt datetime and deleted flag
+        /// </summary>
+        /// <param name="id">The id of the entry in the database</param>
+        /// <param name="createdAt">creation date of the entry</param>
+        /// <param name="updatedAt">update date of the entry</param>
+        /// <param name="deleted">whether the entry is considered as deleted in the database</param>
         public Model(int id, DateTime createdAt, DateTime updatedAt, bool deleted)
         {
             _id = id;
@@ -36,7 +42,10 @@ namespace Droxid.Models
             _updatedAt = updatedAt;
             _deleted = deleted;
         }
-
+        /// <summary>
+        /// Object database id used for references
+        /// </summary>
+        /// <value>database id</value>
         public int Id
         {
             get => _id;
