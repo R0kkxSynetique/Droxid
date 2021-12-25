@@ -13,7 +13,7 @@ namespace Droxid.ViewModels
     // send query(data comes from each model) to dbmanager
     public class ViewModel
     {
-        
+
         //Users
         public static User GetUserByUsername(string username)
         {
@@ -43,7 +43,7 @@ namespace Droxid.ViewModels
             return DBManager.SelectUserGuilds(query);
         }
 
-        public static List<Guild> GetUserGuilds(int id,DateTime lastUpdated)
+        public static List<Guild> GetUserGuilds(int id, DateTime lastUpdated)
         {
             string query = $"SELECT guilds.* FROM users INNER JOIN guilds_has_users ON users.id = guilds_has_users.users_id INNER JOIN guilds ON guilds.id = guilds_has_users.guilds_id WHERE users.id = \"{id}\" AND guilds.updated_at > \"{lastUpdated.ToSqlString()}\";";
 
@@ -77,7 +77,7 @@ namespace Droxid.ViewModels
             string query = $"SELECT * FROM guilds WHERE id = {id} AND guilds.deleted = FALSE;";
 
             return DBManager.SelectGuild(query);
-        } 
+        }
 
         public static Guild GetGuildByChannelId(int id)
         {

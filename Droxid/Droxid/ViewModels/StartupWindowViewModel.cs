@@ -13,16 +13,30 @@ namespace Droxid.ViewModels
 
         private bool _sqlTest;
         private bool _loginTest;
-
+        /// <summary>
+        /// Creates a new Startup window viewmodel
+        /// </summary>
         public StartupWindowViewModel()
         {
             _sqlTest = true;
             _loginTest = true;
         }
-
+        /// <summary>
+        /// Whether the connection passed
+        /// </summary>
         public bool SqlTest { get => _sqlTest; }
+        /// <summary>
+        /// Whether the user exists in the database
+        /// </summary>
         public bool LoginTest { get => _loginTest; }
-
+        /// <summary>
+        /// Set database connection and tests it
+        /// </summary>
+        /// <param name="server">server name/ip</param>
+        /// <param name="user">db user</param>
+        /// <param name="password">db password</param>
+        /// <param name="name">database name</param>
+        /// <returns>whether the connection was succesfull</returns>
         public bool Connect(string server, string user, string password, string name)
         {
             try
@@ -37,13 +51,18 @@ namespace Droxid.ViewModels
             NotifyPropertyChanged(nameof(SqlTest));
             return _sqlTest;
         }
-
+        /// <summary>
+        /// Tries to get the user with a given username
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns>Whether the user was found or not</returns>
         public bool LoginAs(string username)
         {
             try
             {
                 _loginTest = ViewModel.GetUserByUsername(username) != null;
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 _loginTest = false;
             }

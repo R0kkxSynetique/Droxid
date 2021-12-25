@@ -17,19 +17,19 @@ namespace Droxid.Models
         protected bool _deleted;
 
         /// <summary>
-        /// Creates a new model with a given id, defaults the createdAt and updatedAt to now and the deleted flag to false
+        /// Creates a new model
         /// </summary>
         /// <param name="id">The id of the entry in the database</param>
         public Model(int id) : this(id, DateTime.Now, DateTime.Now, false) { }
         /// <summary>
-        /// Creates a new model with a given id, createdAt datetime, updatedAt datetime and defaults the deleted flag to false
+        /// Creates a new model
         /// </summary>
         /// <param name="id">The id of the entry in the database</param>
         /// <param name="createdAt">creation date of the entry</param>
         /// <param name="updatedAt">update date of the entry</param>
         public Model(int id, DateTime createdAt, DateTime updatedAt) : this(id, createdAt, updatedAt, false) { }
         /// <summary>
-        /// Create a new model with a given id, createdAt datetime, updatedAt datetime and deleted flag
+        /// Create a new model
         /// </summary>
         /// <param name="id">The id of the entry in the database</param>
         /// <param name="createdAt">creation date of the entry</param>

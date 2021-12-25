@@ -39,12 +39,21 @@ namespace Droxid.ViewModels
             _timer.Tick += updateTimerEventHandler;
             _timer.IsEnabled = true;
         }
-
+        /// <summary>
+        /// Listen's for timer events and calls the update method
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void updateTimerEventHandler(Object? sender, EventArgs e)
         {
             Update();
         }
-
+        /// <summary>
+        /// Updates cached data
+        /// </summary>
+        /// <remarks>
+        /// Uses the updatedAt property for a minimal performance impact
+        /// </remarks>
         public void Update()
         {
             //Guilds update
@@ -105,17 +114,16 @@ namespace Droxid.ViewModels
             NotifyPropertyChanged(nameof(_client));
         }
 
-
-        //TODO : create a generic way to do this
+        /// <summary>
+        /// List of Guilds to render
+        /// </summary>
         public ObservableCollection<Guild> Guilds
         {
-            get
-            {
-                return new(_guilds);
-
-            }
+            get => new(_guilds);
         }
-
+        /// <summary>
+        /// List of channels available
+        /// </summary>
         public List<Channel> Channels
         {
             get
@@ -125,7 +133,9 @@ namespace Droxid.ViewModels
                 return channels;
             }
         }
-
+        /// <summary>
+        /// Selected guild to render channels from
+        /// </summary>
         public Guild? SelectedGuild
         {
             get => _selectedGuild;
@@ -147,7 +157,9 @@ namespace Droxid.ViewModels
                 }
             }
         }
-
+        /// <summary>
+        /// List of channels to render
+        /// </summary>
         public ObservableCollection<Channel> SelectedChannels
         {
             get
@@ -156,7 +168,9 @@ namespace Droxid.ViewModels
 
             }
         }
-
+        /// <summary>
+        /// Selected channel to render messages from
+        /// </summary>
         public Channel? SelectedChannel
         {
             get => _selectedChannel;
@@ -166,19 +180,18 @@ namespace Droxid.ViewModels
                 NotifyPropertyChanged(nameof(SelectedChannel));
             }
         }
-
+        /// <summary>
+        /// List of messages to render
+        /// </summary>
         public List<Message> Messages
         {
             get => SelectedChannel?.Messages ?? new List<Message>();
         }
 
-
-        public void AddGuild(Guild guild)
-        {
-            //_client.Guilds.Add(guild);
-            NotifyPropertyChanged(nameof(Guilds));
-        }
-
+        /// <summary>
+        /// Sends a new message in the selected channel
+        /// </summary>
+        /// <param name="content">Message content</param>
         public void SendMessage(string content)
         {
             _client.SendMessage(content, _selectedChannel.Id);
