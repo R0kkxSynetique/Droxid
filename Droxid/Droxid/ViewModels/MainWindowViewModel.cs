@@ -175,14 +175,6 @@ namespace Droxid.ViewModels
                 {
                     _selectedGuild = value;
                     _channels = ViewModel.GetGuildChannels(SelectedGuild.Id);
-                    if (SelectedChannels.Count > 0)
-                    {
-                        _selectedChannel = SelectedChannels[0];
-                    }
-                    else
-                    {
-                        _selectedChannel = null;
-                    }
                     NotifyPropertyChanged(nameof(SelectedGuild));
                 }
             }
@@ -207,7 +199,10 @@ namespace Droxid.ViewModels
             set
             {
                 _selectedChannel = value;
+                if(_selectedChannel != null)
+                {
                 _messages = ViewModel.GetChannelMessages(_selectedChannel.Id);
+                }
                 NotifyPropertyChanged(nameof(SelectedChannel));
             }
         }

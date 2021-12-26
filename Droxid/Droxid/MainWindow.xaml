@@ -35,7 +35,7 @@
                 </Path>
             </Button>
             <!--TODO:Fix horizontal scroll-->
-            <ListView Grid.Column="1" Style="{StaticResource lstvServers}" ItemsSource="{Binding Guilds}" SelectionChanged="lstvSelectServer" SelectionMode="Single"/>
+            <ListView Grid.Column="1" Style="{StaticResource lstvServers}" ItemsSource="{Binding Guilds}" SelectionChanged="onSelectGuild" SelectionMode="Single"/>
         </Grid>
 
         <Grid Grid.Row="1" Height="auto">
@@ -53,7 +53,7 @@
                 <TextBlock Foreground="white" Text="{Binding SelectedGuild.Name}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,12,0,0" Grid.RowSpan="2"/>
 
                 <!--Channels-->
-                <ListView ItemsSource="{Binding SelectedChannels}" Style="{StaticResource lstvChannels}" Grid.Row="1" Grid.RowSpan="1" SelectionChanged="lstvSelectChannel" SelectionMode="Single">
+                <ListView x:Name="lstvChannels" ItemsSource="{Binding SelectedChannels}" Style="{StaticResource lstvChannels}" Grid.Row="1" Grid.RowSpan="1" SelectionChanged="onSelectChannel" SelectionMode="Single">
                 </ListView>
             </Grid>
             <Grid Grid.Column="2" Background="#36393f">
