@@ -68,7 +68,7 @@
                 </StackPanel>
                 <!--Messages-->
 
-                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
+                <ScrollViewer x:Name="ictlMessages" Grid.Row="1" VerticalScrollBarVisibility="Hidden" >
                     <ItemsControl ItemsSource="{Binding Messages}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>

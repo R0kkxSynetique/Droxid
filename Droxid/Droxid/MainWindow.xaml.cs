@@ -64,6 +64,7 @@ namespace Droxid
             {
                 ListView listView = (ListView)sender;
                 _vm.SelectedChannel = listView.SelectedItem as Channel;
+                ictlMessages.ScrollToBottom();
             }
         }
 
