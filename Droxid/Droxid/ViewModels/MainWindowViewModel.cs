@@ -28,6 +28,7 @@ namespace Droxid.ViewModels
         //Caching
         private List<Guild> _guilds = new List<Guild>();
         private List<Channel> _channels = new List<Channel>();
+        private List<Message> _messages = new List<Message>();
 
 
         public MainWindowViewModel(string username)
@@ -110,6 +111,35 @@ namespace Droxid.ViewModels
                 _channels.Clear();
             }
 
+            //Messages update
+            if (SelectedChannel != null)
+            {
+                List<Message> dbMessages = ViewModel.GetChannelMessages(SelectedChannel.Id,_messages.OrderBy(message => message.UpdatedAt).DefaultIfEmpty(null).First()?.UpdatedAt ?? new DateTime(0)) ?? new();
+                //Update content
+                foreach(Message dbMessage in dbMessages)
+                {
+                    Message? cachedMessage = _messages.Find(message=>message.Id == dbMessage.Id);
+                    if(cachedMessage != null)
+                    {
+                        if (dbMessage.IsDeleted)
+                        {
+                            _messages.Remove(cachedMessage);
+                        } else
+                        {
+                            cachedMessage.Copy(dbMessage);
+                        }
+                    } else if (!dbMessage.IsDeleted)
+                    {
+                        _messages.Add(dbMessage);
+                    }
+                }
+            }
+            else
+            {
+                _messages.Clear();
+            }
+
+
 
             NotifyPropertyChanged(nameof(_client));
         }
@@ -177,6 +207,7 @@ namespace Droxid.ViewModels
             set
             {
                 _selectedChannel = value;
+                _messages = ViewModel.GetChannelMessages(_selectedChannel.Id);
                 NotifyPropertyChanged(nameof(SelectedChannel));
             }
         }

@@ -67,6 +67,17 @@ namespace Droxid.Models
         {
             get => throw new NotImplementedException();
         }
+        /// <summary>
+        /// Updates the instance's values with a given model. used in order to keep the reference in memory of the current instance
+        /// </summary>
+        /// <param name="message">Channel to copy</param>
+        public void Copy(Message message)
+        {
+            base.Copy(message);
+            _content = message._content;
+            _sender = message._sender;
+            _channel = message._channel;
+        }
 
         public override bool Equals(object? obj)
         {

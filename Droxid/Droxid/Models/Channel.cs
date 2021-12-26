@@ -71,7 +71,7 @@ namespace Droxid.Models
         public void Copy(Channel channel)
         {
             base.Copy(channel);
-            _name = channel.Name;
+            _name = channel._name;
         }
 
         public override bool Equals(object? obj)
