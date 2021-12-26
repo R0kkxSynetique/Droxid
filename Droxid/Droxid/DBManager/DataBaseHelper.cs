@@ -8,16 +8,12 @@ namespace Droxid.DataBase
 {
     public static class DataBaseHelper
     {
+        ///<summary>Returns a <c>DateTime</c> value as a string ready for database usage</summary>
+        ///<param name="datetime">DateTime value to transform</param>
+        ///<returns>timestamp in sql string format (yyyy-MM-dd HH:mm:ss.ffffff)</returns>
         public static string ToSqlString(this DateTime datetime)
         {
             return datetime.ToString("yyyy-MM-dd HH:mm:ss.ffffff");
-        }
-
-        //potentially broken
-        public static long ToTimestamp(this DateTime value)
-        {
-            long epoch = (value.Ticks - 621355968000000000) / 10000000;
-            return epoch;
         }
     }
 }
