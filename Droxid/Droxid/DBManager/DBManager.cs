@@ -75,7 +75,7 @@ namespace Droxid.DataBase
         /// <returns>The list of users from the query</returns>
         public static List<User> SelectUsers(string query)
         {
-            List<User>? users = new();
+            List<User> users = new();
 
             IEnumerable queryResult = _connection.Query(query);
 
@@ -147,7 +147,7 @@ namespace Droxid.DataBase
         /// <returns>The list of channels from the query</returns>
         public static List<Channel> SelectChannels(string query)
         {
-            List<Channel>? channels = new();
+            List<Channel> channels = new();
 
             IEnumerable queryResult = _connection.Query(query);
 
@@ -165,7 +165,7 @@ namespace Droxid.DataBase
         /// <returns>The list of permissions from the query</returns>
         public static List<Permission> SelectPermissions(string query)
         {
-            List<Permission>? permissions = new();
+            List<Permission> permissions = new();
 
             IEnumerable queryResult = _connection.Query(query);
 
@@ -183,7 +183,7 @@ namespace Droxid.DataBase
         /// <returns>The list of messages from the query</returns>
         public static List<Message> SelectMessages(string query)
         {
-            List<Message>? messages = new();
+            List<Message> messages = new();
 
             IEnumerable queryResult = _connection.Query(query);
 
@@ -193,6 +193,42 @@ namespace Droxid.DataBase
             }
 
             return messages;
+        }
+        /// <summary>
+        /// Execute a select which returns a single id
+        /// </summary>
+        /// <remarks>Mainly for inserts with the RETURNING keyword</remarks>
+        /// <param name="query">Query which will be executed</param>
+        /// <returns>id || null when there are no matches</returns>
+        public static int? SelectId(string query)
+        {
+            int? id = null;
+
+            IEnumerable queryResult = _connection.Query(query);
+            foreach (dynamic singleResult in queryResult)
+            {
+                id = singleResult.id;
+            }
+
+            return id;
+        }
+        /// <summary>
+        /// Execute a select which returns multiple ids
+        /// </summary>
+        /// <remarks>Mainly for inserts with the RETURNING keyword</remarks>
+        /// <param name="query">Query which will be executed</param>
+        /// <returns>List of ids</returns>
+        public static List<int> SelectIds(string query)
+        {
+            List<int> ids = new List<int>();
+            IEnumerable queryResult = _connection.Query(query);
+
+            foreach (dynamic singleResult in queryResult)
+            {
+                ids.Add(singleResult.id);
+            }
+
+            return ids;
         }
         /// <summary>
         /// Execute an insert query

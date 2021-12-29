@@ -11,7 +11,7 @@ using System.Collections;
 namespace Droxid.ViewModels
 {
     // send query(data comes from each model) to dbmanager
-    public class ViewModel
+    public static class ViewModel
     {
 
         //Users
@@ -188,6 +188,28 @@ namespace Droxid.ViewModels
             return DBManager.Insert(query);
         }
         /// <summary>
+        /// Creates a guild and adds the owner to the list of members
+        /// </summary>
+        /// <param name="owner">Guild owner</param>
+        /// <param name="name">Guild name</param>
+        /// <exception cref="GuildCreationFailedException"></exception>
+        public static void CreateGuild(this User owner, string name)
+        {
+            string query = $"INSERT INTO guilds (`name`, owner_id) VALUES (\"{name}\", {owner.Id}) RETURNING guilds.id";
+            int? id = DBManager.SelectId(query);
+            if (id == null) throw new GuildCreationFailedException();
+            AddUserToGuild(owner.Id, (int)id);
+        }
+        /// <summary>
+        /// Add a new channel to a guild
+        /// </summary>
+        /// <param name="guild">Guild</param>
+        /// <param name="name">New channel name</param>
+        public static void AddChannel(this Guild guild,string name)
+        {
+            InsertChannel(name, guild.Id);
+        }
+        /// <summary>
         /// Add an user to a guild
         /// </summary>
         /// <param name="user">User id</param>
@@ -327,4 +349,7 @@ namespace Droxid.ViewModels
             return DBManager.Insert(query);
         }
     }
+
+    public class ViewModelException : Exception { }
+    public class GuildCreationFailedException : ViewModelException { }
 }

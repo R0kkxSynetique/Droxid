@@ -75,7 +75,7 @@ namespace Droxid
             {
                 ListView listView = (ListView)sender as ListView;
                 _vm.SelectedGuild = listView.SelectedItem as Guild;
-                if(_vm.SelectedGuild != null && _vm.SelectedGuild.Channels[0] != null)
+                if(_vm.SelectedGuild != null && _vm.SelectedGuild.Channels.Count > 0 && _vm.SelectedGuild.Channels[0] != null)
                 {
                     lstvChannels.SelectedItem = _vm.SelectedGuild.Channels[0];
                 }
