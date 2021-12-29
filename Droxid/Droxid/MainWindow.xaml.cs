@@ -23,7 +23,7 @@ namespace Droxid
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window , INotifyPropertyChanged
     {
         private MainWindowViewModel _vm;
         public MainWindow()
@@ -37,20 +37,29 @@ namespace Droxid
             InitializeComponent();
         }
 
+        //Visual states
+        public Visibility GuildControlsVisibility
+        {
+            get { return _vm.SelectedGuild == null ? Visibility.Collapsed : Visibility.Visible; }
+        }
+
+        public Visibility ChannelControlsVisibility
+        {
+            get => _vm.SelectedChannel == null ? Visibility.Collapsed : Visibility.Visible;
+        }
+
         //ViewModel events
         private void viewmodelProperyChangedEventHandler(object? sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
+                case "SelectedGuild":
+                    NotifyPropertyChanged(nameof(GuildControlsVisibility));
+                    break;
                 case "SelectedChannel":
-                    updateInputVisibility();
+                    NotifyPropertyChanged(nameof(ChannelControlsVisibility));
                     break;
             }
-        }
-
-        private void updateInputVisibility()
-        {
-            grdInput.Visibility = _vm.SelectedChannel == null ? Visibility.Collapsed : Visibility.Visible;
         }
 
         //Window events
@@ -97,12 +106,22 @@ namespace Droxid
             }
         }
 
-        private void btnCreateChannel_Click(object sender, RoutedEventArgs e)
+        private void onCreateChannelClick(object sender, RoutedEventArgs e)
         {
-            if (_vm.SelectedGuild != null && !string.IsNullOrEmpty(txtInputChannel.Text))
+            if (_vm.SelectedGuild != null)
             {
-                _vm.CreateChannel(txtInputChannel.Text);
+                _vm.CreateChannel();
             }
         }
+
+        //Property changed dependencies
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        protected virtual void NotifyPropertyChanged(string propName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+        }
+
     }
 }

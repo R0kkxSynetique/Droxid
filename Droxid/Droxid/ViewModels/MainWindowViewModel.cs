@@ -230,9 +230,10 @@ namespace Droxid.ViewModels
             dialog.ShowDialog();
         }
 
-        public void CreateChannel(string name)
+        public void CreateChannel()
         {
-            _selectedGuild.AddChannel(name);
+            NewChannel dialog = new NewChannel(_selectedGuild);
+            dialog.ShowDialog();
         }
 
         //Property changed dependencies

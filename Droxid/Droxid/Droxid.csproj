@@ -20,4 +20,17 @@
     <PackageReference Include="MySql.Data" Version="8.0.27" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Views\NewChannel.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\NewChannel.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
 </Project>
