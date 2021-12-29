@@ -8,7 +8,7 @@ using Droxid.DataBase;
 
 namespace Droxid.ViewModels
 {
-    public class StartupWindowViewModel : INotifyPropertyChanged
+    public class StartupWindowViewModel : VM
     {
 
         private bool _sqlTest;
@@ -68,15 +68,6 @@ namespace Droxid.ViewModels
             }
             NotifyPropertyChanged(nameof(LoginTest));
             return _loginTest;
-        }
-
-        //Property changed dependencies
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        private void NotifyPropertyChanged(string propName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 
     }

@@ -35,7 +35,12 @@
                 </Path>
             </Button>
             <!--TODO:Fix horizontal scroll-->
-            <ListView Grid.Column="1" Style="{StaticResource lstvServers}" ItemsSource="{Binding Guilds}" SelectionChanged="onSelectGuild" SelectionMode="Single"/>
+            <ScrollViewer  Grid.Column="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <ListView Style="{StaticResource lstvServers}" ItemsSource="{Binding Guilds}" SelectionChanged="onSelectGuild" SelectionMode="Single"/>
+                    <Button Style="{StaticResource btnDroxid}" Click="onCreateGuildClick">+</Button>
+                </StackPanel>
+            </ScrollViewer>
         </Grid>
 
         <Grid Grid.Row="1" Height="auto">

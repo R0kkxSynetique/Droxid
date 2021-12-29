@@ -42,9 +42,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListView}">
                     <Border Name="Border" Background="Transparent" Width="auto">
-                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                            <ItemsPresenter/>
-                        </ScrollViewer>
+                        <ItemsPresenter/>
                     </Border>
                     <ControlTemplate.Resources>
                         <Style TargetType="{x:Type ListViewItem}">

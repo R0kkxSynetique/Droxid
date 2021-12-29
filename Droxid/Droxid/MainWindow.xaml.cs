@@ -59,6 +59,11 @@ namespace Droxid
 
         }
 
+        private void onCreateGuildClick(object sender, RoutedEventArgs e)
+        {
+            _vm.CreateGuild();
+        }
+
         private void onSelectChannel(object sender, SelectionChangedEventArgs e)
         {
             if (sender is ListView)

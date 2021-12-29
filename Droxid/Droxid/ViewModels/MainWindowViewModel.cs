@@ -14,10 +14,11 @@ using System.Timers;
 using System.Windows.Threading;
 using System.Diagnostics;
 using Droxid.DataBase;
+using Droxid.Views;
 
 namespace Droxid.ViewModels
 {
-    public class MainWindowViewModel : INotifyPropertyChanged
+    public class MainWindowViewModel : VM
     {
 
         private User _client;
@@ -223,6 +224,12 @@ namespace Droxid.ViewModels
             _client.SendMessage(content, _selectedChannel.Id);
         }
 
+        public void CreateGuild()
+        {
+            NewGuild dialog = new NewGuild(_client);
+            dialog.ShowDialog();
+        }
+
         public void CreateChannel(string name)
         {
             _selectedGuild.AddChannel(name);
@@ -230,11 +237,9 @@ namespace Droxid.ViewModels
 
         //Property changed dependencies
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        private void NotifyPropertyChanged(string propName)
+        protected override void NotifyPropertyChanged(string propName)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+            base.NotifyPropertyChanged(propName);
             switch (propName)
             {
                 case nameof(_client):
