@@ -67,7 +67,7 @@
                 <!--Channels-->
                 <ScrollViewer Grid.Row="1" Grid.RowSpan="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                     <StackPanel>
-                        <Button x:Name="btnCreateChannel" Content="+" Click="onCreateChannelClick" Visibility="{Binding ElementName=mainWindow, Path=GuildControlsVisibility}"/>
+                        <Button x:Name="btnCreateChannel" Style="{StaticResource btnNewChannel}" Content="+" Click="onCreateChannelClick" Visibility="{Binding ElementName=mainWindow, Path=GuildControlsVisibility}"/>
                         <ListView x:Name="lstvChannels" ItemsSource="{Binding SelectedChannels}" Style="{StaticResource lstvChannels}" SelectionChanged="onSelectChannel" SelectionMode="Single"/>
                     </StackPanel>
                 </ScrollViewer>
