@@ -11,69 +11,95 @@ namespace Droxid.Models
     {
         private string _name;
         private int _owner;
-
-        private List<Channel> _channels = new List<Channel>();
-
+        /// <summary>
+        /// Creates a new guild
+        /// </summary>
+        /// <param name="id">Guild id</param>
+        /// <param name="name">Guild name</param>
+        /// <param name="owner">Owner id</param>
+        public Guild(int id, string name, int owner) : this(id, name, owner, DateTime.Now, DateTime.Now, false) { }
+        /// <summary>
+        /// Creates a new guild
+        /// </summary>
+        /// <param name="id">Guild id</param>
+        /// <param name="name">Guild name</param>
+        /// <param name="owner">Owner id</param>
+        /// <param name="createdAt">Creation datetime</param>
+        /// <param name="updatedAt">Last update</param>
+        public Guild(int id, string name, int owner, DateTime createdAt, DateTime updatedAt) : this(id, name, owner, createdAt, updatedAt, false) { }
+        /// <summary>
+        /// Creates a new guild
+        /// </summary>
+        /// <param name="id">Guild id</param>
+        /// <param name="name">Guild name</param>
+        /// <param name="owner">Owner id</param>
+        /// <param name="createdAt">Creation datetime</param>
+        /// <param name="updatedAt">Last update</param>
+        /// <param name="deleted">Deleted flag</param>
+        public Guild(int id, string name, int owner, DateTime createdAt, DateTime updatedAt, bool deleted) : base(id, createdAt, updatedAt, deleted)
+        {
+            _name = name;
+            _owner = owner;
+        }
+        /// <summary>
+        /// List of roles in this guild
+        /// </summary>
         public List<Role> Roles
         {
             get => ViewModel.GetGuildRoles(_id);
         }
+        /// <summary>
+        /// List of users in this guild
+        /// </summary>
         public List<User> Users
         {
             get => ViewModel.GetGuildUsers(_id);
         }
+        /// <summary>
+        /// Guild owner
+        /// </summary>
         public User Owner
         {
             get => ViewModel.GetUserById(_owner);
         }
+        /// <summary>
+        /// Guild name
+        /// </summary>
         public string Name
         {
             get => _name;
         }
-
+        /// <summary>
+        /// List of channels in this guild
+        /// </summary>
         public List<Channel> Channels
         {
-            get
-            {
-                return ViewModel.GetGuildChannels(_id);
-            }
+            get => ViewModel.GetGuildChannels(_id);
         }
-
-        public Guild(int id, string name, int owner)
-        {
-            _id = id;
-            _name = name;
-            _owner = owner;
-        }
-
+        /// <summary>
+        /// Updates the instance's values with a given model. used in order to keep the reference in memory of the current instance
+        /// </summary>
+        /// <param name="guild">Guild to copy</param>
         public void Copy(Guild guild)
         {
+            base.Copy(guild);
             _name = guild._name;
             _owner = guild._owner;
         }
 
-        public void CreateGuild()
+        public override bool Equals(object? obj)
         {
-            ViewModel.InsertGuild(_name,_owner);
-        }
-
-        public void AddRoleToGuild(string name)
-        {
-            ViewModel.InsertRole(name, _id);
-        }
-
-        public void AddRolesToGuild(List<string> roles)
-        {
-            foreach (string role in roles)
+            bool result = base.Equals(obj);
+            if (result && obj is Guild other)
             {
-                AddRoleToGuild(role);
+                result = (_name == other._name) && (_owner == other._owner);
             }
+            return result;
         }
 
-        public void AddChannel(string name)
+        public override int GetHashCode()
         {
-            ViewModel.InsertChannel(name, _id);
+            return base.GetHashCode() ^ _name.GetHashCode() ^ _owner;
         }
-
     }
 }

@@ -13,14 +13,13 @@ using Droxid.Models;
 using System.Timers;
 using System.Windows.Threading;
 using System.Diagnostics;
+using Droxid.DataBase;
 
 namespace Droxid.ViewModels
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
 
-
-        private MainWindow? _view;
         private User _client;
         private Guild? _selectedGuild;
         private Channel? _selectedChannel;
@@ -29,103 +28,132 @@ namespace Droxid.ViewModels
         //Caching
         private List<Guild> _guilds = new List<Guild>();
         private List<Channel> _channels = new List<Channel>();
+        private List<Message> _messages = new List<Message>();
 
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(string username)
         {
-            _client = ViewModel.GetUserByUsername("R0kkxSynetique");
+            _client = ViewModel.GetUserByUsername(username);
             NotifyPropertyChanged(nameof(Guilds));
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromSeconds(0.5);
             _timer.Tick += updateTimerEventHandler;
             _timer.IsEnabled = true;
-
         }
-
+        /// <summary>
+        /// Listen's for timer events and calls the update method
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void updateTimerEventHandler(Object? sender, EventArgs e)
         {
             Update();
         }
-
+        /// <summary>
+        /// Updates cached data
+        /// </summary>
+        /// <remarks>
+        /// Uses the updatedAt property for a minimal performance impact
+        /// </remarks>
         public void Update()
         {
-            //List<Guild> pastGuilds = new List<Guild>(_guilds);
             //Guilds update
-            List<Guild> guilds = ViewModel.GetUserGuilds(_client.Username) ?? new();
-            //Compare cached with the new
-            for (int i = 0; i < _guilds.Count; i++)
+            List<Guild> dbGuilds = ViewModel.GetUserGuilds(_client.Id, _guilds.OrderBy(guild => guild.UpdatedAt).DefaultIfEmpty(null).First()?.UpdatedAt ?? new DateTime(0)) ?? new();
+            //update content
+            foreach (Guild dbGuild in dbGuilds)
             {
-                Guild? dbGuild = guilds.Find(guild => guild.Id == _guilds[i].Id);
-                if (dbGuild == null)
+                Guild? cachedGuild = _guilds.Find(guild => guild.Id == dbGuild.Id);
+                if (cachedGuild != null)
                 {
-                    //Remove guild from cache if no reference is found in the database result
-                    _guilds.Remove(_guilds[i]);
-                }
-                else
-                {
-                    if (!dbGuild.Equals(_guilds[i]))
+                    if (dbGuild.IsDeleted)
                     {
-                        //Update Content
-                        _guilds[i].Copy(dbGuild);
+                        _guilds.Remove(cachedGuild);
+                    }
+                    else
+                    {
+                        cachedGuild.Copy(dbGuild);
                     }
                 }
-
+                else if (!dbGuild.IsDeleted)
+                {
+                    _guilds.Add(dbGuild);
+                }
             }
-            //Add uncached to cache
-            guilds.ForEach(guild =>
-            {
-                if (_guilds.Find(cachedGuild => cachedGuild.Id == guild.Id) == null) _guilds.Add(guild);
-            });
 
             //Channels update
             if (SelectedGuild != null)
             {
-                List<Channel> dbChannels = ViewModel.GetGuildChannels(SelectedGuild.Id);
-                //Compare cache and DB
-                for (int i = 0; i < _channels.Count; i++)
+                List<Channel> dbChannels = ViewModel.GetGuildChannels(SelectedGuild.Id, _channels.OrderBy(channel => channel.UpdatedAt).DefaultIfEmpty(null).First()?.UpdatedAt ?? new DateTime(0)) ?? new();
+                //update content
+                foreach (Channel dbChannel in dbChannels)
                 {
-                    Channel? dbChannel = dbChannels.Find(channel => channel.Id == _channels[i].Id);
-                    if (dbChannel == null)
+                    Channel? cachedChannel = _channels.Find(channel => channel.Id == dbChannel.Id);
+                    if (cachedChannel != null)
                     {
-                        //Remove channel from cache if no reference is found in the database result
-                        _channels.Remove(_channels[i]);
-                    }
-                    else
-                    {
-                        if (!dbChannel.Equals(_channels[i]))
+                        if (dbChannel.IsDeleted)
                         {
-                            //Update Content
-                            _channels[i].Copy(dbChannel);
+                            _channels.Remove(cachedChannel);
+                        }
+                        else
+                        {
+                            cachedChannel.Copy(dbChannel);
                         }
                     }
-
+                    else if (!dbChannel.IsDeleted)
+                    {
+                        _channels.Add(dbChannel);
+                    }
                 }
-                //Add uncached to cache
-                dbChannels.ForEach(dbChannel =>
-                {
-                    if (_channels.Find(cachedChannel => cachedChannel.Id == dbChannel.Id) == null) _channels.Add(dbChannel);
-                });
+
             }
             else
             {
                 _channels.Clear();
             }
 
+            //Messages update
+            if (SelectedChannel != null)
+            {
+                List<Message> dbMessages = ViewModel.GetChannelMessages(SelectedChannel.Id,_messages.OrderBy(message => message.UpdatedAt).DefaultIfEmpty(null).First()?.UpdatedAt ?? new DateTime(0)) ?? new();
+                //Update content
+                foreach(Message dbMessage in dbMessages)
+                {
+                    Message? cachedMessage = _messages.Find(message=>message.Id == dbMessage.Id);
+                    if(cachedMessage != null)
+                    {
+                        if (dbMessage.IsDeleted)
+                        {
+                            _messages.Remove(cachedMessage);
+                        } else
+                        {
+                            cachedMessage.Copy(dbMessage);
+                        }
+                    } else if (!dbMessage.IsDeleted)
+                    {
+                        _messages.Add(dbMessage);
+                    }
+                }
+            }
+            else
+            {
+                _messages.Clear();
+            }
+
+
 
             NotifyPropertyChanged(nameof(_client));
         }
 
-
-        //TODO : create a generic way to do this
+        /// <summary>
+        /// List of Guilds to render
+        /// </summary>
         public ObservableCollection<Guild> Guilds
         {
-            get
-            {
-                return new(_guilds);
-
-            }
+            get => new(_guilds);
         }
-
+        /// <summary>
+        /// List of channels available
+        /// </summary>
         public List<Channel> Channels
         {
             get
@@ -135,7 +163,9 @@ namespace Droxid.ViewModels
                 return channels;
             }
         }
-
+        /// <summary>
+        /// Selected guild to render channels from
+        /// </summary>
         public Guild? SelectedGuild
         {
             get => _selectedGuild;
@@ -145,19 +175,13 @@ namespace Droxid.ViewModels
                 {
                     _selectedGuild = value;
                     _channels = ViewModel.GetGuildChannels(SelectedGuild.Id);
-                    if (SelectedChannels.Count > 0)
-                    {
-                        _selectedChannel = SelectedChannels[0];
-                    }
-                    else
-                    {
-                        _selectedChannel = null;
-                    }
                     NotifyPropertyChanged(nameof(SelectedGuild));
                 }
             }
         }
-
+        /// <summary>
+        /// List of channels to render
+        /// </summary>
         public ObservableCollection<Channel> SelectedChannels
         {
             get
@@ -166,34 +190,34 @@ namespace Droxid.ViewModels
 
             }
         }
-
+        /// <summary>
+        /// Selected channel to render messages from
+        /// </summary>
         public Channel? SelectedChannel
         {
             get => _selectedChannel;
             set
             {
                 _selectedChannel = value;
+                if(_selectedChannel != null)
+                {
+                _messages = ViewModel.GetChannelMessages(_selectedChannel.Id);
+                }
                 NotifyPropertyChanged(nameof(SelectedChannel));
             }
         }
-
+        /// <summary>
+        /// List of messages to render
+        /// </summary>
         public List<Message> Messages
         {
             get => SelectedChannel?.Messages ?? new List<Message>();
         }
 
-
-        public void AddGuild(Guild guild)
-        {
-            //_client.Guilds.Add(guild);
-            NotifyPropertyChanged(nameof(Guilds));
-        }
-
-        public void register(MainWindow mainWindow)
-        {
-            _view = mainWindow;
-        }
-
+        /// <summary>
+        /// Sends a new message in the selected channel
+        /// </summary>
+        /// <param name="content">Message content</param>
         public void SendMessage(string content)
         {
             _client.SendMessage(content, _selectedChannel.Id);

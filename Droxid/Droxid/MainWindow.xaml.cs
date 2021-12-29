@@ -16,6 +16,7 @@ using System.ComponentModel;
 using Droxid.ViewModels;
 using Droxid.Models;
 using Droxid.DataBase;
+using Droxid.Views;
 
 namespace Droxid
 {
@@ -27,10 +28,13 @@ namespace Droxid
         private MainWindowViewModel _vm;
         public MainWindow()
         {
-            InitializeComponent();
-            _vm = (MainWindowViewModel)this.DataContext;
-            _vm.register(this);
+            StartupWindow diag = new StartupWindow();
+            diag.ShowDialog();
+            if (!diag.Success) Close();
+            _vm = new MainWindowViewModel(diag.Username);
             _vm.PropertyChanged += viewmodelProperyChangedEventHandler;
+            this.DataContext = _vm;
+            InitializeComponent();
         }
 
         //ViewModel events
@@ -46,36 +50,41 @@ namespace Droxid
 
         private void updateInputVisibility()
         {
-            grdInput.Visibility =_vm.SelectedChannel == null ? Visibility.Collapsed : Visibility.Visible;
+            grdInput.Visibility = _vm.SelectedChannel == null ? Visibility.Collapsed : Visibility.Visible;
         }
 
         //Window events
         private void BtnDroxidClick(object sender, RoutedEventArgs e)
         {
-            
+
         }
 
-        private void lstvSelectChannel(object sender, SelectionChangedEventArgs e)
+        private void onSelectChannel(object sender, SelectionChangedEventArgs e)
         {
-            if(sender is ListView)
+            if (sender is ListView)
             {
                 ListView listView = (ListView)sender;
                 _vm.SelectedChannel = listView.SelectedItem as Channel;
+                ictlMessages.ScrollToBottom();
             }
         }
 
-        private void lstvSelectServer(object sender, SelectionChangedEventArgs e)
+        private void onSelectGuild(object sender, SelectionChangedEventArgs e)
         {
-            if(sender is ListView)
+            if (sender is ListView)
             {
-                ListView listView = ( ListView)sender as ListView;
+                ListView listView = (ListView)sender as ListView;
                 _vm.SelectedGuild = listView.SelectedItem as Guild;
+                if(_vm.SelectedGuild != null && _vm.SelectedGuild.Channels[0] != null)
+                {
+                    lstvChannels.SelectedItem = _vm.SelectedGuild.Channels[0];
+                }
             }
         }
 
         private void TextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.Enter)
+            if (e.Key == Key.Enter)
             {
                 _vm.SendMessage(txtMessage.Text);
                 txtMessage.Clear();
