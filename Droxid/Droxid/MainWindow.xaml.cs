@@ -17,6 +17,7 @@ using Droxid.ViewModels;
 using Droxid.Models;
 using Droxid.DataBase;
 using Droxid.Views;
+using System.Diagnostics;
 
 namespace Droxid
 {
@@ -40,12 +41,17 @@ namespace Droxid
         //Visual states
         public Visibility GuildControlsVisibility
         {
-            get { return _vm.SelectedGuild == null ? Visibility.Collapsed : Visibility.Visible; }
+            get { return (_vm.IsCurrentGuildOwner) ? Visibility.Visible : Visibility.Collapsed; }
         }
 
         public Visibility ChannelControlsVisibility
         {
-            get => _vm.SelectedChannel == null ? Visibility.Collapsed : Visibility.Visible;
+            get => _vm.SelectedChannel != null ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public Visibility ChannelEditVisibility
+        {
+            get => (_vm.IsCurrentGuildOwner && _vm.SelectedChannel != null) ? Visibility.Visible: Visibility.Collapsed;
         }
 
         //ViewModel events
@@ -58,6 +64,7 @@ namespace Droxid
                     break;
                 case "SelectedChannel":
                     NotifyPropertyChanged(nameof(ChannelControlsVisibility));
+                    NotifyPropertyChanged(nameof(ChannelEditVisibility));
                     break;
             }
         }
@@ -111,6 +118,14 @@ namespace Droxid
             if (_vm.SelectedGuild != null)
             {
                 _vm.CreateChannel();
+            }
+        }
+
+        private void onEditChannelClick(object sender, RoutedEventArgs e)
+        {
+            if(sender is Button btnEditChannel)
+            {
+                _vm.EditChannel();
             }
         }
 

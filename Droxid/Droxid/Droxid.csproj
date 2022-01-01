@@ -21,13 +21,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\NewChannel.xaml.cs">
+    <Compile Update="Views\Channels\EditChannel.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Channels\NewChannel.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="Views\NewChannel.xaml">
+    <Page Update="Views\Channels\EditChannel.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Channels\NewChannel.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

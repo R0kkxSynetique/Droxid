@@ -80,6 +80,7 @@
                 </Grid.RowDefinitions>
                 <!--Channel name-->
                 <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <Button Content="*" Click="onEditChannelClick" Width="10" Height="10" Visibility="{Binding ElementName=mainWindow,Path=ChannelEditVisibility}" DataContext="{Binding SelectedChannel}"/>
                     <TextBlock Foreground="White" Text="{Binding SelectedChannel.Name}" Width="auto" VerticalAlignment="Center" Margin="5,0,0,0"/>
                 </StackPanel>
                 <!--Messages-->

@@ -215,6 +215,11 @@ namespace Droxid.ViewModels
             get => SelectedChannel?.Messages ?? new List<Message>();
         }
 
+        public bool IsCurrentGuildOwner
+        {
+            get => _selectedGuild != null && _selectedGuild.Owner.Equals(_client);
+        }
+
         /// <summary>
         /// Sends a new message in the selected channel
         /// </summary>
@@ -233,6 +238,12 @@ namespace Droxid.ViewModels
         public void CreateChannel()
         {
             NewChannel dialog = new NewChannel(_selectedGuild);
+            dialog.ShowDialog();
+        }
+
+        public void EditChannel()
+        {
+            EditChannel dialog = new EditChannel(_selectedChannel);
             dialog.ShowDialog();
         }
 
