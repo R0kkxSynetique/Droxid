@@ -212,7 +212,7 @@ namespace Droxid.ViewModels
         public static void AddChannel(this Guild guild, string name)
         {
             if (guild == null) { throw new EmptyChannelGuild(); }
-            if (name == null) { throw new EmptyChannelName(); }
+            if (string.IsNullOrWhiteSpace(name)) { throw new EmptyChannelName(); }
 
             InsertChannel(name, guild.Id);
         }
@@ -326,7 +326,21 @@ namespace Droxid.ViewModels
 
             return DBManager.Insert(query);
         }
+        /// <summary>
+        /// Modify a channel from the database
+        /// </summary>
+        /// <param name="channel">Channel to edit</param>
+        /// <param name="name">New channel name</param>
+        /// <returns>Number of rows affected</returns>
+        public static int UpdateChannel(this Channel channel,string name)
+        {
+            if (channel == null) { throw new NoGivenChannelException(); }
+            if (string.IsNullOrWhiteSpace(name)) { throw new EmptyChannelName(); }
 
+            string query = $"UPDATE channels set `name` = \"{name}\" WHERE id = {channel.Id}";
+
+            return DBManager.Update(query);
+        }
         //Messages
         /// <summary>
         /// Add a message to the database
@@ -361,6 +375,7 @@ namespace Droxid.ViewModels
 
     public class GuildCreationFailedException : ViewModelException { }
     public class ChannelCreationFailedException : ViewModelException { }
+    public class NoGivenChannelException : ViewModelException { }
 
     public class EmptyOwnerException : GuildCreationFailedException { }
     public class EmptyGuildNameException : GuildCreationFailedException { }
