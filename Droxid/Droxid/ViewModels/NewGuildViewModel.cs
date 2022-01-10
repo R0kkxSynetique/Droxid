@@ -19,8 +19,23 @@ namespace Droxid.ViewModels
 
         public void CreateGuild(string name)
         {
-            _user.CreateGuild(name);
+            try
+            {
+                _user.CreateGuild(name);
+            }
+            catch (Exception e)
+            {
+                if (e is EmptyOwnerException)
+                {
+                    //TODO
+                }
+                if (e is EmptyGuildNameException)
+                {
+                    //TODO
+                }
+            }
         }
+
     }
 
 }

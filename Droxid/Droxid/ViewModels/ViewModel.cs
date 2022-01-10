@@ -195,17 +195,21 @@ namespace Droxid.ViewModels
         /// <exception cref="GuildCreationFailedException"></exception>
         public static void CreateGuild(this User owner, string name)
         {
+            if (owner == null) { throw new EmptyOwnerException(); }
+            if (name == null) { throw new EmptyGuildNameException(); }
+
             string query = $"INSERT INTO guilds (`name`, owner_id) VALUES (\"{name}\", {owner.Id}) RETURNING guilds.id";
             int? id = DBManager.SelectId(query);
             if (id == null) throw new GuildCreationFailedException();
             AddUserToGuild(owner.Id, (int)id);
+
         }
         /// <summary>
         /// Add a new channel to a guild
         /// </summary>
         /// <param name="guild">Guild</param>
         /// <param name="name">New channel name</param>
-        public static void AddChannel(this Guild guild,string name)
+        public static void AddChannel(this Guild guild, string name)
         {
             InsertChannel(name, guild.Id);
         }
@@ -352,4 +356,7 @@ namespace Droxid.ViewModels
 
     public class ViewModelException : Exception { }
     public class GuildCreationFailedException : ViewModelException { }
+    public class EmptyOwnerException : GuildCreationFailedException { }
+    public class EmptyGuildNameException : GuildCreationFailedException { }
+
 }
