@@ -211,6 +211,9 @@ namespace Droxid.ViewModels
         /// <param name="name">New channel name</param>
         public static void AddChannel(this Guild guild, string name)
         {
+            if (guild == null) { throw new EmptyChannelGuild(); }
+            if (name == null) { throw new EmptyChannelName(); }
+
             InsertChannel(name, guild.Id);
         }
         /// <summary>
@@ -355,8 +358,13 @@ namespace Droxid.ViewModels
     }
 
     public class ViewModelException : Exception { }
+
     public class GuildCreationFailedException : ViewModelException { }
+    public class ChannelCreationFailedException : ViewModelException { }
+
     public class EmptyOwnerException : GuildCreationFailedException { }
     public class EmptyGuildNameException : GuildCreationFailedException { }
+    public class EmptyChannelName : ChannelCreationFailedException { }
+    public class EmptyChannelGuild : ChannelCreationFailedException { }
 
 }
