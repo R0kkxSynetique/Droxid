@@ -47,8 +47,6 @@ namespace Droxid.DataBase
         public static void Connect(string server, string database, string user, string password)
         {
             _connection = new($"Database={database};Server={server};user={user};password={password};");
-            OpenDBConnection();
-            CloseDBConnection();
         }
         /// <summary>
         /// Executes a select query for 1 user
