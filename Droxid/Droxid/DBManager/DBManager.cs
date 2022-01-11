@@ -9,15 +9,37 @@ using Droxid.Models;
 using Dapper;
 using System.Collections;
 using Droxid.ViewModels;
+using Newtonsoft.Json;
+using System.IO;
+using Newtonsoft.Json.Linq;
 
 namespace Droxid.DataBase
 {
-    // This class will only open connection to DB
     public class DBManager
     {
         // TODO Need to be in a config file NOT SECURED
         //This may not work beacause of the static methods(May need an object to end a connection)
         private static MySqlConnection _connection = new("Database=droxid;Server=localhost;user=Droxid;password=Droxid;");
+
+        private static string _conn
+        {
+            get
+            {
+                StreamReader r = new StreamReader("../../../config.json");
+
+                string json = r.ReadToEnd();
+
+                JObject result = JObject.Parse(json);
+
+                string DB = (string)result["DBConnection"]["Database"];
+                string SRV = (string)result["DBConnection"]["Server"];
+                string USER = (string)result["DBConnection"]["user"];
+                string PSWD = (string)result["DBConnection"]["password"];
+
+
+                return new($"Database={DB};Server={SRV};user={USER};password={PSWD};");
+            }
+        }
 
         /// <summary>
         /// Opens the connection to the database using the static connection instance
