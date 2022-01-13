@@ -115,7 +115,7 @@
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock Name="ChannelType" Foreground="#72767d" Grid.Column="0" Text="#" Margin="2,0" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16"/>
-                                                <TextBlock Name="ChannelName" Foreground="#72767d" Grid.Column="1" Text="{Binding Name}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                                <ContentPresenter Name="ContentPresenter" Grid.Column="1" TextBlock.Foreground="#72767d" />
                                             </Grid>
                                         </Border>
                                         <ControlTemplate.Triggers>
@@ -123,13 +123,13 @@
                                                 <Setter TargetName="Border" Property="CornerRadius" Value="5"/>
                                                 <Setter TargetName="Border" Property="Background" Value="#34373c"/>
                                                 <Setter TargetName="ChannelType" Property="Foreground" Value="#bcbdbf"/>
-                                                <Setter TargetName="ChannelName" Property="Foreground" Value="#bcbdbf"/>
+                                                <Setter TargetName="ContentPresenter" Property="TextBlock.Foreground" Value="#bcbdbf"/>
                                             </Trigger>
                                             <Trigger Property="IsSelected" Value="True">
                                                 <Setter TargetName="Border" Property="CornerRadius" Value="5"/>
                                                 <Setter TargetName="Border" Property="Background" Value="#393c43"/>
                                                 <Setter TargetName="ChannelType" Property="Foreground" Value="#ffffff"/>
-                                                <Setter TargetName="ChannelName" Property="Foreground" Value="#ffffff"/>
+                                                <Setter TargetName="ContentPresenter" Property="TextBlock.Foreground" Value="#ffffff"/>
                                             </Trigger>
                                         </ControlTemplate.Triggers>
                                     </ControlTemplate>
