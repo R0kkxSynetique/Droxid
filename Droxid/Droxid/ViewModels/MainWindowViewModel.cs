@@ -14,10 +14,11 @@ using System.Timers;
 using System.Windows.Threading;
 using System.Diagnostics;
 using Droxid.DataBase;
+using Droxid.Views;
 
 namespace Droxid.ViewModels
 {
-    public class MainWindowViewModel : INotifyPropertyChanged
+    public class MainWindowViewModel : VM
     {
 
         private User _client;
@@ -214,6 +215,11 @@ namespace Droxid.ViewModels
             get => SelectedChannel?.Messages ?? new List<Message>();
         }
 
+        public bool IsCurrentGuildOwner
+        {
+            get => _selectedGuild != null && _selectedGuild.Owner.Equals(_client);
+        }
+
         /// <summary>
         /// Sends a new message in the selected channel
         /// </summary>
@@ -223,13 +229,29 @@ namespace Droxid.ViewModels
             _client.SendMessage(content, _selectedChannel.Id);
         }
 
+        public void CreateGuild()
+        {
+            NewGuild dialog = new NewGuild(_client);
+            dialog.ShowDialog();
+        }
+
+        public void CreateChannel()
+        {
+            NewChannel dialog = new NewChannel(_selectedGuild);
+            dialog.ShowDialog();
+        }
+
+        public void EditChannel()
+        {
+            EditChannel dialog = new EditChannel(_selectedChannel);
+            dialog.ShowDialog();
+        }
+
         //Property changed dependencies
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        private void NotifyPropertyChanged(string propName)
+        protected override void NotifyPropertyChanged(string propName)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+            base.NotifyPropertyChanged(propName);
             switch (propName)
             {
                 case nameof(_client):

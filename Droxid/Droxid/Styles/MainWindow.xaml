@@ -42,9 +42,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListView}">
                     <Border Name="Border" Background="Transparent" Width="auto">
-                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                            <ItemsPresenter/>
-                        </ScrollViewer>
+                        <ItemsPresenter/>
                     </Border>
                     <ControlTemplate.Resources>
                         <Style TargetType="{x:Type ListViewItem}">
@@ -102,9 +100,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListView}">
                     <Border Name="Border" Background="Transparent" Width="auto">
-                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                             <ItemsPresenter HorizontalAlignment="Stretch"/>
-                        </ScrollViewer>
                     </Border>
                     <ControlTemplate.Resources>
                         <Style TargetType="{x:Type ListViewItem}">
@@ -148,6 +144,25 @@
             </Setter.Value>
         </Setter>
 
+    </Style>
+
+    <Style x:Key="btnNewChannel" TargetType="{x:Type Button}">
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Background" Value="#393c43"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Name="Border" Background="{TemplateBinding Background}" Margin="4,1" CornerRadius="5">
+                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="#72767d"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style x:Key="MessageInput" TargetType="{x:Type TextBox}">

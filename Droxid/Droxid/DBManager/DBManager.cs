@@ -12,12 +12,27 @@ using Droxid.ViewModels;
 
 namespace Droxid.DataBase
 {
-    // This class will only open connection to DB
     public class DBManager
     {
-        // TODO Need to be in a config file NOT SECURED
+        private static string _defaultConfigPath = AppDomain.CurrentDomain.BaseDirectory + "config.drxd";
+
         //This may not work beacause of the static methods(May need an object to end a connection)
-        private static MySqlConnection _connection = new("Database=droxid;Server=localhost;user=Droxid;password=Droxid;");
+        private static MySqlConnection _connection;
+
+        /// <summary>
+        /// Changes the static connection during runtime and opens it
+        /// </summary>
+        /// <param name="server">name/ip address of the sql server</param>
+        /// <param name="database">database name used for droxid</param>
+        /// <param name="user">database user with CRUD access to the database</param>
+        /// <param name="password">user's password</param>
+        /// <exception cref="System.InvalidOperationException"></exception>
+        /// <exception cref="MySql.Data.MySqlClient.MySqlException">Thrown when the connection failed to open</exception>
+        public static void OpenDBConnection(string server, string database, string user, string password)
+        {
+            _connection = new($"Database={database};Server={server};user={user};password={password};");
+            _connection.Open();
+        }
 
         /// <summary>
         /// Opens the connection to the database using the static connection instance
@@ -35,21 +50,7 @@ namespace Droxid.DataBase
         {
             _connection.Close();
         }
-        /// <summary>
-        /// Changes the static connection during runtime and open/closes it once to test it
-        /// </summary>
-        /// <param name="server">name/ip address of the sql server</param>
-        /// <param name="database">database name used for droxid</param>
-        /// <param name="user">database user with CRUD access to the database</param>
-        /// <param name="password">user's password</param>
-        /// <exception cref="System.InvalidOperationException"></exception>
-        /// <exception cref="MySql.Data.MySqlClient.MySqlException">Thrown when the connection failed to open</exception>
-        public static void Connect(string server, string database, string user, string password)
-        {
-            _connection = new($"Database={database};Server={server};user={user};password={password};");
-            OpenDBConnection();
-            CloseDBConnection();
-        }
+
         /// <summary>
         /// Executes a select query for 1 user
         /// </summary>
@@ -75,7 +76,7 @@ namespace Droxid.DataBase
         /// <returns>The list of users from the query</returns>
         public static List<User> SelectUsers(string query)
         {
-            List<User>? users = new();
+            List<User> users = new();
 
             IEnumerable queryResult = _connection.Query(query);
 
@@ -147,7 +148,7 @@ namespace Droxid.DataBase
         /// <returns>The list of channels from the query</returns>
         public static List<Channel> SelectChannels(string query)
         {
-            List<Channel>? channels = new();
+            List<Channel> channels = new();
 
             IEnumerable queryResult = _connection.Query(query);
 
@@ -165,7 +166,7 @@ namespace Droxid.DataBase
         /// <returns>The list of permissions from the query</returns>
         public static List<Permission> SelectPermissions(string query)
         {
-            List<Permission>? permissions = new();
+            List<Permission> permissions = new();
 
             IEnumerable queryResult = _connection.Query(query);
 
@@ -183,7 +184,7 @@ namespace Droxid.DataBase
         /// <returns>The list of messages from the query</returns>
         public static List<Message> SelectMessages(string query)
         {
-            List<Message>? messages = new();
+            List<Message> messages = new();
 
             IEnumerable queryResult = _connection.Query(query);
 
@@ -193,6 +194,42 @@ namespace Droxid.DataBase
             }
 
             return messages;
+        }
+        /// <summary>
+        /// Execute a select which returns a single id
+        /// </summary>
+        /// <remarks>Mainly for inserts with the RETURNING keyword</remarks>
+        /// <param name="query">Query which will be executed</param>
+        /// <returns>id || null when there are no matches</returns>
+        public static int? SelectId(string query)
+        {
+            int? id = null;
+
+            IEnumerable queryResult = _connection.Query(query);
+            foreach (dynamic singleResult in queryResult)
+            {
+                id = singleResult.id;
+            }
+
+            return id;
+        }
+        /// <summary>
+        /// Execute a select which returns multiple ids
+        /// </summary>
+        /// <remarks>Mainly for inserts with the RETURNING keyword</remarks>
+        /// <param name="query">Query which will be executed</param>
+        /// <returns>List of ids</returns>
+        public static List<int> SelectIds(string query)
+        {
+            List<int> ids = new List<int>();
+            IEnumerable queryResult = _connection.Query(query);
+
+            foreach (dynamic singleResult in queryResult)
+            {
+                ids.Add(singleResult.id);
+            }
+
+            return ids;
         }
         /// <summary>
         /// Execute an insert query
@@ -212,6 +249,15 @@ namespace Droxid.DataBase
         public static int InsertMultiple(string query, List<int> parameters)
         {
             return _connection.Execute(query, parameters);
+        }
+        /// <summary>
+        /// Execute an update query
+        /// </summary>
+        /// <param name="query">Query which will be executed</param>
+        /// <returns>The number of rows affected</returns>
+        public static int Update(string query)
+        {
+            return _connection.Execute(query);
         }
     }
 }

@@ -12,6 +12,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Droxid.ViewModels;
+using System.IO;
+using Microsoft.Win32;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace Droxid.Views
 {
@@ -25,49 +29,138 @@ namespace Droxid.Views
         private string _dbUser = "";
         private string _dbName = "";
         private string _username = "";
+        private string _configFilePath;
+        private string _defaultConfigPath = AppDomain.CurrentDomain.BaseDirectory + "config.drxd";
+        private string _defaultDirectory = AppDomain.CurrentDomain.BaseDirectory;
         private StartupWindowViewModel? _vm;
         private bool _success;
+
 
         public StartupWindow()
         {
             InitializeComponent();
             _success = false;
             _vm = this.DataContext as StartupWindowViewModel;
+
+            if (File.Exists(_defaultConfigPath))
+            {
+                ImportConfig(_defaultConfigPath);
+            }
         }
 
 
         public string? Username { get => _username; }
         public bool Success { get => _success; }
 
-        private void btnSubmit(object sender, RoutedEventArgs e)
+        private void btnConnect_Click(object sender, RoutedEventArgs e)
         {
-            if (!String.IsNullOrWhiteSpace(txtDBServer.Text) && !String.IsNullOrWhiteSpace(txtDBUser.Text) && !String.IsNullOrWhiteSpace(txtDBPassword.Text) && !String.IsNullOrWhiteSpace(txtDBName.Text) && !String.IsNullOrWhiteSpace(txtUsername.Text))
+            if (!String.IsNullOrWhiteSpace(txtDBServer.Text) && !String.IsNullOrWhiteSpace(txtDBUser.Text) && !String.IsNullOrWhiteSpace(txtDBName.Text) && !String.IsNullOrWhiteSpace(txtUsername.Text))
             {
                 _dbServer = txtDBServer.Text;
                 _dbPassword = txtDBPassword.Text;
                 _dbUser = txtDBUser.Text;
                 _dbName = txtDBName.Text;
                 _username = txtUsername.Text;
+                _configFilePath = txtPath.Text;
+            }
 
-                if (_vm?.Connect(_dbServer, _dbUser, _dbPassword, _dbName) ?? false)
+            if (ViewModel.TestConnection(_dbServer, _dbName, _dbUser, _dbPassword))
+            {
+                dbHeader.Background = (Brush)new BrushConverter().ConvertFrom("#36393f");
+                if (_vm.LoginAs(_username))
                 {
-                    dbHeader.Background = (Brush)new BrushConverter().ConvertFrom("#36393f");
-                    if (_vm.LoginAs(_username))
+                    appHeader.Background = (Brush)new BrushConverter().ConvertFrom("#36393f");
+                    _success = true;
+                    this.Close();
+                }
+                else
+                {
+                    appHeader.Background = new SolidColorBrush(Colors.Red);
+                }
+            }
+            else
+            {
+                dbHeader.Background = new SolidColorBrush(Colors.Red);
+            }
+        }
+
+        private void btnImportConfig_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.InitialDirectory = _defaultDirectory;
+            openFileDialog.Filter = "All files (*.drxd)|*.drxd";
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                if (openFileDialog.FileName != null)
+                {
+                    txtPath.Text = openFileDialog.FileName;
+                    ImportConfig(txtPath.Text);
+                }
+            }
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            if (!String.IsNullOrWhiteSpace(txtDBServer.Text) && !String.IsNullOrWhiteSpace(txtDBUser.Text) && !String.IsNullOrWhiteSpace(txtDBName.Text) && !String.IsNullOrWhiteSpace(txtUsername.Text))
+            {
+                _dbServer = txtDBServer.Text;
+                _dbPassword = txtDBPassword.Text;
+                _dbUser = txtDBUser.Text;
+                _dbName = txtDBName.Text;
+                _username = txtUsername.Text;
+                _configFilePath = txtPath.Text;
+
+                if (File.Exists(_defaultConfigPath))
+                {
+                    if (MessageBox.Show("Le Fichier de configuration existe déjà. Voulez-vous l'écraser avec celui-ci?", "Fichier Existant!", MessageBoxButton.YesNo, MessageBoxImage.Information, MessageBoxResult.No) == MessageBoxResult.Yes)
                     {
-                        appHeader.Background = (Brush)new BrushConverter().ConvertFrom("#36393f");
-                        _success = true;
-                        this.Close();
-                    }
-                    else
-                    {
-                        appHeader.Background = new SolidColorBrush(Colors.Red);
+                        SaveConfig();
                     }
                 }
                 else
                 {
-                    dbHeader.Background = new SolidColorBrush(Colors.Red);
+                    MessageBox.Show(_defaultConfigPath);
                 }
+            }
+        }
+
+        private void ImportConfig(string fileName)
+        {
+            if (File.ReadAllText(fileName).Length != 0)
+            {
+
+                StreamReader r = new StreamReader(fileName);
+
+                string json = r.ReadToEnd();
+
+                JObject result = JObject.Parse(json);
+
+                txtDBServer.Text = (string)result["DBConnection"]["Server"];
+                txtDBName.Text = (string)result["DBConnection"]["Database"];
+                txtDBUser.Text = (string)result["DBConnection"]["User"];
+                txtDBPassword.Text = (string)result["DBConnection"]["Password"];
+            }
+        }
+
+        private void SaveConfig()
+        {
+            using (StreamWriter file = File.CreateText(_configFilePath))
+            {
+                JObject json = JObject.FromObject(new
+                {
+                    DBConnection = new
+                    {
+                        Server = _dbServer,
+                        Database = _dbName,
+                        User = _dbUser,
+                        Password = _dbPassword
+                    }
+                });
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Serialize(file, json);
             }
         }
     }
 }
+

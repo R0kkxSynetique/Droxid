@@ -5,6 +5,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:Droxid"
     xmlns:vm="clr-namespace:Droxid.ViewModels"
+    x:Name="mainWindow"
     mc:Ignorable="d" Title="Droxid" Height="750" Width="1300">
 
     <Window.Resources>
@@ -35,7 +36,12 @@
                 </Path>
             </Button>
             <!--TODO:Fix horizontal scroll-->
-            <ListView Grid.Column="1" Style="{StaticResource lstvServers}" ItemsSource="{Binding Guilds}" SelectionChanged="onSelectGuild" SelectionMode="Single"/>
+            <ScrollViewer  Grid.Column="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <ListView Style="{StaticResource lstvServers}" ItemsSource="{Binding Guilds}" SelectionChanged="onSelectGuild" SelectionMode="Single"/>
+                    <Button Style="{StaticResource btnDroxid}" Click="onCreateGuildClick">+</Button>
+                </StackPanel>
+            </ScrollViewer>
         </Grid>
 
         <Grid Grid.Row="1" Height="auto">
@@ -50,11 +56,21 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <!--Server banner-->
-                <TextBlock Foreground="white" Text="{Binding SelectedGuild.Name}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,12,0,0" Grid.RowSpan="2"/>
-
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="40"/>
+                        <ColumnDefinition Width="160"/>
+                        <ColumnDefinition Width="40"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Foreground="white" Text="{Binding SelectedGuild.Name}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,12,0,0" Grid.Column="1"/>
+                </Grid>
                 <!--Channels-->
-                <ListView x:Name="lstvChannels" ItemsSource="{Binding SelectedChannels}" Style="{StaticResource lstvChannels}" Grid.Row="1" Grid.RowSpan="1" SelectionChanged="onSelectChannel" SelectionMode="Single">
-                </ListView>
+                <ScrollViewer Grid.Row="1" Grid.RowSpan="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <Button x:Name="btnCreateChannel" Style="{StaticResource btnNewChannel}" Content="+" Click="onCreateChannelClick" Visibility="{Binding ElementName=mainWindow, Path=GuildControlsVisibility}"/>
+                        <ListView x:Name="lstvChannels" ItemsSource="{Binding SelectedChannels}" Style="{StaticResource lstvChannels}" SelectionChanged="onSelectChannel" SelectionMode="Single"/>
+                    </StackPanel>
+                </ScrollViewer>
             </Grid>
             <Grid Grid.Column="2" Background="#36393f">
                 <Grid.RowDefinitions>
@@ -64,6 +80,7 @@
                 </Grid.RowDefinitions>
                 <!--Channel name-->
                 <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <Button Content="*" Click="onEditChannelClick" Width="10" Height="10" Visibility="{Binding ElementName=mainWindow,Path=ChannelEditVisibility}" DataContext="{Binding SelectedChannel}"/>
                     <TextBlock Foreground="White" Text="{Binding SelectedChannel.Name}" Width="auto" VerticalAlignment="Center" Margin="5,0,0,0"/>
                 </StackPanel>
                 <!--Messages-->
@@ -95,7 +112,7 @@
                 </ScrollViewer>
 
                 <!--Input-->
-                <Grid Grid.Row="2" x:Name="grdInput" Visibility="Collapsed">
+                <Grid Grid.Row="2" x:Name="grdInput" Visibility="{Binding ElementName=mainWindow,Path=ChannelControlsVisibility}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="60"/>
                         <ColumnDefinition Width="1*"/>
