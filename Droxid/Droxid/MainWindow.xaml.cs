@@ -127,7 +127,7 @@ namespace Droxid
             {
                 ListView listView = (ListView)sender as ListView;
                 _vm.SelectedGuild = listView.SelectedItem as Guild;
-                if(_vm.SelectedGuild != null && _vm.SelectedGuild.Channels.Count > 0 && _vm.SelectedGuild.Channels[0] != null)
+                if (_vm.SelectedGuild != null && _vm.SelectedGuild.Channels.Count > 0 && _vm.SelectedGuild.Channels[0] != null)
                 {
                     lstvChannels.SelectedItem = _vm.SelectedGuild.Channels[0];
                 }
@@ -155,9 +155,17 @@ namespace Droxid
 
         private void onEditChannelClick(object sender, RoutedEventArgs e)
         {
-            if(sender is Button btnEditChannel && btnEditChannel.DataContext is Channel channel)
+        if(sender is Button btnEditChannel && btnEditChannel.DataContext is Channel channel)
             {
                 _vm.EditChannel(channel);
+            }
+        }
+
+        private void onDeleteChannelClick(object sender, RoutedEventArgs e)
+        {
+            if(sender is Button btnDeleteChannel && btnDeleteChannel.DataContext is Channel channel && MessageBox.Show($"Do you really want to delete \"{channel.Name}\"?", "delete channel", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+            {
+                throw new NotImplementedException();
             }
         }
 
