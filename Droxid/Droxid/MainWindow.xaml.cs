@@ -155,9 +155,9 @@ namespace Droxid
 
         private void onEditChannelClick(object sender, RoutedEventArgs e)
         {
-            if(sender is Button btnEditChannel)
+            if(sender is Button btnEditChannel && btnEditChannel.DataContext is Channel channel)
             {
-                _vm.EditChannel();
+                _vm.EditChannel(channel);
             }
         }
 
