@@ -24,9 +24,10 @@ namespace Droxid
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window , INotifyPropertyChanged
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
         private MainWindowViewModel _vm;
+        private bool _membersListToggle = false;
         public MainWindow()
         {
             StartupWindow diag = new StartupWindow();
@@ -36,12 +37,28 @@ namespace Droxid
             _vm.PropertyChanged += viewmodelProperyChangedEventHandler;
             this.DataContext = _vm;
             InitializeComponent();
+            PropertyChanged += viewPropertyChangedEventHandler;
         }
 
         //Visual states
         public Visibility GuildControlsVisibility
         {
-            get { return (_vm.IsCurrentGuildOwner) ? Visibility.Visible : Visibility.Collapsed; }
+            get => _vm.SelectedGuild != null ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public Visibility GuildAdminControlsVisibility
+        {
+            get => (_vm.IsCurrentGuildOwner) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public Visibility GuildMembersListVisibility
+        {
+            get { return (_vm.SelectedGuild != null && _membersListToggle) ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        public int ChatRowSpan
+        {
+            get => GuildMembersListVisibility == Visibility.Collapsed ? 2 : 1;
         }
 
         public Visibility ChannelControlsVisibility
@@ -51,7 +68,7 @@ namespace Droxid
 
         public Visibility ChannelEditVisibility
         {
-            get => (_vm.IsCurrentGuildOwner && _vm.SelectedChannel != null) ? Visibility.Visible: Visibility.Collapsed;
+            get => (_vm.IsCurrentGuildOwner && _vm.SelectedChannel != null) ? Visibility.Visible : Visibility.Collapsed;
         }
 
         //ViewModel events
@@ -61,10 +78,24 @@ namespace Droxid
             {
                 case "SelectedGuild":
                     NotifyPropertyChanged(nameof(GuildControlsVisibility));
+                    NotifyPropertyChanged(nameof(GuildAdminControlsVisibility));
                     break;
                 case "SelectedChannel":
                     NotifyPropertyChanged(nameof(ChannelControlsVisibility));
                     NotifyPropertyChanged(nameof(ChannelEditVisibility));
+                    break;
+            }
+        }
+
+        private void viewPropertyChangedEventHandler(object? sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "_membersListToggle":
+                    NotifyPropertyChanged(nameof(GuildMembersListVisibility));
+                    break;
+                case "GuildMembersListVisibility":
+                    NotifyPropertyChanged(nameof(ChatRowSpan));
                     break;
             }
         }
@@ -100,6 +131,7 @@ namespace Droxid
                 {
                     lstvChannels.SelectedItem = _vm.SelectedGuild.Channels[0];
                 }
+                NotifyPropertyChanged(nameof(GuildMembersListVisibility));
             }
         }
 
@@ -127,6 +159,12 @@ namespace Droxid
             {
                 _vm.EditChannel();
             }
+        }
+
+        private void onToggleMembersListClick(object sender, RoutedEventArgs e)
+        {
+            _membersListToggle = !_membersListToggle;
+            NotifyPropertyChanged(nameof(_membersListToggle));
         }
 
         //Property changed dependencies
