@@ -9,36 +9,30 @@ using Droxid.Models;
 using Dapper;
 using System.Collections;
 using Droxid.ViewModels;
-using Newtonsoft.Json;
-using System.IO;
-using Newtonsoft.Json.Linq;
 
 namespace Droxid.DataBase
 {
     public class DBManager
     {
-        // TODO Need to be in a config file NOT SECURED
+        private static string _defaultConfigPath = AppDomain.CurrentDomain.BaseDirectory + "config.drxd";
         //This may not work beacause of the static methods(May need an object to end a connection)
-        private static MySqlConnection _connection = new("Database=droxid;Server=localhost;user=Droxid;password=Droxid;");
+        //private static MySqlConnection _connection = new("Database=droxid;Server=localhost;user=Droxid;password=Droxid;");
 
-        private static string _conn
+        private static MySqlConnection _connection;
+
+        /// <summary>
+        /// Changes the static connection during runtime and opens it
+        /// </summary>
+        /// <param name="server">name/ip address of the sql server</param>
+        /// <param name="database">database name used for droxid</param>
+        /// <param name="user">database user with CRUD access to the database</param>
+        /// <param name="password">user's password</param>
+        /// <exception cref="System.InvalidOperationException"></exception>
+        /// <exception cref="MySql.Data.MySqlClient.MySqlException">Thrown when the connection failed to open</exception>
+        public static void OpenDBConnection(string server, string database, string user, string password)
         {
-            get
-            {
-                StreamReader r = new StreamReader("../../../config.json");
-
-                string json = r.ReadToEnd();
-
-                JObject result = JObject.Parse(json);
-
-                string DB = (string)result["DBConnection"]["Database"];
-                string SRV = (string)result["DBConnection"]["Server"];
-                string USER = (string)result["DBConnection"]["user"];
-                string PSWD = (string)result["DBConnection"]["password"];
-
-
-                return new($"Database={DB};Server={SRV};user={USER};password={PSWD};");
-            }
+            _connection = new($"Database={database};Server={server};user={user};password={password};");
+            _connection.Open();
         }
 
         /// <summary>
@@ -57,19 +51,7 @@ namespace Droxid.DataBase
         {
             _connection.Close();
         }
-        /// <summary>
-        /// Changes the static connection during runtime and open/closes it once to test it
-        /// </summary>
-        /// <param name="server">name/ip address of the sql server</param>
-        /// <param name="database">database name used for droxid</param>
-        /// <param name="user">database user with CRUD access to the database</param>
-        /// <param name="password">user's password</param>
-        /// <exception cref="System.InvalidOperationException"></exception>
-        /// <exception cref="MySql.Data.MySqlClient.MySqlException">Thrown when the connection failed to open</exception>
-        public static void Connect(string server, string database, string user, string password)
-        {
-            _connection = new($"Database={database};Server={server};user={user};password={password};");
-        }
+
         /// <summary>
         /// Executes a select query for 1 user
         /// </summary>

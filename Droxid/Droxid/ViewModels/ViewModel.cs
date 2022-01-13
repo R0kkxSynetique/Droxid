@@ -13,7 +13,6 @@ namespace Droxid.ViewModels
     // send query(data comes from each model) to dbmanager
     public static class ViewModel
     {
-
         //Users
         /// <summary>
         /// Fetch an user by username
@@ -332,7 +331,7 @@ namespace Droxid.ViewModels
         /// <param name="channel">Channel to edit</param>
         /// <param name="name">New channel name</param>
         /// <returns>Number of rows affected</returns>
-        public static int UpdateChannel(this Channel channel,string name)
+        public static int UpdateChannel(this Channel channel, string name)
         {
             if (channel == null) { throw new NoGivenChannelException(); }
             if (string.IsNullOrWhiteSpace(name)) { throw new EmptyChannelName(); }
@@ -368,6 +367,33 @@ namespace Droxid.ViewModels
             string query = $"INSERT INTO permissions (`name`, description) VALUES (\"{name}\", {description})";
 
             return DBManager.Insert(query);
+        }
+
+        public static bool TestConnection()
+        {
+            try
+            {
+                DBManager.OpenDBConnection();
+                return true;
+
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public static bool TestConnection(string server, string database, string user, string password)
+        {
+            try
+            {
+                DBManager.OpenDBConnection(server, database, user, password);
+                return true;
+
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 
