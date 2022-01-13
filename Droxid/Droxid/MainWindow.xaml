@@ -119,6 +119,34 @@
                                     </Style>
                                 </Button.Resources>
                             </Button>
+                            <Button Margin="4,0,0,0" Click="onDeleteChannelClick" Visibility="{Binding ElementName=mainWindow,Path=ChannelEditVisibility}" DataContext="{Binding SelectedChannel}">
+                                <Button.Resources>
+                                    <Style TargetType="{x:Type Button}">
+                                        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type Button}">
+                                                    <Border  Name="Border" Background="Transparent" CornerRadius="10" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                        <Viewbox Margin="6" Width="15" Height="15">
+                                                            <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Fill="White">
+                                                                <Path.Data>
+                                                                    <PathGeometry Figures="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" FillRule="EvenOdd"/>
+                                                                </Path.Data>
+                                                            </Path>
+
+                                                        </Viewbox>
+                                                    </Border>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter TargetName="Border" Property="Background" Value="#2f3136"/>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
                         </StackPanel>
                         <Button Grid.Column="1" Click="onToggleMembersListClick" Visibility="{Binding ElementName=mainWindow, Path=GuildControlsVisibility}">
                             <Button.Resources>
