@@ -270,9 +270,9 @@ namespace Droxid.ViewModels
             dialog.ShowDialog();
         }
 
-        public void EditChannel()
+        public void EditChannel(Channel channel)
         {
-            EditChannel dialog = new EditChannel(_selectedChannel);
+            EditChannel dialog = new EditChannel(channel);
             dialog.ShowDialog();
         }
 
