@@ -15,9 +15,8 @@ namespace Droxid.DataBase
     public class DBManager
     {
         private static string _defaultConfigPath = AppDomain.CurrentDomain.BaseDirectory + "config.drxd";
-        //This may not work beacause of the static methods(May need an object to end a connection)
-        //private static MySqlConnection _connection = new("Database=droxid;Server=localhost;user=Droxid;password=Droxid;");
 
+        //This may not work beacause of the static methods(May need an object to end a connection)
         private static MySqlConnection _connection;
 
         /// <summary>
