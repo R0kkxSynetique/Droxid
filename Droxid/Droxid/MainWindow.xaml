@@ -29,11 +29,20 @@
             </Grid.ColumnDefinitions>
             <!--TODO:Replace icon with server/dm-->
             <Button Grid.Column="0" x:Name="btnDroxid" Style="{StaticResource btnDroxid}" Click="BtnDroxidClick">
-                <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="path2" Fill="#dcddde">
-                    <Path.Data>
-                        <PathGeometry Figures="M23.0212 1.67671C21.3107 0.879656 19.5079 0.318797 17.6584 0C17.4062 0.461742 17.1749 0.934541 16.9708 1.4184C15.003 1.12145 12.9974 1.12145 11.0283 1.4184C10.819 0.934541 10.589 0.461744 10.3368 0.00546311C8.48074 0.324393 6.67795 0.885118 4.96746 1.68231C1.56727 6.77853 0.649666 11.7538 1.11108 16.652C3.10102 18.1418 5.3262 19.2743 7.69177 20C8.22338 19.2743 8.69519 18.4993 9.09812 17.691C8.32996 17.3997 7.58522 17.0424 6.87684 16.6135C7.06531 16.4762 7.24726 16.3387 7.42403 16.1847C11.5911 18.1749 16.408 18.1749 20.5763 16.1847C20.7531 16.3332 20.9351 16.4762 21.1171 16.6135C20.41 17.0369 19.6639 17.3997 18.897 17.691C19.3052 18.4993 19.7718 19.2689 20.3021 19.9945C22.6677 19.2689 24.8929 18.1364 26.8828 16.6466H26.8893C27.43 10.9731 25.9665 6.04728 23.0212 1.67671ZM9.68041 13.6383C8.39754 13.6383 7.34085 12.4453 7.34085 10.994C7.34085 9.54272 8.37155 8.34973 9.68041 8.34973C10.9893 8.34973 12.0395 9.54272 12.0187 10.994C12.0187 12.4453 10.9828 13.6383 9.68041 13.6383ZM18.3161 13.6383C17.0332 13.6383 15.9765 12.4453 15.9765 10.994C15.9765 9.54272 17.0124 8.34973 18.3161 8.34973C19.6184 8.34973 20.6751 9.54272 20.6543 10.994C20.6543 12.4453 19.6184 13.6383 18.3161 13.6383Z" FillRule="NonZero" />
-                    </Path.Data>
-                </Path>
+                <Viewbox Margin="8">
+                    <Canvas Width="120" Height="120">
+                        <Canvas.RenderTransform>
+                            <TranslateTransform X="0" Y="0"/>
+                        </Canvas.RenderTransform>
+                        <Canvas>
+                            <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Fill="#FFDCDDDE" StrokeThickness="2.73821">
+                                <Path.Data>
+                                    <PathGeometry Figures="M 19.047658 4.782659 C 18.375766 4.756734 17.687549 4.828168 17.002359 5.0117588 L 5.5639619 8.0763766 C 1.9096089 9.055555 -0.24292178 12.785821 0.73625958 16.440161 l 9.66536442 36.0682 c 0.01682 0.06258 0.04139 0.120938 0.05977 0.182616 A 50.999653 50.999498 0 0 0 9.0004607 64.275434 50.999653 50.999498 0 0 0 60.000116 115.27493 50.999653 50.999498 0 0 0 110.99978 64.275434 50.999653 50.999498 0 0 0 109.60526 52.478478 l 9.65872 -36.038317 c 0.97917 -3.65434 -1.17667 -7.384606 -4.83103 -8.3637844 L 102.99455 5.0117588 C 99.340194 4.0325805 95.609926 6.1851044 94.630738 9.8394462 L 90.908694 23.724855 A 50.999653 50.999498 0 0 0 60.000116 13.275936 50.999653 50.999498 0 0 0 29.121419 23.847706 L 25.36617 9.8394462 C 24.570586 6.8702945 21.959193 4.8949905 19.047658 4.782659 Z M 41.300242 52.37555 a 8.4999424 8.4999164 0 0 1 8.499942 8.499917 8.4999424 8.4999164 0 0 1 -8.499942 8.499915 8.4999424 8.4999164 0 0 1 -8.499943 -8.499915 8.4999424 8.4999164 0 0 1 8.499943 -8.499917 z m 37.399745 0 a 8.4999424 8.4999164 0 0 1 8.499943 8.499917 8.4999424 8.4999164 0 0 1 -8.499943 8.499915 8.4999424 8.4999164 0 0 1 -8.499941 -8.499915 8.4999424 8.4999164 0 0 1 8.499941 -8.499917 z" FillRule="NonZero"/>
+                                </Path.Data>
+                            </Path>
+                        </Canvas>
+                    </Canvas>
+                </Viewbox>
             </Button>
             <!--TODO:Fix horizontal scroll-->
             <ScrollViewer  Grid.Column="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
@@ -67,59 +76,186 @@
                 <!--Channels-->
                 <ScrollViewer Grid.Row="1" Grid.RowSpan="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                     <StackPanel>
-                        <Button x:Name="btnCreateChannel" Style="{StaticResource btnNewChannel}" Content="+" Click="onCreateChannelClick" Visibility="{Binding ElementName=mainWindow, Path=GuildControlsVisibility}"/>
-                        <ListView x:Name="lstvChannels" ItemsSource="{Binding SelectedChannels}" Style="{StaticResource lstvChannels}" SelectionChanged="onSelectChannel" SelectionMode="Single"/>
+                        <Button x:Name="btnCreateChannel" Style="{StaticResource btnNewChannel}" Content="+" Click="onCreateChannelClick" Visibility="{Binding ElementName=mainWindow, Path=GuildAdminControlsVisibility}"/>
+                        <ListView x:Name="lstvChannels" ItemsSource="{Binding SelectedChannels}" Style="{StaticResource lstvChannels}" SelectionChanged="onSelectChannel" SelectionMode="Single">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="40"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding Name}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,2,0" HorizontalAlignment="Right">
+
+                                            <Button Margin="4,0,0,0" Click="onEditChannelClick" Visibility="{Binding ElementName=mainWindow,Path=ChannelEditVisibility}">
+                                                <Button.Resources>
+                                                    <Style TargetType="{x:Type Button}">
+                                                        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="{x:Type Button}">
+                                                                    <Border  Name="Border" Background="Transparent" CornerRadius="10" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                                        <Viewbox Margin="4" Width="10" Height="10">
+                                                                            <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Fill="white">
+                                                                                <Path.Data>
+                                                                                    <PathGeometry Figures="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" FillRule="NonZero"/>
+                                                                                </Path.Data>
+                                                                            </Path>
+                                                                        </Viewbox>
+                                                                    </Border>
+                                                                    <ControlTemplate.Triggers>
+                                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                                            <Setter TargetName="Border" Property="Background" Value="#2f3136"/>
+                                                                        </Trigger>
+                                                                    </ControlTemplate.Triggers>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Style>
+                                                </Button.Resources>
+                                            </Button>
+                                        </StackPanel>
+
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
                     </StackPanel>
                 </ScrollViewer>
             </Grid>
-            <Grid Grid.Column="2" Background="#36393f">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="60"/>
-                </Grid.RowDefinitions>
-                <!--Channel name-->
-                <StackPanel Grid.Row="0" Orientation="Horizontal">
-                    <Button Content="*" Click="onEditChannelClick" Width="10" Height="10" Visibility="{Binding ElementName=mainWindow,Path=ChannelEditVisibility}" DataContext="{Binding SelectedChannel}"/>
-                    <TextBlock Foreground="White" Text="{Binding SelectedChannel.Name}" Width="auto" VerticalAlignment="Center" Margin="5,0,0,0"/>
-                </StackPanel>
-                <!--Messages-->
+            <Grid Grid.Column="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="200"/>
+                </Grid.ColumnDefinitions>
 
-                <ScrollViewer x:Name="ictlMessages" Grid.Row="1" VerticalScrollBarVisibility="Hidden" >
-                    <ItemsControl ItemsSource="{Binding Messages}">
+                <Grid Background="#36393f" Grid.Column="0" Grid.ColumnSpan="{Binding ElementName=mainWindow, Path=ChatRowSpan}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="60"/>
+                    </Grid.RowDefinitions>
+                    <!--Channel name-->
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="40"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Orientation="Horizontal">
+                            <TextBlock Foreground="White" Text="{Binding SelectedChannel.Name}" Width="auto" VerticalAlignment="Center" Margin="30,0,0,0"/>
+                            <Button Margin="4,0,0,0" Click="onDeleteChannelClick" Visibility="{Binding ElementName=mainWindow,Path=ChannelEditVisibility}" DataContext="{Binding SelectedChannel}">
+                                <Button.Resources>
+                                    <Style TargetType="{x:Type Button}">
+                                        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type Button}">
+                                                    <Border  Name="Border" Background="Transparent" CornerRadius="10" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                        <Viewbox Margin="6" Width="15" Height="15">
+                                                            <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Fill="White">
+                                                                <Path.Data>
+                                                                    <PathGeometry Figures="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" FillRule="EvenOdd"/>
+                                                                </Path.Data>
+                                                            </Path>
+
+                                                        </Viewbox>
+                                                    </Border>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter TargetName="Border" Property="Background" Value="#2f3136"/>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                        </StackPanel>
+                        <Button Grid.Column="1" Click="onToggleMembersListClick" Visibility="{Binding ElementName=mainWindow, Path=GuildControlsVisibility}">
+                            <Button.Resources>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type Button}">
+                                                <Border Name="Border" Background="Transparent" CornerRadius="10" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                    <Viewbox Margin="6" Width="15" Height="15">
+                                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Fill="White">
+                                                            <Path.Data>
+                                                                <PathGeometry Figures="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" FillRule="NonZero"/>
+                                                            </Path.Data>
+                                                        </Path>
+                                                    </Viewbox>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="Border" Property="Background" Value="#2f3136"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </Grid>
+                    <!--Messages-->
+
+                    <ScrollViewer x:Name="ictlMessages" Grid.Row="1" VerticalScrollBarVisibility="Hidden" >
+                        <ItemsControl ItemsSource="{Binding Messages}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,4">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="30"/>
+                                            <ColumnDefinition Width="1*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="20"/>
+                                            <RowDefinition Height="1*"/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Row="0" FontSize="14" Grid.Column="1" Text="{Binding Sender.Username}" Foreground="LightGray"/>
+                                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Content}" Foreground="White" TextWrapping="Wrap"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+
+                    <!--Input-->
+                    <Grid Grid.Row="2" x:Name="grdInput" Visibility="{Binding ElementName=mainWindow,Path=ChannelControlsVisibility}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="txtMessage" Grid.Column="1" Style="{StaticResource MessageInput}" KeyDown="TextBox_KeyDown"/>
+                    </Grid>
+                </Grid>
+
+                <ScrollViewer Grid.Column="1" Visibility="{Binding ElementName=mainWindow, Path=GuildMembersListVisibility}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+
+                    <ItemsControl ItemsSource="{Binding SelectedGuildMembers}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <StackPanel/>
+                                <StackPanel Background="#2f3136"/>
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Grid Margin="0,4">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="30"/>
-                                        <ColumnDefinition Width="1*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="20"/>
-                                        <RowDefinition Height="1*"/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="0" FontSize="14" Grid.Column="1" Text="{Binding Sender.Username}" Foreground="LightGray"/>
-                                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Content}" Foreground="White" TextWrapping="Wrap"/>
-                                </Grid>
+                                <TextBlock Foreground="White" Text="{Binding Username}" Margin="4,2"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-                </ScrollViewer>
 
-                <!--Input-->
-                <Grid Grid.Row="2" x:Name="grdInput" Visibility="{Binding ElementName=mainWindow,Path=ChannelControlsVisibility}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="60"/>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="100"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBox x:Name="txtMessage" Grid.Column="1" Style="{StaticResource MessageInput}" KeyDown="TextBox_KeyDown"/>
-                </Grid>
+                </ScrollViewer>
             </Grid>
         </Grid>
     </Grid>

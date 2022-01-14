@@ -141,6 +141,18 @@ namespace Droxid.ViewModels
             return DBManager.SelectUsers(query);
         }
         /// <summary>
+        /// Fetch a list of all the users in a guild which were updated after a given datetime
+        /// </summary>
+        /// <param name="id">Guild id</param>
+        /// <param name="lastUpdated">Datetime after which the users were updated</param>
+        /// <returns>List of users</returns>
+        public static List<User> GetGuildUsers(int id, DateTime lastUpdated)
+        {
+            string query = $"SELECT users.*FROM guilds_has_users INNER JOIN users ON guilds_has_users.users_id = users.id WHERE guilds_has_users.guilds_id = {id} AND users.updated_at > \"{lastUpdated.ToSqlString()}\";";
+
+            return DBManager.SelectUsers(query);
+        }
+        /// <summary>
         /// Fetch a list of roles in a guild
         /// </summary>
         /// <param name="id">Guild id</param>
