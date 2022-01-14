@@ -45,7 +45,6 @@
                     </Canvas>
                 </Viewbox>
             </Button>
-            <!--TODO:Fix horizontal scroll-->
             <ScrollViewer  Grid.Column="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                     <ListView Style="{StaticResource lstvServers}" ItemsSource="{Binding Guilds}" SelectionChanged="onSelectGuild" SelectionMode="Single"/>
@@ -73,6 +72,39 @@
                         <ColumnDefinition Width="40"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Foreground="white" Text="{Binding SelectedGuild.Name}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,12,0,0" Grid.Column="1"/>
+                    <Button Grid.Column="2" Visibility="{Binding ElementName=mainWindow, Path=GuildAdminControlsVisibility}">
+                        <Button.Resources>
+                            <Style TargetType="{x:Type Button}">
+                                <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Border Name="Border" Background="Transparent" CornerRadius="10" Margin="5">
+                                                <Viewbox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Stretch="Uniform" Height="20" Width="20">
+                                                    <Canvas Width="20" Height="20">
+                                                        <Canvas.RenderTransform>
+                                                            <TranslateTransform X="0" Y="0"/>
+                                                        </Canvas.RenderTransform>
+                                                        <Path Name="Path" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Fill="#bcbdbf">
+                                                            <Path.Data>
+                                                                <PathGeometry Figures="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" FillRule="EvenOdd"/>
+                                                            </Path.Data>
+                                                        </Path>
+                                                    </Canvas>
+                                                </Viewbox>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="Path" Property="Fill" Value="#FFFFFF"/>
+                                                    <Setter TargetName="Border" Property="Background" Value="#202225"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
                 </Grid>
                 <!--Channels-->
                 <ScrollViewer Grid.Row="1" Grid.RowSpan="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
