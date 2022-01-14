@@ -46,6 +46,7 @@ namespace Droxid.Views
             {
                 ImportConfig(_defaultConfigPath);
             }
+            
         }
 
 
@@ -140,6 +141,7 @@ namespace Droxid.Views
                 StreamReader r = new StreamReader(fileName);
 
                 string json = r.ReadToEnd();
+                r.Close();
 
                 JObject result = JObject.Parse(json);
 
