@@ -29,24 +29,27 @@ namespace Droxid.Views
         private string _dbUser = "";
         private string _dbName = "";
         private string _username = "";
-        private string _configFilePath;
         private string _defaultConfigPath = AppDomain.CurrentDomain.BaseDirectory + "config.drxd";
         private string _defaultDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        private string _configFilePath;
         private StartupWindowViewModel? _vm;
         private bool _success;
+        private bool _firstTime;
 
 
         public StartupWindow()
         {
             InitializeComponent();
             _success = false;
+            _firstTime = false;
+            _configFilePath = _defaultConfigPath;
             _vm = this.DataContext as StartupWindowViewModel;
 
             if (File.Exists(_defaultConfigPath))
             {
                 ImportConfig(_defaultConfigPath);
             }
-            
+
         }
 
 
@@ -154,21 +157,30 @@ namespace Droxid.Views
 
         private void SaveConfig()
         {
-            using (StreamWriter file = File.CreateText(_configFilePath))
-            {
-                JObject json = JObject.FromObject(new
-                {
-                    DBConnection = new
-                    {
-                        Server = _dbServer,
-                        Database = _dbName,
-                        User = _dbUser,
-                        Password = _dbPassword
-                    }
-                });
-                JsonSerializer serializer = new JsonSerializer();
-                serializer.Serialize(file, json);
-            }
+            //using (StreamWriter file = File.CreateText(_configFilePath))
+            //{
+            //    JObject json = JObject.FromObject(new
+            //    {
+            //        DBConnection = new
+            //        {
+            //            Server = _dbServer,
+            //            Database = _dbName,
+            //            User = _dbUser,
+            //            Password = _dbPassword
+            //        }
+            //    });
+            //    JsonSerializer serializer = new JsonSerializer();
+            //    serializer.Serialize(file, json);
+            //}
+            StreamReader r = new StreamReader(_configFilePath);
+
+            string json = r.ReadToEnd();
+            r.Close();
+
+            JObject result = JObject.Parse(json);
+
+            JObject DBC = (JObject)result["DBConnection"];
+
         }
     }
 }
