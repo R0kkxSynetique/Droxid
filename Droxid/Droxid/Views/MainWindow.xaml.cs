@@ -109,6 +109,15 @@ namespace Droxid.Views
             _vm.CreateGuild();
         }
 
+        private void onManageGuildClick(object sender, RoutedEventArgs e)
+        {
+            if(_vm.SelectedGuild != null)
+            {
+                ManageGuild dialog = new(_vm.SelectedGuild);
+                dialog.ShowDialog();
+            }
+        }
+
         private void onSelectChannel(object sender, SelectionChangedEventArgs e)
         {
             if (sender is ListView)

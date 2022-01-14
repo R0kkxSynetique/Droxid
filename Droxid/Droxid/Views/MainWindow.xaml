@@ -72,7 +72,7 @@
                         <ColumnDefinition Width="40"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Foreground="white" Text="{Binding SelectedGuild.Name}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,12,0,0" Grid.Column="1"/>
-                    <Button Grid.Column="2" Visibility="{Binding ElementName=mainWindow, Path=GuildAdminControlsVisibility}">
+                    <Button Grid.Column="2" Visibility="{Binding ElementName=mainWindow, Path=GuildAdminControlsVisibility}" Click="onManageGuildClick">
                         <Button.Resources>
                             <Style TargetType="{x:Type Button}">
                                 <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
