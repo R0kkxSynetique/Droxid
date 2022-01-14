@@ -5,6 +5,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:Droxid.Views"
     xmlns:vm="clr-namespace:Droxid.ViewModels"
+    d:DataContext="{d:DesignInstance vm:MainWindowViewModel, IsDesignTimeCreatable=False}"
     x:Name="mainWindow"
     mc:Ignorable="d" Title="Droxid" Height="750" Width="1300">
 
