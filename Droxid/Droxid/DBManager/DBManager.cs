@@ -30,7 +30,7 @@ namespace Droxid.DataBase
         /// <exception cref="MySql.Data.MySqlClient.MySqlException">Thrown when the connection failed to open</exception>
         public static void OpenDBConnection(string server, string database, string user, string password)
         {
-            _connection = new($"Database={database};Server={server};user={user};password={password};");
+            _connection = new($"Database={database};Server={server};user={user};password={password};CharSet=utf8mb4;");
             _connection.Open();
         }
 
