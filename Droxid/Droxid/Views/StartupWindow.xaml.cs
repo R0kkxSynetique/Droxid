@@ -29,8 +29,9 @@ namespace Droxid.Views
         private string _dbUser = "";
         private string _dbName = "";
         private string _username = "";
-        private string _defaultConfigPath = AppDomain.CurrentDomain.BaseDirectory + "config.drxd";
+        private string _defaultConfigPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\droxid\\" + "config.json";
         private string _defaultDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        private string _appDataDroxidDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\droxid";
         private string _configFilePath;
         private StartupWindowViewModel? _vm;
         private bool _success;
@@ -45,9 +46,18 @@ namespace Droxid.Views
             _configFilePath = _defaultConfigPath;
             _vm = this.DataContext as StartupWindowViewModel;
 
+            if (!Directory.Exists(_appDataDroxidDirectory))
+            {
+                Directory.CreateDirectory(_appDataDroxidDirectory);
+            }
+
             if (File.Exists(_defaultConfigPath))
             {
                 ImportConfig(_defaultConfigPath);
+            }
+            else
+            {
+                CreateConfigFile();
             }
 
         }
@@ -98,7 +108,7 @@ namespace Droxid.Views
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.InitialDirectory = _defaultDirectory;
-            openFileDialog.Filter = "All files (*.drxd)|*.drxd";
+            openFileDialog.Filter = "All files (*.json)|*.json";
 
             if (openFileDialog.ShowDialog() == true)
             {
@@ -119,7 +129,6 @@ namespace Droxid.Views
                 _dbUser = txtDBUser.Text;
                 _dbName = txtDBName.Text;
                 _username = txtUsername.Text;
-                _configFilePath = txtPath.Text;
 
                 if (File.Exists(_defaultConfigPath))
                 {
@@ -144,6 +153,7 @@ namespace Droxid.Views
                 StreamReader r = new StreamReader(fileName);
 
                 string json = r.ReadToEnd();
+
                 r.Close();
 
                 JObject result = JObject.Parse(json);
@@ -157,30 +167,45 @@ namespace Droxid.Views
 
         private void SaveConfig()
         {
-            //using (StreamWriter file = File.CreateText(_configFilePath))
-            //{
-            //    JObject json = JObject.FromObject(new
-            //    {
-            //        DBConnection = new
-            //        {
-            //            Server = _dbServer,
-            //            Database = _dbName,
-            //            User = _dbUser,
-            //            Password = _dbPassword
-            //        }
-            //    });
-            //    JsonSerializer serializer = new JsonSerializer();
-            //    serializer.Serialize(file, json);
-            //}
+
             StreamReader r = new StreamReader(_configFilePath);
 
             string json = r.ReadToEnd();
+
             r.Close();
 
             JObject result = JObject.Parse(json);
+            JObject DBConnectionParameters = (JObject)result["DBConnection"];
 
-            JObject DBC = (JObject)result["DBConnection"];
+            DBConnectionParameters["Server"] = _dbServer;
+            DBConnectionParameters["Database"] = _dbName;
+            DBConnectionParameters["User"] = _dbUser;
+            DBConnectionParameters["Password"] = _dbPassword;
 
+            using (StreamWriter file = File.CreateText(_configFilePath))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Serialize(file, DBConnectionParameters);
+            }
+        }
+
+        private void CreateConfigFile()
+        {
+            using (StreamWriter file = File.CreateText(_configFilePath))
+            {
+                JObject json = JObject.FromObject(new
+                {
+                    DBConnection = new
+                    {
+                        Server = _dbServer,
+                        Database = _dbName,
+                        User = _dbUser,
+                        Password = _dbPassword
+                    }
+                });
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Serialize(file, json);
+            }
         }
     }
 }

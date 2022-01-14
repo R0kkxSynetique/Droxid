@@ -45,7 +45,7 @@
             <TextBlock  Text="Config File" Foreground="White"  HorizontalAlignment="Center" Margin="2"/>
         </Border>
         <Label Grid.Row="6" Grid.Column="0" Content="Path" Foreground="White"/>
-        <TextBox x:Name="txtPath" Grid.Row="6" Grid.Column="1" Text="config.drxd"/>
+        <TextBox x:Name="txtPath" Grid.Row="6" Grid.Column="1"/>
 
         <Button x:Name="btnImportConfig" Grid.Column="1" Content="Choose configuration file" Margin="0,4,0,0" Grid.Row="7" Click="OnImportConfig_Click"/>
 
