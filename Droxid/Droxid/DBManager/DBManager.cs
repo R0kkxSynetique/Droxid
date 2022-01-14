@@ -251,6 +251,15 @@ namespace Droxid.DataBase
             return _connection.Execute(query, parameters);
         }
         /// <summary>
+        /// Execute a delete query
+        /// </summary>
+        /// <param name="query">Query which will be executed</param>
+        /// <returns>The number of rows affected</returns>
+        public static int Delete(string query)
+        {
+            return _connection.Execute(query);
+        }
+        /// <summary>
         /// Execute an update query
         /// </summary>
         /// <param name="query">Query which will be executed</param>
