@@ -348,9 +348,20 @@ namespace Droxid.ViewModels
             if (channel == null) { throw new NoGivenChannelException(); }
             if (string.IsNullOrWhiteSpace(name)) { throw new EmptyChannelName(); }
 
-            string query = $"UPDATE channels set `name` = \"{name}\" WHERE id = {channel.Id}";
+            string query = $"UPDATE channels SET `name` = \"{name}\" WHERE id = {channel.Id}";
 
             return DBManager.Update(query);
+        }
+        /// <summary>
+        /// Mark the channel as delete in the database
+        /// </summary>
+        /// <param name="channel">Channel to delete</param>
+        /// <returns>Number of rows affected</returns>
+        public static int DeleteChannel(this Channel channel)
+        {
+            string query = $"UPDATE channels SET deleted = 1 WHERE id = {channel.Id}";
+
+            return DBManager.Delete(query);
         }
         //Messages
         /// <summary>
@@ -414,6 +425,7 @@ namespace Droxid.ViewModels
     public class GuildCreationFailedException : ViewModelException { }
     public class ChannelCreationFailedException : ViewModelException { }
     public class NoGivenChannelException : ViewModelException { }
+    public class NoSelectedChannelException : ViewModelException { }
 
     public class EmptyOwnerException : GuildCreationFailedException { }
     public class EmptyGuildNameException : GuildCreationFailedException { }

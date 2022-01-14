@@ -163,7 +163,11 @@ namespace Droxid.Views
         {
             if(sender is Button btnDeleteChannel && btnDeleteChannel.DataContext is Channel channel && MessageBox.Show($"Do you really want to delete \"{channel.Name}\"?", "delete channel", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
             {
-                throw new NotImplementedException();
+                if (_vm.SelectedChannel == null)
+                {
+                    throw new NoSelectedChannelException();
+                }
+                ViewModel.DeleteChannel(_vm.SelectedChannel);
             }
         }
 
