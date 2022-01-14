@@ -26,5 +26,9 @@ namespace Droxid.Views
             DataContext = _vm;
         }
 
+        private void onWindowDrag(object sender, MouseButtonEventArgs e)
+        {
+            this.DragMove();
+        }
     }
 }

@@ -7,6 +7,17 @@
         xmlns:vm="clr-namespace:Droxid.ViewModels"
         mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:ManageGuildViewModel,IsDesignTimeCreatable=True}"
         Title="{Binding Guild.Name}" Name="ManageGuildWindow" Height="400" Width="500"  Background="#2f3136">
-
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Background="Aqua" MouseLeftButtonDown="onWindowDrag" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+            <Button Width="20" Height="20"/>
+        </StackPanel>
+    </Grid>
     
 </Window>
