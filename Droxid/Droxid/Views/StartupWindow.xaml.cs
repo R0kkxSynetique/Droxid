@@ -120,7 +120,8 @@ namespace Droxid.Views
                 }
                 else
                 {
-                    MessageBox.Show(_defaultConfigPath);
+                    SaveConfig();
+                    MessageBox.Show("Configuration sauvée!", "Sauvgarde", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
         }
