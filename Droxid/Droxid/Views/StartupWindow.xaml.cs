@@ -46,45 +46,52 @@ namespace Droxid.Views
             {
                 ImportConfig(_defaultConfigPath);
             }
+            
         }
 
 
         public string? Username { get => _username; }
         public bool Success { get => _success; }
 
-        private void btnConnect_Click(object sender, RoutedEventArgs e)
+        private async void OnConnect_Click(object sender, RoutedEventArgs e)
         {
-            if (!String.IsNullOrWhiteSpace(txtDBServer.Text) && !String.IsNullOrWhiteSpace(txtDBUser.Text) && !String.IsNullOrWhiteSpace(txtDBName.Text) && !String.IsNullOrWhiteSpace(txtUsername.Text))
+            if (sender is Button button)
             {
-                _dbServer = txtDBServer.Text;
-                _dbPassword = txtDBPassword.Text;
-                _dbUser = txtDBUser.Text;
-                _dbName = txtDBName.Text;
-                _username = txtUsername.Text;
-                _configFilePath = txtPath.Text;
-            }
+                button.IsEnabled = false;
 
-            if (ViewModel.TestConnection(_dbServer, _dbName, _dbUser, _dbPassword))
-            {
-                dbHeader.Background = (Brush)new BrushConverter().ConvertFrom("#36393f");
-                if (_vm.LoginAs(_username))
+                if (!String.IsNullOrWhiteSpace(txtDBServer.Text) && !String.IsNullOrWhiteSpace(txtDBUser.Text) && !String.IsNullOrWhiteSpace(txtDBName.Text) && !String.IsNullOrWhiteSpace(txtUsername.Text))
                 {
-                    appHeader.Background = (Brush)new BrushConverter().ConvertFrom("#36393f");
-                    _success = true;
-                    this.Close();
+                    _dbServer = txtDBServer.Text;
+                    _dbPassword = txtDBPassword.Text;
+                    _dbUser = txtDBUser.Text;
+                    _dbName = txtDBName.Text;
+                    _username = txtUsername.Text;
+                    _configFilePath = txtPath.Text;
+                }
+                if (await Task<bool>.Run(() => ViewModel.TestConnection(_dbServer, _dbName, _dbUser, _dbPassword)))
+                {
+                    dbHeader.Background = (Brush)new BrushConverter().ConvertFrom("#36393f");
+                    if (await Task<bool>.Run(() => _vm.LoginAs(_username)))
+                    {
+                        appHeader.Background = (Brush)new BrushConverter().ConvertFrom("#36393f");
+                        _success = true;
+                        this.Close();
+                    }
+                    else
+                    {
+                        appHeader.Background = new SolidColorBrush(Colors.Red);
+                    }
                 }
                 else
                 {
-                    appHeader.Background = new SolidColorBrush(Colors.Red);
+                    dbHeader.Background = new SolidColorBrush(Colors.Red);
                 }
-            }
-            else
-            {
-                dbHeader.Background = new SolidColorBrush(Colors.Red);
+
+                button.IsEnabled = true;
             }
         }
 
-        private void btnImportConfig_Click(object sender, RoutedEventArgs e)
+        private void OnImportConfig_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.InitialDirectory = _defaultDirectory;
@@ -100,7 +107,7 @@ namespace Droxid.Views
             }
         }
 
-        private void btnSave_Click(object sender, RoutedEventArgs e)
+        private void OnSave_Click(object sender, RoutedEventArgs e)
         {
             if (!String.IsNullOrWhiteSpace(txtDBServer.Text) && !String.IsNullOrWhiteSpace(txtDBUser.Text) && !String.IsNullOrWhiteSpace(txtDBName.Text) && !String.IsNullOrWhiteSpace(txtUsername.Text))
             {
@@ -134,6 +141,7 @@ namespace Droxid.Views
                 StreamReader r = new StreamReader(fileName);
 
                 string json = r.ReadToEnd();
+                r.Close();
 
                 JObject result = JObject.Parse(json);
 

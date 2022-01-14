@@ -47,7 +47,7 @@
         <Label Grid.Row="6" Grid.Column="0" Content="Path" Foreground="White"/>
         <TextBox x:Name="txtPath" Grid.Row="6" Grid.Column="1" Text="config.drxd"/>
 
-        <Button x:Name="btnImportConfig" Grid.Column="1" Content="Choose configuration file" Margin="0,4,0,0" Grid.Row="7" Click="btnImportConfig_Click"/>
+        <Button x:Name="btnImportConfig" Grid.Column="1" Content="Choose configuration file" Margin="0,4,0,0" Grid.Row="7" Click="OnImportConfig_Click"/>
 
         <Border x:Name="appHeader" Grid.ColumnSpan="2" Grid.Row="8" Background="#36393f" Margin="0,4,0,0">
             <TextBlock  Text="Droxid" Foreground="White"  HorizontalAlignment="Center" Margin="2"/>
@@ -60,8 +60,8 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="btnSave" Grid.Column="0" Content="Save Config" Margin="5,4,10,0" Click="btnSave_Click"/>
-            <Button x:Name="btnConnect" Grid.Column="1" Content="Connect" Margin="10,4,5,0" Click="btnConnect_Click"/>
+            <Button x:Name="btnSave" Grid.Column="0" Content="Save Config" Margin="5,4,10,0" Click="OnSave_Click"/>
+            <Button x:Name="btnConnect" Grid.Column="1" Content="Connect" Margin="10,4,5,0" Click="OnConnect_Click"/>
         </Grid>
         
 
