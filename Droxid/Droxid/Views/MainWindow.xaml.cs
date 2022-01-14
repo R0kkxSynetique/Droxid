@@ -19,7 +19,8 @@ using Droxid.DataBase;
 using Droxid.Views;
 using System.Diagnostics;
 
-namespace Droxid
+
+namespace Droxid.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -28,12 +29,9 @@ namespace Droxid
     {
         private MainWindowViewModel _vm;
         private bool _membersListToggle = false;
-        public MainWindow()
+        public MainWindow(string username)
         {
-            StartupWindow diag = new StartupWindow();
-            diag.ShowDialog();
-            if (!diag.Success) Close();
-            _vm = new MainWindowViewModel(diag.Username);
+            _vm = new MainWindowViewModel(username);
             _vm.PropertyChanged += viewmodelProperyChangedEventHandler;
             this.DataContext = _vm;
             InitializeComponent();
