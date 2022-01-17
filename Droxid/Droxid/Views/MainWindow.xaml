@@ -6,24 +6,44 @@
     xmlns:local="clr-namespace:Droxid.Views"
     xmlns:vm="clr-namespace:Droxid.ViewModels"
     d:DataContext="{d:DesignInstance vm:MainWindowViewModel, IsDesignTimeCreatable=False}"
-    x:Name="mainWindow" WindowStartupLocation="CenterScreen"
+    x:Name="mainWindow" WindowStartupLocation="CenterScreen" WindowStyle="None" Background="Transparent"
     mc:Ignorable="d" Title="Droxid" Height="750" Width="1300">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CornerRadius="0"/>
+    </WindowChrome.WindowChrome>
 
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles/MainWindow.xaml"/>
+                <ResourceDictionary Source="Styles/WindowDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
 
     <Grid Background="#202225">
         <Grid.RowDefinitions>
+            <RowDefinition Height="24"/>
             <RowDefinition Height="70" />
             <RowDefinition Height="100*" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Height="70">
+        <Border Grid.Row="0" MouseLeftButtonDown="onWindowDrag" Background="#000000" Padding="4">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="Droxid" Foreground="White"/>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" FlowDirection="RightToLeft">
+                    <Button WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource btnChrome}" Click="onWindowClose" Background="Red"/>
+                    <Button WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource btnChrome}" Click="onWindowMinMax" Background="Yellow"/>
+                    <Button WindowChrome.IsHitTestVisibleInChrome="true" Style="{StaticResource btnChrome}" Click="onWindowMinimize" Background="Green"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+        
+        <Grid Grid.Row="1" Height="70">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="60" />
                 <ColumnDefinition Width="100*" />
@@ -53,7 +73,7 @@
             </ScrollViewer>
         </Grid>
 
-        <Grid Grid.Row="1" Height="auto">
+        <Grid Grid.Row="2" Height="auto">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="240" />
                 <ColumnDefinition Width="100*" />

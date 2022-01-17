@@ -186,6 +186,27 @@ namespace Droxid.Views
             NotifyPropertyChanged(nameof(_membersListToggle));
         }
 
+        private void onWindowDrag(object sender, MouseButtonEventArgs e)
+        {
+            this.DragMove();
+        }
+
+        private void onWindowClose(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void onWindowMinMax(object sender, RoutedEventArgs e)
+        {
+            WindowState = (WindowState == WindowState.Maximized) ? WindowState.Normal : WindowState.Maximized;
+        }
+
+        private void onWindowMinimize(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+
         //Property changed dependencies
 
         public event PropertyChangedEventHandler? PropertyChanged;
