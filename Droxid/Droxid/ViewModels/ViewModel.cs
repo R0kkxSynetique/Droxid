@@ -289,6 +289,12 @@ namespace Droxid.ViewModels
 
             return DBManager.Insert(query);
         }
+        public static List<User> GetRoleUsers(int role)
+        {
+            string query = $"SELECT users.* FROM users_has_roles INNER JOIN users ON users_has_roles.users_id = users.id WHERE users_has_roles.roles_id = {role}";
+
+            return DBManager.SelectUsers(query);
+        }
 
         //Channels
         /// <summary>
