@@ -29,11 +29,15 @@ namespace Droxid.Views
         private string _dbUser = "";
         private string _dbName = "";
         private string _username = "";
+        private string _password = "";
+
         private string _defaultConfigPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\droxid\\" + "config.json";
         private string _defaultDirectory = AppDomain.CurrentDomain.BaseDirectory;
         private string _appDataDroxidDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\droxid";
         private string _configFilePath;
+
         private StartupWindowViewModel? _vm;
+
         private bool _success;
         private bool _firstTime;
 
@@ -149,7 +153,6 @@ namespace Droxid.Views
         {
             if (File.ReadAllText(fileName).Length != 0)
             {
-
                 StreamReader r = new StreamReader(fileName);
 
                 string json = r.ReadToEnd();
@@ -167,7 +170,6 @@ namespace Droxid.Views
 
         private void SaveConfig()
         {
-
             StreamReader r = new StreamReader(_configFilePath);
 
             string json = r.ReadToEnd();
@@ -175,12 +177,12 @@ namespace Droxid.Views
             r.Close();
 
             JObject result = JObject.Parse(json);
-            JObject DBConnectionParameters = (JObject)result["DBConnection"];
+            JObject DBConnectionParameters = (JObject)result;
 
-            DBConnectionParameters["Server"] = _dbServer;
-            DBConnectionParameters["Database"] = _dbName;
-            DBConnectionParameters["User"] = _dbUser;
-            DBConnectionParameters["Password"] = _dbPassword;
+            DBConnectionParameters["DBConnection"]["Server"] = _dbServer;
+            DBConnectionParameters["DBConnection"]["Database"] = _dbName;
+            DBConnectionParameters["DBConnection"]["User"] = _dbUser;
+            DBConnectionParameters["DBConnection"]["Password"] = _dbPassword;
 
             using (StreamWriter file = File.CreateText(_configFilePath))
             {
@@ -201,12 +203,24 @@ namespace Droxid.Views
                         Database = _dbName,
                         User = _dbUser,
                         Password = _dbPassword
+                    },
+                    Client = new
+                    {
+                        Username = _username,
+                        Password = _password
                     }
                 });
                 JsonSerializer serializer = new JsonSerializer();
                 serializer.Serialize(file, json);
             }
         }
+    }
+    public class DBParam
+    {
+        public string Server { get; set; }
+        public string Name{ get; set; }
+        public string User{ get; set; }
+        public string Password{ get; set; }
     }
 }
 
