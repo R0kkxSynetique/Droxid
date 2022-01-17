@@ -384,6 +384,13 @@ namespace Droxid.ViewModels
             return DBManager.Insert(query);
         }
 
+        public static Channel GetMessageChannel(int message)
+        {
+            string query = $"SELECT channels.* FROM messages INNER JOIN channels ON messages.channel_id = channels.id WHERE messages.id = {message}";
+
+            return DBManager.SelectChannel(query);
+        }
+
         //Permissions
         /// <summary>
         /// Adds a permission to the database

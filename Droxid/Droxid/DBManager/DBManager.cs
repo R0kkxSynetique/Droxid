@@ -141,6 +141,19 @@ namespace Droxid.DataBase
 
             return roles;
         }
+        public static Channel SelectChannel(string query)
+        {
+            Channel? channel = null;
+
+            IEnumerable queryResult = _connection.Query(query);
+
+            foreach (dynamic singleResult in queryResult)
+            {
+                channel = new(singleResult.id, singleResult.name,singleResult.created_at,singleResult.updated_at,(singleResult.deleted == 1));
+            }
+
+            return channel;
+        }
         /// <summary>
         /// Execute a select query for multiple channels
         /// </summary>
