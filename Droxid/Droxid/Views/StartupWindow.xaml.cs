@@ -214,13 +214,14 @@ namespace Droxid.Views
                 serializer.Serialize(file, json);
             }
         }
-    }
-    public class DBParam
-    {
-        public string Server { get; set; }
-        public string Name{ get; set; }
-        public string User{ get; set; }
-        public string Password{ get; set; }
+
+        private void EnableSaveButton(object sender, KeyEventArgs e)
+        {
+            if ((e.Key >= Key.A && e.Key <= Key.Z) || (e.Key >= Key.D0 && e.Key <= Key.D9) || (e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9))
+            {
+                btnSave.IsEnabled = true;
+            }
+        }
     }
 }
 

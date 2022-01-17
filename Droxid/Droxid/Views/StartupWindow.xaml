@@ -32,13 +32,13 @@
             <TextBlock  Text="Database" Foreground="White"  HorizontalAlignment="Center" Margin="2"/>
         </Border>
         <Label Grid.Row="1" Grid.Column="0" Content="Server" Foreground="White"/>
-        <TextBox x:Name="txtDBServer" Grid.Row="1" Grid.Column="1" Text="localhost"/>
+        <TextBox x:Name="txtDBServer" Grid.Row="1" Grid.Column="1" Text="localhost" KeyUp="EnableSaveButton"/>
         <Label Grid.Row="2" Grid.Column="0" Content="Database" Foreground="White"/>
-        <TextBox x:Name="txtDBName" Grid.Row="2" Grid.Column="1" Text="droxid"/>
+        <TextBox x:Name="txtDBName" Grid.Row="2" Grid.Column="1" Text="droxid" KeyUp="EnableSaveButton"/>
         <Label Grid.Row="3" Grid.Column="0" Content="User" Foreground="White"/>
-        <TextBox x:Name="txtDBUser" Grid.Row="3" Grid.Column="1" Text="root"/>
+        <TextBox x:Name="txtDBUser" Grid.Row="3" Grid.Column="1" Text="root" KeyUp="EnableSaveButton"/>
         <Label Grid.Row="4" Grid.Column="0" Content="Password" Foreground="White"/>
-        <TextBox x:Name="txtDBPassword" Grid.Row="4" Grid.Column="1" Text=""/>
+        <TextBox x:Name="txtDBPassword" Grid.Row="4" Grid.Column="1" Text="" KeyUp="EnableSaveButton"/>
         
 
         <Border x:Name="ConfigHeader" Grid.ColumnSpan="2" Grid.Row="5" Background="#36393f" Margin="0,4,0,0">
@@ -60,7 +60,7 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="btnSave" Grid.Column="0" Content="Save Config" Margin="5,4,10,0" Click="OnSave_Click"/>
+            <Button x:Name="btnSave" Grid.Column="0" Content="Save Config" Margin="5,4,10,0" Click="OnSave_Click" IsEnabled="False"/>
             <Button x:Name="btnConnect" Grid.Column="1" Content="Connect" Margin="10,4,5,0" Click="OnConnect_Click"/>
         </Grid>
         
