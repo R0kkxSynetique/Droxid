@@ -6,7 +6,7 @@
     xmlns:local="clr-namespace:Droxid.Views"
     xmlns:vm="clr-namespace:Droxid.ViewModels"
     d:DataContext="{d:DesignInstance vm:MainWindowViewModel, IsDesignTimeCreatable=False}"
-    x:Name="mainWindow"
+    x:Name="mainWindow" WindowStartupLocation="CenterScreen"
     mc:Ignorable="d" Title="Droxid" Height="750" Width="1300">
 
     <Window.Resources>
