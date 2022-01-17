@@ -24,6 +24,8 @@ namespace Droxid.Views
             InitializeComponent();
             _vm = new ManageGuildViewModel (guild);
             DataContext = _vm;
+            txtGuildName.Text = guild.Name;
+            txtHeader.Text = guild.Name;
         }
 
         private void onWindowDrag(object sender, MouseButtonEventArgs e)

@@ -17,10 +17,11 @@ namespace Droxid.ViewModels
             _guild = guild;
         }
 
-        public Guild Guild
+        public string Name
         {
-            get => _guild;
+            get => _guild.Name;
         }
+
 
     }
 

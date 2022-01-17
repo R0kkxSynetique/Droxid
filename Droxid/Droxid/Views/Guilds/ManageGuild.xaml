@@ -27,15 +27,32 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Border Grid.Row="0" Background="#202225" MouseLeftButtonDown="onWindowDrag" Padding="5">
-            <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
-                <Button WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource btnChrome}" Click="onWindowClose" Background="Red"/>
-                <Button WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource btnChrome}" Click="onWindowMinMax" Background="Yellow"/>
-                <Button WindowChrome.IsHitTestVisibleInChrome="true" Style="{StaticResource btnChrome}" Click="onWindowMinimize" Background="Green"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="txtHeader" Foreground="White" VerticalAlignment="Center"/>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" FlowDirection="RightToLeft">
+                    <Button WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource btnChrome}" Click="onWindowClose" Background="Red"/>
+                    <Button WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource btnChrome}" Click="onWindowMinMax" Background="Yellow"/>
+                    <Button WindowChrome.IsHitTestVisibleInChrome="true" Style="{StaticResource btnChrome}" Click="onWindowMinimize" Background="Green"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+        <Border Grid.Row="1" Background="#36393f" Padding="10">
+            <StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Foreground="White" VerticalAlignment="Center" Margin="0,0,10,0">Nom de la guilde</TextBlock>
+                    <TextBox x:Name="txtGuildName" Grid.Column="1">
+                    </TextBox>
+                </Grid>
             </StackPanel>
         </Border>
-        <Grid Grid.Row="1" Background="#2f3136">
-
-        </Grid>
     </Grid>
 
 </Window>
