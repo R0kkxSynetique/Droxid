@@ -5,19 +5,27 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Droxid.Views"
         xmlns:vm="clr-namespace:Droxid.ViewModels"
-        mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:ManageGuildViewModel,IsDesignTimeCreatable=True}"
-        Title="{Binding Guild.Name}" Name="ManageGuildWindow" Height="400" Width="500"  Background="#2f3136">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <StackPanel Background="Aqua" MouseLeftButtonDown="onWindowDrag" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
-            <Button Width="20" Height="20"/>
-        </StackPanel>
-    </Grid>
-    
+        mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:ManageGuildViewModel,IsDesignTimeCreatable=False}"
+        WindowStyle="None" ResizeMode="CanResizeWithGrip" AllowsTransparency="True"
+        Title="{Binding Guild.Name}" Name="ManageGuildWindow" Height="400" Width="500" Background="Transparent">
+    <Border Background="#202225">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <StackPanel Background="Transparent" MouseLeftButtonDown="onWindowDrag" Orientation="Horizontal" FlowDirection="RightToLeft">
+                <Button Click="onWindowClose" Width="20" Height="20"/>
+                <Button Click="onWindowMinMax" Width="20" Height="20"/>
+                <Button Click="onWindowMinimize" Width="20" Height="20"/>
+            </StackPanel>
+            <Grid Grid.Row="1" Background="#2f3136">
+
+            </Grid>
+        </Grid>
+    </Border>
+
 </Window>

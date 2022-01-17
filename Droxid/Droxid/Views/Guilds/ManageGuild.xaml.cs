@@ -30,5 +30,20 @@ namespace Droxid.Views
         {
             this.DragMove();
         }
+
+        private void onWindowClose(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void onWindowMinMax(object sender, RoutedEventArgs e)
+        {
+            WindowState = (WindowState == WindowState.Maximized) ? WindowState.Normal : WindowState.Maximized;
+        }
+
+        private void onWindowMinimize(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
     }
 }
