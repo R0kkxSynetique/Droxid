@@ -7,7 +7,7 @@
         xmlns:vm="clr-namespace:Droxid.ViewModels"
         mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:ManageGuildViewModel,IsDesignTimeCreatable=False}"
         WindowStyle="None" WindowStartupLocation="CenterScreen"
-        Title="{Binding Guild.Name}" Name="ManageGuildWindow" Height="400" Width="500">
+        Title="{Binding Guild.Name}" Name="ManageGuildWindow" Width="500">
     <WindowChrome.WindowChrome>
         <WindowChrome CornerRadius="0" />
     </WindowChrome.WindowChrome>
@@ -50,6 +50,37 @@
                     <TextBlock Grid.Column="0" Foreground="White" VerticalAlignment="Center" Margin="0,0,10,0">Nom de la guilde</TextBlock>
                     <TextBox x:Name="txtGuildName" Grid.Column="1">
                     </TextBox>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.Resources>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                            <Setter Property="Height" Value="20"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="5">
+                                            <ContentPresenter/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Grid.Resources>
+                    <Border Grid.Column="0" Padding="4,2">
+                        <Button Background="LightGreen">
+                            <TextBlock Text="Sauvegarder" Foreground="White" HorizontalAlignment="Center"/>
+                        </Button>
+                    </Border>
+                    <Border Grid.Column="1" Padding="4,2">
+                        <Button Background="Red">
+                            <TextBlock Text="Effacer" Foreground="White" HorizontalAlignment="Center"/>
+                        </Button>
+                    </Border>
                 </Grid>
             </StackPanel>
         </Border>
