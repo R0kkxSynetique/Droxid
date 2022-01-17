@@ -60,7 +60,7 @@ namespace Droxid.Models
         /// </summary>
         public List<Role> Roles
         {
-            get => throw new NotImplementedException();
+            get => ViewModel.GetPermissionRoles(_id);
         }
 
         public override bool Equals(object? obj)

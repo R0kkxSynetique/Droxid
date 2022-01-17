@@ -405,6 +405,13 @@ namespace Droxid.ViewModels
             return DBManager.Insert(query);
         }
 
+        public static List<Role> GetPermissionRoles(int permission)
+        {
+            string query = $"SELECT roles.* FROM roles_has_permissions INNER JOIN roles ON roles_has_permissions.roles_id = roles.id INNER JOIN permissions ON roles_has_permissions.permissions_id = permissions.id WHERE permissions.id = {permission}";
+
+            return DBManager.SelectRoles(query);
+        }
+
         public static bool TestConnection()
         {
             try
