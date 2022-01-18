@@ -22,6 +22,11 @@ namespace Droxid.ViewModels
             get => _guild.Name;
         }
 
+        public List<Role> Roles
+        {
+            get => _guild.Roles;
+        }
+
 
     }
 

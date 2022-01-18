@@ -7,7 +7,7 @@
         xmlns:vm="clr-namespace:Droxid.ViewModels"
         mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:ManageGuildViewModel,IsDesignTimeCreatable=False}"
         WindowStyle="None" WindowStartupLocation="CenterScreen"
-        Title="{Binding Guild.Name}" Name="ManageGuildWindow" Width="500" Height="500">
+        Name="ManageGuildWindow" Width="500" Height="500">
     <WindowChrome.WindowChrome>
         <WindowChrome CornerRadius="0" />
     </WindowChrome.WindowChrome>
@@ -32,7 +32,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <TextBlock x:Name="txtHeader" Foreground="White" VerticalAlignment="Center"/>
+                <TextBlock Margin="4,0,0,0" x:Name="txtHeader" Foreground="White" VerticalAlignment="Center"/>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" FlowDirection="RightToLeft">
                     <Button WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource btnChrome}" Click="onWindowClose" Background="#dc2626"/>
                     <Button WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource btnChrome}" Click="onWindowMinMax" Background="#fbbf24"/>
@@ -47,13 +47,113 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Foreground="White" VerticalAlignment="Center" Margin="0,0,10,0">Nom de la guilde</TextBlock>
-                    <TextBox x:Name="txtGuildName" Grid.Column="1"/>
+                <Border Grid.Row="0" Padding="4">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Foreground="White" VerticalAlignment="Center" FontWeight="SemiBold" FontSize="12" Margin="0,0,10,0">Nom de la guilde</TextBlock>
+                        <TextBox x:Name="txtGuildName" Grid.Column="1"/>
+                    </Grid>
+                </Border>
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Padding="4">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock Grid.Column="0" Margin="0,0,10,0" Text="Roles" Foreground="White" FontWeight="SemiBold" FontSize="12"  VerticalAlignment="Center"/>
+                            <Border Grid.Column ="1" Padding="4" VerticalAlignment="Center">
+                                <Border.Resources>
+                                    <Style TargetType="{x:Type Button}">
+                                        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                        <Setter Property="Height" Value="20"/>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type Button}">
+                                                    <Border Name="Border" Background="{TemplateBinding Background}" CornerRadius="5">
+                                                        <ContentPresenter/>
+                                                    </Border>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter TargetName="Border" Property="Opacity" Value="0.6"/>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </Border.Resources>
+
+                                <Button Background="#393c43" Click="onAddRoleClick">
+                                    <TextBlock Text="Nouveau" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                                </Button>
+                            </Border>
+                        </Grid>
+                    </Border>
+                    <Border Grid.Row="1" Padding="4">
+                        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                            <ListView ItemsSource="{Binding Roles}" SelectionMode="Single">
+                                <ListView.Resources>
+                                    <Style TargetType="{x:Type ListView}">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="Width" Value="auto"/>
+                                        <Setter Property="ItemsPanel">
+                                            <Setter.Value>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel HorizontalAlignment="Stretch"/>
+                                                </ItemsPanelTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type ListView}">
+                                                    <Border>
+                                                        <ItemsPresenter HorizontalAlignment="Stretch"/>
+                                                    </Border>
+                                                    <ControlTemplate.Resources>
+                                                        <Style TargetType="{x:Type ListViewItem}">
+                                                            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                                            <Setter Property="Template">
+                                                                <Setter.Value>
+                                                                    <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                                                        <Border>
+                                                                            <Grid>
+                                                                                <Grid.ColumnDefinitions>
+                                                                                    <ColumnDefinition Width="*"/>
+                                                                                    <ColumnDefinition Width="40"/>
+                                                                                    <ColumnDefinition Width="40"/>
+                                                                                </Grid.ColumnDefinitions>
+                                                                                <TextBlock Foreground="White" Text="{Binding Name}" Grid.Column="0" VerticalAlignment="Center"/>
+                                                                                <Border Grid.Column="1" Padding="2">
+                                                                                    <Button>edit</Button>
+                                                                                </Border>
+                                                                                <Border Grid.Column="2" Padding="2">
+                                                                                    <Button>delete</Button>
+                                                                                </Border>
+                                                                            </Grid>
+                                                                        </Border>
+                                                                    </ControlTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </Style>
+                                                    </ControlTemplate.Resources>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </ListView.Resources>
+                            </ListView>
+                        </ScrollViewer>
+                    </Border>
                 </Grid>
                 <Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>
