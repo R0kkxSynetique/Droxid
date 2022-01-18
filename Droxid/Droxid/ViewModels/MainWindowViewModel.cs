@@ -106,7 +106,7 @@ namespace Droxid.ViewModels
                 }
 
                 //Channels update
-                List<Channel> dbChannels = ViewModel.GetGuildChannels(SelectedGuild.Id, _channels.OrderBy(channel => channel.UpdatedAt).DefaultIfEmpty(null).First()?.UpdatedAt ?? new DateTime(0)) ?? new();
+                List<Channel> dbChannels = ViewModel.GetGuildChannels(SelectedGuild.Id, _client.Id, _channels.OrderBy(channel => channel.UpdatedAt).DefaultIfEmpty(null).First()?.UpdatedAt ?? new DateTime(0)) ?? new();
                 //update content
                 foreach (Channel dbChannel in dbChannels)
                 {
@@ -198,7 +198,7 @@ namespace Droxid.ViewModels
                 if (_selectedGuild != value)
                 {
                     _selectedGuild = value;
-                    _channels = ViewModel.GetGuildChannels(SelectedGuild.Id);
+                    _channels = ViewModel.GetGuildChannels(SelectedGuild.Id,_client.Id);
                     _members = ViewModel.GetGuildUsers(SelectedGuild.Id);
                     NotifyPropertyChanged(nameof(SelectedGuild));
                 }

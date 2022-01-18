@@ -175,14 +175,26 @@ namespace Droxid.ViewModels
             return DBManager.SelectChannels(query);
         }
         /// <summary>
+        /// Fetch a list of channels which the given user is allowed to see
+        /// </summary>
+        /// <param name="guild">Guild id</param>
+        /// <param name="user">User id</param>
+        /// <returns>List of channels</returns>
+        public static List<Channel> GetGuildChannels(int guild, int user)
+        {
+            string query = $"SELECT channels.* FROM users_has_roles INNER JOIN roles ON users_has_roles.roles_id = roles.id INNER JOIN channels ON roles.guilds_id = channels.guild_id INNER JOIN roles_has_permissions ON roles_has_permissions.roles_id = roles.id INNER JOIN permissions ON permissions.id = roles_has_permissions.permissions_id WHERE users_has_roles.users_id = {user} AND channels.guild_id = {guild} AND roles_has_permissions.permissions_id = 2 AND channels.deleted = FALSE;";
+
+            return DBManager.SelectChannels(query);
+        }
+        /// <summary>
         /// Fetch a list of channels which were updated after a given datetime
         /// </summary>
-        /// <param name="id">Guild id</param>
+        /// <param name="guild">Guild id</param>
         /// <param name="lastUpdated">Datetime after which the channels were updated</param>
         /// <returns>List of channels</returns>
-        public static List<Channel> GetGuildChannels(int id, DateTime lastUpdated)
+        public static List<Channel> GetGuildChannels(int guild, int user, DateTime lastUpdated)
         {
-            string query = $"SELECT channels.* FROM guilds INNER JOIN channels ON guilds.id = channels.guild_id WHERE guilds.id = {id} AND channels.updated_at > \"{lastUpdated.ToSqlString()}\";";
+            string query = $"SELECT channels.* FROM users_has_roles INNER JOIN roles ON users_has_roles.roles_id = roles.id INNER JOIN channels ON roles.guilds_id = channels.guild_id INNER JOIN roles_has_permissions ON roles_has_permissions.roles_id = roles.id INNER JOIN permissions ON permissions.id = roles_has_permissions.permissions_id WHERE users_has_roles.users_id = {user} AND channels.guild_id = {guild} AND roles_has_permissions.permissions_id = 2 AND channels.updated_at > \"{lastUpdated.ToSqlString()}\" AND channels.deleted = FALSE;";
 
             return DBManager.SelectChannels(query);
         }
