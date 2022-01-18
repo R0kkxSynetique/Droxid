@@ -22,10 +22,23 @@ namespace Droxid.Views
         public ManageGuild(Guild guild)
         {
             InitializeComponent();
-            _vm = new ManageGuildViewModel (guild);
+            _vm = new ManageGuildViewModel(guild);
             DataContext = _vm;
             txtGuildName.Text = guild.Name;
             txtHeader.Text = guild.Name;
+        }
+
+        private void onSaveClick(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void onDeleteClick(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Voulez vous vraiment effacer cette guild?", "Effacer la guilde", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         private void onWindowDrag(object sender, MouseButtonEventArgs e)
