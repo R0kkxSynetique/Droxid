@@ -46,6 +46,11 @@ namespace Droxid.Views
             throw new NotImplementedException();
         }
 
+        private void onEditRoleClick(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         private void onWindowDrag(object sender, MouseButtonEventArgs e)
         {
             this.DragMove();
