@@ -144,7 +144,7 @@ namespace Droxid.Views
 
         private void TextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            if (e.Key == Key.Enter && !String.IsNullOrWhiteSpace(txtMessage.Text))
             {
                 _vm.SendMessage(txtMessage.Text);
                 txtMessage.Clear();
