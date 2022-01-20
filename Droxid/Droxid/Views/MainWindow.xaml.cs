@@ -146,7 +146,7 @@ namespace Droxid.Views
         {
             if (e.Key == Key.Enter && !String.IsNullOrWhiteSpace(txtMessage.Text))
             {
-                _vm.SendMessage(txtMessage.Text);
+                _vm.SendMessage(txtMessage.Text.Trim());
                 txtMessage.Clear();
                 _vm.Update();
             }
