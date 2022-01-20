@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="Droxid.Views.UserControls.PenIcon"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Droxid.Views.UserControls"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance local:PenIcon,IsDesignTimeCreatable=True}"
+             d:DesignHeight="40" d:DesignWidth="40" DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+    <Viewbox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Canvas Width="20" Height="20">
+            <Canvas.RenderTransform>
+                <TranslateTransform X="0" Y="0"/>
+            </Canvas.RenderTransform>
+            <Path Name="Path" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Fill="{Binding Fill}">
+                <Path.Data>
+                    <PathGeometry Figures="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" FillRule="NonZero"/>
+                </Path.Data>
+            </Path>
+        </Canvas>
+    </Viewbox>
+</UserControl>
