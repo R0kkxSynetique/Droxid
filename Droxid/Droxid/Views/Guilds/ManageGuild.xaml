@@ -35,9 +35,15 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock Margin="4,0,0,0" x:Name="txtHeader" Foreground="White" VerticalAlignment="Center"/>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" FlowDirection="RightToLeft">
-                    <Button WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource btnChrome}" Click="onWindowClose" Background="#dc2626"/>
-                    <Button WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource btnChrome}" Click="onWindowMinMax" Background="#fbbf24"/>
-                    <Button WindowChrome.IsHitTestVisibleInChrome="true" Style="{StaticResource btnChrome}" Click="onWindowMinimize" Background="#16a34a"/>
+                    <Button WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource btnChrome}" Click="onWindowClose" Background="#dc2626">
+                        <uc:CrossIcon Fill="White" Padding="1"/>
+                    </Button>
+                    <Button WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource btnChrome}" Click="onWindowMinMax" Background="#ea580c">
+                        <uc:MaxIcon Fill="White" Padding="1"/>
+                    </Button>
+                    <Button WindowChrome.IsHitTestVisibleInChrome="true" Style="{StaticResource btnChrome}" Click="onWindowMinimize" Background="#16a34a">
+                        <uc:MinIcon Fill="White" Padding="1"/>
+                    </Button>
                 </StackPanel>
             </Grid>
         </Border>
