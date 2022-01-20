@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Droxid.Views"
+        xmlns:uc="clr-namespace:Droxid.Views.UserControls"
         xmlns:vm="clr-namespace:Droxid.ViewModels"
         mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:ManageGuildViewModel,IsDesignTimeCreatable=False}"
         WindowStyle="None" WindowStartupLocation="CenterScreen"
@@ -134,13 +135,35 @@
                                                                                 </Grid.ColumnDefinitions>
                                                                                 <TextBlock Foreground="White" Text="{Binding Name}" Grid.Column="0" VerticalAlignment="Center"/>
                                                                                 <Border Grid.Column="1" Padding="2">
-                                                                                    <Button>edit</Button>
+                                                                                    <Button Padding="2">
+                                                                                        <uc:PenIcon Fill="White"/>
+                                                                                    </Button>
                                                                                 </Border>
                                                                                 <Border Grid.Column="2" Padding="2">
-                                                                                    <Button>delete</Button>
+                                                                                    <Button Padding="2">
+                                                                                        <uc:TrashIcon Fill="White"/>
+                                                                                    </Button>
                                                                                 </Border>
                                                                             </Grid>
                                                                         </Border>
+                                                                        <ControlTemplate.Resources>
+                                                                            <Style TargetType="{x:Type Button}">
+                                                                                <Setter Property="Template">
+                                                                                    <Setter.Value>
+                                                                                        <ControlTemplate TargetType="{x:Type Button}">
+                                                                                            <Border Name="Border" Padding="{TemplateBinding Padding}"  Background="#383b41" CornerRadius="5">
+                                                                                                <ContentPresenter/>
+                                                                                            </Border>
+                                                                                            <ControlTemplate.Triggers>
+                                                                                                <Trigger Property="IsMouseOver" Value="True">
+                                                                                                    <Setter TargetName="Border" Property="Background" Value="#3d3d3d"/>
+                                                                                                </Trigger>
+                                                                                            </ControlTemplate.Triggers>
+                                                                                        </ControlTemplate>
+                                                                                    </Setter.Value>
+                                                                                </Setter>
+                                                                            </Style>
+                                                                        </ControlTemplate.Resources>
                                                                     </ControlTemplate>
                                                                 </Setter.Value>
                                                             </Setter>
