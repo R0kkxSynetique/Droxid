@@ -69,6 +69,16 @@ namespace Droxid.Views
             get => (_vm.IsCurrentGuildOwner && _vm.SelectedChannel != null) ? Visibility.Visible : Visibility.Collapsed;
         }
 
+        public int MembersListRowSpan
+        {
+            get => GuildAdminControlsVisibility == Visibility.Collapsed ? 2 : 1;
+        }
+
+        public int MembersListRow
+        {
+            get => GuildAdminControlsVisibility != Visibility.Collapsed ? 1 : 0;
+        }
+
         //ViewModel events
         private void viewmodelProperyChangedEventHandler(object? sender, PropertyChangedEventArgs e)
         {
@@ -94,6 +104,10 @@ namespace Droxid.Views
                     break;
                 case "GuildMembersListVisibility":
                     NotifyPropertyChanged(nameof(ChatRowSpan));
+                    break;
+                case "GuildAdminControlsVisibility":
+                    NotifyPropertyChanged(nameof(MembersListRowSpan));
+                    NotifyPropertyChanged(nameof(MembersListRow));
                     break;
             }
         }
