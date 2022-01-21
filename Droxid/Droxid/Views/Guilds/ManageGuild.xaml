@@ -27,26 +27,7 @@
             <RowDefinition Height="40"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Border Grid.Row="0" Background="#202225" MouseLeftButtonDown="onWindowDrag" Padding="5">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Margin="4,0,0,0" x:Name="txtHeader" Foreground="White" VerticalAlignment="Center"/>
-                <StackPanel Grid.Column="1" Orientation="Horizontal" FlowDirection="RightToLeft">
-                    <Button WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource btnChrome}" Click="onWindowClose" Background="#dc2626">
-                        <uc:CrossIcon Fill="White" Padding="1"/>
-                    </Button>
-                    <Button WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource btnChrome}" Click="onWindowMinMax" Background="#ea580c">
-                        <uc:MaxIcon Fill="White" Padding="1"/>
-                    </Button>
-                    <Button WindowChrome.IsHitTestVisibleInChrome="true" Style="{StaticResource btnChrome}" Click="onWindowMinimize" Background="#16a34a">
-                        <uc:MinIcon Fill="White" Padding="1"/>
-                    </Button>
-                </StackPanel>
-            </Grid>
-        </Border>
+        <uc:ToolBar Background="#202225" Title="{Binding Guild.Name }"/>
         <Border Grid.Row="1" Background="#36393f" Padding="10">
             <Grid>
                 <Grid.RowDefinitions>
@@ -61,7 +42,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Foreground="White" VerticalAlignment="Center" FontWeight="SemiBold" FontSize="12" Margin="0,0,10,0">Nom de la guilde</TextBlock>
-                        <TextBox x:Name="txtGuildName" Grid.Column="1"/>
+                        <TextBox x:Name="txtGuildName" Text="{Binding Guild.Name,Mode=OneWay}" Grid.Column="1"/>
                     </Grid>
                 </Border>
                 <Grid Grid.Row="1">

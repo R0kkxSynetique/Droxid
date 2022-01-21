@@ -28,6 +28,11 @@ namespace Droxid.ViewModels
             get => _guild.Roles;
         }
 
+        public Guild Guild
+        {
+            get => _guild;
+        }
+
         public void AddRole()
         {
             NewRole dialog = new NewRole(_guild);
