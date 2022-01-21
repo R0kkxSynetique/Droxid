@@ -109,6 +109,15 @@ namespace Droxid.Views
             _vm.CreateGuild();
         }
 
+        private void onManageGuildClick(object sender, RoutedEventArgs e)
+        {
+            if(_vm.SelectedGuild != null)
+            {
+                ManageGuild dialog = new(_vm.SelectedGuild);
+                dialog.ShowDialog();
+            }
+        }
+
         private void onSelectChannel(object sender, SelectionChangedEventArgs e)
         {
             if (sender is ListView)
@@ -135,9 +144,9 @@ namespace Droxid.Views
 
         private void TextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            if (e.Key == Key.Enter && !String.IsNullOrWhiteSpace(txtMessage.Text))
             {
-                _vm.SendMessage(txtMessage.Text);
+                _vm.SendMessage(txtMessage.Text.Trim());
                 txtMessage.Clear();
                 _vm.Update();
             }
@@ -176,6 +185,27 @@ namespace Droxid.Views
             _membersListToggle = !_membersListToggle;
             NotifyPropertyChanged(nameof(_membersListToggle));
         }
+
+        private void onWindowDrag(object sender, MouseButtonEventArgs e)
+        {
+            this.DragMove();
+        }
+
+        private void onWindowClose(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void onWindowMinMax(object sender, RoutedEventArgs e)
+        {
+            WindowState = (WindowState == WindowState.Maximized) ? WindowState.Normal : WindowState.Maximized;
+        }
+
+        private void onWindowMinimize(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
 
         //Property changed dependencies
 

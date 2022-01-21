@@ -5,8 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Droxid.Views"
         xmlns:vm="clr-namespace:Droxid.ViewModels"
-        mc:Ignorable="d"
-        Title="StartupWindow" Height="300" Width="400" Background="#2f3136">
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        Title="StartupWindow" Height="450" Width="400" Background="#2f3136">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Views/Styles/WindowDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Window.DataContext>
         <vm:StartupWindowViewModel/>
     </Window.DataContext>

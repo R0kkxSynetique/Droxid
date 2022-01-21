@@ -32,6 +32,9 @@
     <Compile Update="Views\Channels\NewChannel.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\Guilds\ManageGuild.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -40,6 +43,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Channels\NewChannel.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Guilds\ManageGuild.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

@@ -1,0 +1,222 @@
+﻿<Window x:Class="Droxid.Views.ManageGuild"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Droxid.Views"
+        xmlns:uc="clr-namespace:Droxid.Views.UserControls"
+        xmlns:vm="clr-namespace:Droxid.ViewModels"
+        mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:ManageGuildViewModel,IsDesignTimeCreatable=False}"
+        WindowStyle="None" WindowStartupLocation="CenterScreen"
+        Name="ManageGuildWindow" Width="500" Height="500">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CornerRadius="0" />
+    </WindowChrome.WindowChrome>
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Views/Styles/WindowDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" Background="#202225" MouseLeftButtonDown="onWindowDrag" Padding="5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Margin="4,0,0,0" x:Name="txtHeader" Foreground="White" VerticalAlignment="Center"/>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" FlowDirection="RightToLeft">
+                    <Button WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource btnChrome}" Click="onWindowClose" Background="#dc2626">
+                        <uc:CrossIcon Fill="White" Padding="1"/>
+                    </Button>
+                    <Button WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource btnChrome}" Click="onWindowMinMax" Background="#ea580c">
+                        <uc:MaxIcon Fill="White" Padding="1"/>
+                    </Button>
+                    <Button WindowChrome.IsHitTestVisibleInChrome="true" Style="{StaticResource btnChrome}" Click="onWindowMinimize" Background="#16a34a">
+                        <uc:MinIcon Fill="White" Padding="1"/>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+        <Border Grid.Row="1" Background="#36393f" Padding="10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Border Grid.Row="0" Padding="4">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Foreground="White" VerticalAlignment="Center" FontWeight="SemiBold" FontSize="12" Margin="0,0,10,0">Nom de la guilde</TextBlock>
+                        <TextBox x:Name="txtGuildName" Grid.Column="1"/>
+                    </Grid>
+                </Border>
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Padding="4">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock Grid.Column="0" Margin="0,0,10,0" Text="Roles" Foreground="White" FontWeight="SemiBold" FontSize="12"  VerticalAlignment="Center"/>
+                            <Border Grid.Column ="1" Padding="4" VerticalAlignment="Center">
+                                <Border.Resources>
+                                    <Style TargetType="{x:Type Button}">
+                                        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                        <Setter Property="Height" Value="20"/>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type Button}">
+                                                    <Border Name="Border" Background="{TemplateBinding Background}" CornerRadius="5">
+                                                        <ContentPresenter/>
+                                                    </Border>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter TargetName="Border" Property="Opacity" Value="0.6"/>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </Border.Resources>
+
+                                <Button Background="#393c43" Click="onAddRoleClick">
+                                    <TextBlock Text="Nouveau" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                                </Button>
+                            </Border>
+                        </Grid>
+                    </Border>
+                    <Border Grid.Row="1" Padding="4">
+                        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                            <ListView ItemsSource="{Binding Roles}" SelectionMode="Single">
+                                <ListView.Resources>
+                                    <Style TargetType="{x:Type ListView}">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="Width" Value="auto"/>
+                                        <Setter Property="ItemsPanel">
+                                            <Setter.Value>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel HorizontalAlignment="Stretch"/>
+                                                </ItemsPanelTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type ListView}">
+                                                    <Border>
+                                                        <ItemsPresenter HorizontalAlignment="Stretch"/>
+                                                    </Border>
+                                                    <ControlTemplate.Resources>
+                                                        <Style TargetType="{x:Type ListViewItem}">
+                                                            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                                            <Setter Property="Template">
+                                                                <Setter.Value>
+                                                                    <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                                                        <Border>
+                                                                            <Grid>
+                                                                                <Grid.ColumnDefinitions>
+                                                                                    <ColumnDefinition Width="*"/>
+                                                                                    <ColumnDefinition Width="40"/>
+                                                                                    <ColumnDefinition Width="40"/>
+                                                                                </Grid.ColumnDefinitions>
+                                                                                <TextBlock Foreground="White" Text="{Binding Name}" Grid.Column="0" VerticalAlignment="Center"/>
+                                                                                <Border Grid.Column="1" Padding="2">
+                                                                                    <Button Padding="2">
+                                                                                        <uc:PenIcon Fill="White"/>
+                                                                                    </Button>
+                                                                                </Border>
+                                                                                <Border Grid.Column="2" Padding="2">
+                                                                                    <Button Padding="2">
+                                                                                        <uc:TrashIcon Fill="White"/>
+                                                                                    </Button>
+                                                                                </Border>
+                                                                            </Grid>
+                                                                        </Border>
+                                                                        <ControlTemplate.Resources>
+                                                                            <Style TargetType="{x:Type Button}">
+                                                                                <Setter Property="Template">
+                                                                                    <Setter.Value>
+                                                                                        <ControlTemplate TargetType="{x:Type Button}">
+                                                                                            <Border Name="Border" Padding="{TemplateBinding Padding}"  Background="#383b41" CornerRadius="5">
+                                                                                                <ContentPresenter/>
+                                                                                            </Border>
+                                                                                            <ControlTemplate.Triggers>
+                                                                                                <Trigger Property="IsMouseOver" Value="True">
+                                                                                                    <Setter TargetName="Border" Property="Background" Value="#3d3d3d"/>
+                                                                                                </Trigger>
+                                                                                            </ControlTemplate.Triggers>
+                                                                                        </ControlTemplate>
+                                                                                    </Setter.Value>
+                                                                                </Setter>
+                                                                            </Style>
+                                                                        </ControlTemplate.Resources>
+                                                                    </ControlTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </Style>
+                                                    </ControlTemplate.Resources>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </ListView.Resources>
+                            </ListView>
+                        </ScrollViewer>
+                    </Border>
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.Resources>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                            <Setter Property="Height" Value="20"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="5">
+                                            <ContentPresenter/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Grid.Resources>
+                    <Border Grid.Column="0" Padding="4,2">
+                        <Button Click="onDeleteClick" Background="#dc2626">
+                            <TextBlock Text="Effacer" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                        </Button>
+                    </Border>
+                    <Border Grid.Column="1" Padding="4,2">
+                        <Button Click="onSaveClick" Background="#16a34a">
+                            <TextBlock Text="Sauvegarder" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                        </Button>
+                    </Border>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+
+</Window>
