@@ -205,6 +205,12 @@ namespace Droxid.Views
             _vm.InviteMember();
         }
 
+        private void onKickMemberClick(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+
         private void onWindowDrag(object sender, MouseButtonEventArgs e)
         {
             this.DragMove();
