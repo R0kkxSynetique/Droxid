@@ -165,6 +165,8 @@ namespace Droxid.Views
                 txtDBName.Text = (string)result["DBConnection"]["Database"];
                 txtDBUser.Text = (string)result["DBConnection"]["User"];
                 txtDBPassword.Text = (string)result["DBConnection"]["Password"];
+
+                txtUsername.Text = (string)result["Client"]["Username"];
             }
         }
 
@@ -177,17 +179,20 @@ namespace Droxid.Views
             r.Close();
 
             JObject result = JObject.Parse(json);
-            JObject DBConnectionParameters = (JObject)result;
+            JObject configurations = (JObject)result;
 
-            DBConnectionParameters["DBConnection"]["Server"] = _dbServer;
-            DBConnectionParameters["DBConnection"]["Database"] = _dbName;
-            DBConnectionParameters["DBConnection"]["User"] = _dbUser;
-            DBConnectionParameters["DBConnection"]["Password"] = _dbPassword;
+            configurations["DBConnection"]["Server"] = _dbServer;
+            configurations["DBConnection"]["Database"] = _dbName;
+            configurations["DBConnection"]["User"] = _dbUser;
+            configurations["DBConnection"]["Password"] = _dbPassword;
+
+            configurations["Client"]["Username"] = _username;
+            configurations["Client"]["Password"] = _password;
 
             using (StreamWriter file = File.CreateText(_configFilePath))
             {
                 JsonSerializer serializer = new JsonSerializer();
-                serializer.Serialize(file, DBConnectionParameters);
+                serializer.Serialize(file, configurations);
             }
         }
 
