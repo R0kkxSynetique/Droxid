@@ -1,4 +1,4 @@
-﻿<Window x:Class="Droxid.Views.NewRole"
+﻿<Window x:Class="Droxid.Views.InviteMember"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,9 +7,9 @@
         xmlns:uc="clr-namespace:Droxid.Views.UserControls"
         xmlns:vm="clr-namespace:Droxid.ViewModels"
         mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance vm:NewRoleViewModel,IsDesignTimeCreatable=False}"
+        d:DataContext="{d:DesignInstance vm:InviteMemberViewModel,IsDesignTimeCreatable=False}"
         WindowStartupLocation="CenterScreen"
-        Title="NewRole" Height="150" Width="300" Background="#2f3136">
+        Title="InviteMember" Height="150" Width="300" Background="#2f3136">
     <WindowChrome.WindowChrome>
         <WindowChrome CornerRadius="0"/>
     </WindowChrome.WindowChrome>
@@ -18,8 +18,8 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <uc:ToolBar Grid.Row="0" Background="#202225" Title="New Role"/>
-        <Border Grid.Row="1" Padding="10" >
+        <uc:ToolBar Grid.Row="0" Background="#202225" Title="Invite"/>
+        <Border Grid.Row="1" Padding="10">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
@@ -29,13 +29,12 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Content="Nom" Foreground="White"></Label>
+                <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Content="Nom" Foreground="White"/>
                 <Border Grid.Row="0" Grid.Column="1" Width="auto" Padding="5">
-                    <TextBox x:Name="txtInputName" VerticalAlignment="Center"/>
+                    <TextBox x:Name="txtinputName" VerticalAlignment="Center"/>
                 </Border>
-                <Button Grid.Row="1" Grid.ColumnSpan="2" Click="onSubmitClick" Content="Créer"></Button>
+                <Button Grid.Row="1" Grid.ColumnSpan="2" Click="onInviteClick" Content="Inviter"/>
             </Grid>
         </Border>
-
     </Grid>
 </Window>

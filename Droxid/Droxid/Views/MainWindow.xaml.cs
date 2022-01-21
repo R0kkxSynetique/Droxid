@@ -186,6 +186,11 @@ namespace Droxid.Views
             NotifyPropertyChanged(nameof(_membersListToggle));
         }
 
+        private void onInviteMemberClick(object sender, RoutedEventArgs e)
+        {
+            _vm.InviteMember();
+        }
+
         private void onWindowDrag(object sender, MouseButtonEventArgs e)
         {
             this.DragMove();
