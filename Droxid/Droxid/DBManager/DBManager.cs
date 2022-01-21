@@ -149,7 +149,7 @@ namespace Droxid.DataBase
 
             foreach (dynamic singleResult in queryResult)
             {
-                channel = new(singleResult.id, singleResult.name,singleResult.created_at,singleResult.updated_at,(singleResult.deleted == 1));
+                channel = new(singleResult.id, singleResult.name, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1));
             }
 
             return channel;
@@ -167,7 +167,10 @@ namespace Droxid.DataBase
 
             foreach (dynamic singleResult in queryResult)
             {
-                channels.Add(new(singleResult.id, singleResult.name, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1)));
+                if (!channels.Contains(new(singleResult.id, singleResult.name, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1))))
+                {
+                    channels.Add(new(singleResult.id, singleResult.name, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1)));
+                }
             }
 
             return channels;
