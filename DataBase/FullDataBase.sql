@@ -1,7 +1,7 @@
 -- --------------------------------------------------------
--- Hôte:                         127.0.0.1
--- Version du serveur:           10.7.1-MariaDB - mariadb.org binary distribution
--- SE du serveur:                Win64
+-- Host:                         127.0.0.1
+-- Server version:               10.7.1-MariaDB - mariadb.org binary distribution
+-- Server OS:                    Win64
 -- HeidiSQL Version:             11.3.0.6295
 -- --------------------------------------------------------
 
@@ -13,11 +13,13 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
--- Listage de la structure de la base pour droxid
+-- Dumping database structure for droxid
+DROP DATABASE IF EXISTS `droxid`;
 CREATE DATABASE IF NOT EXISTS `droxid` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin */;
 USE `droxid`;
 
--- Listage de la structure de la table droxid. channels
+-- Dumping structure for table droxid.channels
+DROP TABLE IF EXISTS `channels`;
 CREATE TABLE IF NOT EXISTS `channels` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) COLLATE utf8mb4_bin NOT NULL,
@@ -28,9 +30,9 @@ CREATE TABLE IF NOT EXISTS `channels` (
   PRIMARY KEY (`id`),
   KEY `fk_channels_guilds1_idx` (`guild_id`),
   CONSTRAINT `fk_channels_guilds1` FOREIGN KEY (`guild_id`) REFERENCES `guilds` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Listage des données de la table droxid.channels : ~35 rows (environ)
+-- Dumping data for table droxid.channels: ~33 rows (approximately)
 /*!40000 ALTER TABLE `channels` DISABLE KEYS */;
 REPLACE INTO `channels` (`id`, `name`, `guild_id`, `created_at`, `updated_at`, `deleted`) VALUES
 	(1, 'accueil', 1, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0),
@@ -61,10 +63,15 @@ REPLACE INTO `channels` (`id`, `name`, `guild_id`, `created_at`, `updated_at`, `
 	(26, 'régles', 4, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0),
 	(27, 'papotage', 4, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0),
 	(28, 'clips', 4, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0),
-	(29, 'bot', 4, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0);
+	(29, 'bot', 4, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0),
+	(30, 'asd', 3, '2022-01-14 11:39:43', '2022-01-14 11:39:49', 1),
+	(31, 'tyest', 3, '2022-01-17 07:59:01', '2022-01-17 07:59:06', 1),
+	(32, 'test', 1, '2022-01-17 15:14:56', '2022-01-17 15:14:56', 0),
+	(33, 'asd', 3, '2022-01-20 11:57:47', '2022-01-20 11:57:47', 0);
 /*!40000 ALTER TABLE `channels` ENABLE KEYS */;
 
--- Listage de la structure de la table droxid. guilds
+-- Dumping structure for table droxid.guilds
+DROP TABLE IF EXISTS `guilds`;
 CREATE TABLE IF NOT EXISTS `guilds` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) COLLATE utf8mb4_bin NOT NULL,
@@ -75,18 +82,20 @@ CREATE TABLE IF NOT EXISTS `guilds` (
   PRIMARY KEY (`id`),
   KEY `fk_guilds_users1_idx` (`owner_id`),
   CONSTRAINT `fk_guilds_users1` FOREIGN KEY (`owner_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Listage des données de la table droxid.guilds : ~9 rows (environ)
+-- Dumping data for table droxid.guilds: ~5 rows (approximately)
 /*!40000 ALTER TABLE `guilds` DISABLE KEYS */;
 REPLACE INTO `guilds` (`id`, `name`, `owner_id`, `created_at`, `updated_at`, `deleted`) VALUES
 	(1, 'Server.sh', 4, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0),
 	(2, '#LetMePost', 13, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0),
 	(3, 'R0kkx Team', 1, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0),
-	(4, 'R0kkxRyuk', 2, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0);
+	(4, 'R0kkxRyuk', 2, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0),
+	(5, 'server', 4, '2022-01-17 15:15:48', '2022-01-17 15:15:48', 0);
 /*!40000 ALTER TABLE `guilds` ENABLE KEYS */;
 
--- Listage de la structure de la table droxid. guilds_has_users
+-- Dumping structure for table droxid.guilds_has_users
+DROP TABLE IF EXISTS `guilds_has_users`;
 CREATE TABLE IF NOT EXISTS `guilds_has_users` (
   `guilds_id` int(11) NOT NULL,
   `users_id` int(11) NOT NULL,
@@ -100,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `guilds_has_users` (
   CONSTRAINT `fk_guilds_has_users_users1` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Listage des données de la table droxid.guilds_has_users : ~27 rows (environ)
+-- Dumping data for table droxid.guilds_has_users: ~24 rows (approximately)
 /*!40000 ALTER TABLE `guilds_has_users` DISABLE KEYS */;
 REPLACE INTO `guilds_has_users` (`guilds_id`, `users_id`, `created_at`, `updated_at`, `deleted`) VALUES
 	(1, 1, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0),
@@ -125,10 +134,12 @@ REPLACE INTO `guilds_has_users` (`guilds_id`, `users_id`, `created_at`, `updated
 	(3, 12, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0),
 	(4, 1, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0),
 	(4, 2, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0),
-	(4, 13, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0);
+	(4, 13, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0),
+	(5, 4, '2022-01-17 15:15:48', '2022-01-17 15:15:48', 0);
 /*!40000 ALTER TABLE `guilds_has_users` ENABLE KEYS */;
 
--- Listage de la structure de la table droxid. messages
+-- Dumping structure for table droxid.messages
+DROP TABLE IF EXISTS `messages`;
 CREATE TABLE IF NOT EXISTS `messages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `content` mediumtext COLLATE utf8mb4_bin NOT NULL,
@@ -142,9 +153,9 @@ CREATE TABLE IF NOT EXISTS `messages` (
   KEY `fk_messages_users1_idx` (`user_id`),
   CONSTRAINT `fk_messages_channels1` FOREIGN KEY (`channel_id`) REFERENCES `channels` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_messages_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=552 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Listage des données de la table droxid.messages : ~187 rows (environ)
+-- Dumping data for table droxid.messages: ~120 rows (approximately)
 /*!40000 ALTER TABLE `messages` DISABLE KEYS */;
 REPLACE INTO `messages` (`id`, `content`, `channel_id`, `user_id`, `created_at`, `updated_at`, `deleted`) VALUES
 	(1, 'Morbi vestibulum, velit id pretium iaculis, diam erat fermentum justo, nec condimentum neque sapien placerat ante. Nulla justo. Aliquam quis turpis eget elit sodales scelerisque. Mauris sit amet eros. Suspendisse accumsan tortor quis turpis. Sed ante.', 28, 10, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0),
@@ -246,10 +257,31 @@ REPLACE INTO `messages` (`id`, `content`, `channel_id`, `user_id`, `created_at`,
 	(97, 'Duis consequat dui nec nisi volutpat eleifend. Donec ut dolor. Morbi vel lectus in quam fringilla rhoncus. Mauris enim leo, rhoncus sed, vestibulum sit amet, cursus id, turpis. Integer aliquet, massa id lobortis convallis, tortor risus dapibus augue, vel accumsan tellus nisi eu orci. Mauris lacinia sapien quis libero. Nullam sit amet turpis elementum ligula vehicula consequat. Morbi a ipsum. Integer a nibh. In quis justo.', 28, 5, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0),
 	(98, 'Pellentesque at nulla.', 27, 2, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0),
 	(99, 'Ut tellus. Nulla ut erat id mauris vulputate elementum. Nullam varius. Nulla facilisi. Cras non velit nec nisi vulputate nonummy. Maecenas tincidunt lacus at velit.', 4, 2, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0),
-	(100, 'Phasellus sit amet erat. Nulla tempus.', 13, 5, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0);
+	(100, 'Phasellus sit amet erat. Nulla tempus.', 13, 5, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0),
+	(532, '', 3, 1, '2022-01-17 15:15:31', '2022-01-17 15:15:31', 0),
+	(533, '', 3, 1, '2022-01-17 15:15:31', '2022-01-17 15:15:31', 0),
+	(534, '', 3, 1, '2022-01-17 15:15:31', '2022-01-17 15:15:31', 0),
+	(535, '', 3, 1, '2022-01-17 15:15:31', '2022-01-17 15:15:31', 0),
+	(536, '', 3, 1, '2022-01-17 15:15:31', '2022-01-17 15:15:31', 0),
+	(537, '', 3, 1, '2022-01-17 15:15:31', '2022-01-17 15:15:31', 0),
+	(538, '', 3, 1, '2022-01-17 15:15:31', '2022-01-17 15:15:31', 0),
+	(539, '', 3, 1, '2022-01-17 15:15:31', '2022-01-17 15:15:31', 0),
+	(540, '', 3, 1, '2022-01-17 15:15:31', '2022-01-17 15:15:31', 0),
+	(541, '', 3, 1, '2022-01-17 15:15:31', '2022-01-17 15:15:31', 0),
+	(542, '', 3, 1, '2022-01-17 15:15:31', '2022-01-17 15:15:31', 0),
+	(543, '', 3, 1, '2022-01-17 15:15:32', '2022-01-17 15:15:32', 0),
+	(544, '', 3, 1, '2022-01-17 15:15:32', '2022-01-17 15:15:32', 0),
+	(545, '', 3, 1, '2022-01-17 15:15:32', '2022-01-17 15:15:32', 0),
+	(546, '', 3, 1, '2022-01-17 15:15:32', '2022-01-17 15:15:32', 0),
+	(547, '', 3, 1, '2022-01-17 15:15:32', '2022-01-17 15:15:32', 0),
+	(548, '', 3, 1, '2022-01-17 15:15:32', '2022-01-17 15:15:32', 0),
+	(549, '', 3, 1, '2022-01-17 15:15:32', '2022-01-17 15:15:32', 0),
+	(550, '', 3, 1, '2022-01-17 15:15:32', '2022-01-17 15:15:32', 0),
+	(551, '', 3, 1, '2022-01-17 15:15:32', '2022-01-17 15:15:32', 0);
 /*!40000 ALTER TABLE `messages` ENABLE KEYS */;
 
--- Listage de la structure de la table droxid. permissions
+-- Dumping structure for table droxid.permissions
+DROP TABLE IF EXISTS `permissions`;
 CREATE TABLE IF NOT EXISTS `permissions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) COLLATE utf8mb4_bin NOT NULL,
@@ -260,7 +292,7 @@ CREATE TABLE IF NOT EXISTS `permissions` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Listage des données de la table droxid.permissions : ~6 rows (environ)
+-- Dumping data for table droxid.permissions: ~6 rows (approximately)
 /*!40000 ALTER TABLE `permissions` DISABLE KEYS */;
 REPLACE INTO `permissions` (`id`, `name`, `description`, `created_at`, `updated_at`, `deleted`) VALUES
 	(1, 'Envoyer des messages', 'Permet aux membres d\'envoyer des messages', '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0),
@@ -271,7 +303,8 @@ REPLACE INTO `permissions` (`id`, `name`, `description`, `created_at`, `updated_
 	(6, 'Gérer les messages', 'Permet aux membres de supprimer les messages', '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0);
 /*!40000 ALTER TABLE `permissions` ENABLE KEYS */;
 
--- Listage de la structure de la table droxid. roles
+-- Dumping structure for table droxid.roles
+DROP TABLE IF EXISTS `roles`;
 CREATE TABLE IF NOT EXISTS `roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) COLLATE utf8mb4_bin NOT NULL,
@@ -284,7 +317,7 @@ CREATE TABLE IF NOT EXISTS `roles` (
   CONSTRAINT `fk_roles_guilds1` FOREIGN KEY (`guilds_id`) REFERENCES `guilds` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Listage des données de la table droxid.roles : ~21 rows (environ)
+-- Dumping data for table droxid.roles: ~21 rows (approximately)
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
 REPLACE INTO `roles` (`id`, `name`, `guilds_id`, `created_at`, `updated_at`, `deleted`) VALUES
 	(1, 'MonCorp', 1, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0),
@@ -310,7 +343,8 @@ REPLACE INTO `roles` (`id`, `name`, `guilds_id`, `created_at`, `updated_at`, `de
 	(21, 'Bota testeur', 4, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0);
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 
--- Listage de la structure de la table droxid. roles_has_permissions
+-- Dumping structure for table droxid.roles_has_permissions
+DROP TABLE IF EXISTS `roles_has_permissions`;
 CREATE TABLE IF NOT EXISTS `roles_has_permissions` (
   `roles_id` int(11) NOT NULL,
   `permissions_id` int(11) NOT NULL,
@@ -327,20 +361,45 @@ CREATE TABLE IF NOT EXISTS `roles_has_permissions` (
   CONSTRAINT `fk_roles_has_permissions_roles1` FOREIGN KEY (`roles_id`) REFERENCES `roles` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Listage des données de la table droxid.roles_has_permissions : ~8 rows (environ)
+-- Dumping data for table droxid.roles_has_permissions: ~27 rows (approximately)
 /*!40000 ALTER TABLE `roles_has_permissions` DISABLE KEYS */;
 REPLACE INTO `roles_has_permissions` (`roles_id`, `permissions_id`, `channels_id`, `created_at`, `updated_at`, `deleted`) VALUES
-	(3, 1, NULL, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0),
-	(3, 2, NULL, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0),
-	(3, 3, NULL, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0),
-	(3, 4, NULL, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0),
-	(3, 5, NULL, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0),
-	(3, 6, NULL, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0),
-	(17, 1, NULL, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0),
-	(17, 5, NULL, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0);
+	(1, 1, NULL, '2022-01-21 08:29:08', '2022-01-21 08:29:08', 0),
+	(1, 2, NULL, '2022-01-21 08:29:08', '2022-01-21 08:29:08', 0),
+	(1, 3, NULL, '2022-01-21 08:29:08', '2022-01-21 08:29:08', 0),
+	(1, 4, NULL, '2022-01-21 08:29:08', '2022-01-21 08:29:08', 0),
+	(1, 5, NULL, '2022-01-21 08:29:08', '2022-01-21 08:29:08', 0),
+	(1, 6, NULL, '2022-01-21 08:29:08', '2022-01-21 08:29:08', 0),
+	(2, 1, NULL, '2022-01-21 08:29:08', '2022-01-21 08:29:08', 0),
+	(2, 2, NULL, '2022-01-21 08:29:08', '2022-01-21 08:29:08', 0),
+	(2, 3, NULL, '2022-01-21 08:29:08', '2022-01-21 08:29:08', 0),
+	(2, 4, NULL, '2022-01-21 08:29:08', '2022-01-21 08:29:08', 0),
+	(2, 6, NULL, '2022-01-21 08:29:08', '2022-01-21 08:29:08', 0),
+	(3, 1, NULL, '2022-01-21 08:29:08', '2022-01-21 08:29:08', 0),
+	(3, 2, NULL, '2022-01-21 08:29:08', '2022-01-21 08:29:08', 0),
+	(3, 3, NULL, '2022-01-21 08:29:08', '2022-01-21 08:29:08', 0),
+	(3, 4, NULL, '2022-01-21 08:29:08', '2022-01-21 08:29:08', 0),
+	(3, 5, NULL, '2022-01-21 08:29:08', '2022-01-21 08:29:08', 0),
+	(3, 6, NULL, '2022-01-21 08:29:08', '2022-01-21 08:29:08', 0),
+	(4, 1, NULL, '2022-01-21 08:29:08', '2022-01-21 08:29:08', 0),
+	(4, 2, NULL, '2022-01-21 08:29:08', '2022-01-21 08:29:08', 0),
+	(4, 3, NULL, '2022-01-21 08:29:08', '2022-01-21 08:29:08', 0),
+	(4, 6, NULL, '2022-01-21 08:29:08', '2022-01-21 08:29:08', 0),
+	(5, 1, NULL, '2022-01-21 08:29:08', '2022-01-21 08:29:08', 0),
+	(5, 2, NULL, '2022-01-21 08:29:08', '2022-01-21 08:29:08', 0),
+	(6, 1, NULL, '2022-01-21 08:29:08', '2022-01-21 08:29:08', 0),
+	(6, 2, NULL, '2022-01-21 08:29:08', '2022-01-21 08:29:08', 0),
+	(7, 1, NULL, '2022-01-21 08:29:08', '2022-01-21 08:29:08', 0),
+	(7, 2, NULL, '2022-01-21 08:29:08', '2022-01-21 08:29:08', 0),
+	(8, 2, NULL, '2022-01-21 08:34:37', '2022-01-21 08:34:37', 0),
+	(13, 2, NULL, '2022-01-21 08:35:04', '2022-01-21 08:35:04', 0),
+	(20, 1, NULL, '2022-01-21 08:35:44', '2022-01-21 08:35:44', 0),
+	(20, 2, NULL, '2022-01-21 08:35:32', '2022-01-21 08:35:32', 0),
+	(20, 6, NULL, '2022-01-21 08:35:57', '2022-01-21 08:35:57', 0);
 /*!40000 ALTER TABLE `roles_has_permissions` ENABLE KEYS */;
 
--- Listage de la structure de la table droxid. users
+-- Dumping structure for table droxid.users
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(45) COLLATE utf8mb4_bin NOT NULL,
@@ -351,7 +410,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `username_UNIQUE` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Listage des données de la table droxid.users : ~13 rows (environ)
+-- Dumping data for table droxid.users: ~13 rows (approximately)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 REPLACE INTO `users` (`id`, `username`, `created_at`, `updated_at`, `deleted`) VALUES
 	(1, 'R0kkxSynetique', '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0),
@@ -369,7 +428,8 @@ REPLACE INTO `users` (`id`, `username`, `created_at`, `updated_at`, `deleted`) V
 	(13, 'VicVicMat', '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
--- Listage de la structure de la table droxid. users_has_roles
+-- Dumping structure for table droxid.users_has_roles
+DROP TABLE IF EXISTS `users_has_roles`;
 CREATE TABLE IF NOT EXISTS `users_has_roles` (
   `users_id` int(11) NOT NULL,
   `roles_id` int(11) NOT NULL,
@@ -383,14 +443,20 @@ CREATE TABLE IF NOT EXISTS `users_has_roles` (
   CONSTRAINT `fk_users_has_roles_users1` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Listage des données de la table droxid.users_has_roles : ~6 rows (environ)
+-- Dumping data for table droxid.users_has_roles: ~9 rows (approximately)
 /*!40000 ALTER TABLE `users_has_roles` DISABLE KEYS */;
 REPLACE INTO `users_has_roles` (`users_id`, `roles_id`, `created_at`, `updated_at`, `deleted`) VALUES
 	(1, 2, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0),
+	(1, 3, '2022-01-18 14:54:07', '2022-01-18 14:54:08', 0),
+	(1, 8, '2022-01-21 08:37:10', '2022-01-21 08:37:10', 0),
+	(1, 13, '2022-01-21 08:36:44', '2022-01-21 08:36:44', 0),
+	(1, 17, '2022-01-17 14:02:31', '2022-01-17 14:02:32', 0),
+	(1, 20, '2022-01-21 08:36:57', '2022-01-21 08:36:57', 0),
 	(2, 5, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0),
 	(2, 6, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0),
 	(4, 1, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0),
 	(9, 7, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0),
+	(11, 17, '2022-01-17 14:03:13', '2022-01-17 14:03:14', 0),
 	(13, 10, '2022-01-14 09:29:47', '2022-01-14 09:29:47', 0);
 /*!40000 ALTER TABLE `users_has_roles` ENABLE KEYS */;
 
