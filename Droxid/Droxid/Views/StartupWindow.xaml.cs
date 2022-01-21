@@ -222,7 +222,7 @@ namespace Droxid.Views
 
         private void EnableSaveButton(object sender, KeyEventArgs e)
         {
-            if ((e.Key >= Key.A && e.Key <= Key.Z) || (e.Key >= Key.D0 && e.Key <= Key.D9) || (e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9))
+            if ((e.Key >= Key.A && e.Key <= Key.Z) || (e.Key >= Key.D0 && e.Key <= Key.D9) || (e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9) || (e.Key == Key.Delete) || (e.Key == Key.Back))
             {
                 btnSave.IsEnabled = true;
             }
