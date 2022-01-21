@@ -339,7 +339,7 @@ namespace Droxid.ViewModels
         /// <returns>List of permissions</returns>
         public static List<Permission> GetChannelPermissions(int id)
         {
-            string query = $"";
+            string query = $"SELECT permissions.* FROM roles_has_permissions INNER JOIN permissions ON roles_has_permissions.permissions_id = permissions.id WHERE roles_has_permissions.channels_id = {id}";
 
             return DBManager.SelectPermissions(query);
         }
@@ -453,12 +453,10 @@ namespace Droxid.ViewModels
     }
 
     public class ViewModelException : Exception { }
-
     public class GuildCreationFailedException : ViewModelException { }
     public class ChannelCreationFailedException : ViewModelException { }
     public class NoGivenChannelException : ViewModelException { }
     public class NoSelectedChannelException : ViewModelException { }
-
     public class EmptyOwnerException : GuildCreationFailedException { }
     public class EmptyGuildNameException : GuildCreationFailedException { }
     public class EmptyChannelName : ChannelCreationFailedException { }
