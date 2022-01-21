@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using Droxid.DataBase;
 using Droxid.Models;
+using Droxid.Views;
 
 namespace Droxid.ViewModels
 {
@@ -27,7 +28,11 @@ namespace Droxid.ViewModels
             get => _guild.Roles;
         }
 
-
+        public void AddRole()
+        {
+            NewRole dialog = new NewRole(_guild);
+            dialog.ShowDialog();
+        }
     }
 
 }

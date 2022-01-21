@@ -18,7 +18,7 @@ namespace Droxid.Views
 {
     public partial class ManageGuild : Window
     {
-        private ViewModels.ManageGuildViewModel _vm;
+        private ManageGuildViewModel _vm;
         public ManageGuild(Guild guild)
         {
             InitializeComponent();
@@ -43,7 +43,7 @@ namespace Droxid.Views
 
         private void onAddRoleClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            _vm.AddRole();
         }
 
         private void onEditRoleClick(object sender, RoutedEventArgs e)
