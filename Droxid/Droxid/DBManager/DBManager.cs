@@ -100,7 +100,7 @@ namespace Droxid.DataBase
 
             foreach (dynamic singleResult in queryResult)
             {
-                guilds.Add(new(singleResult.id, singleResult.name, singleResult.owner_id, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1)));
+                guilds.Add(new(singleResult.id, singleResult.name, singleResult.owner_id, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == true), singleResult.isPrivate));
             }
 
             return guilds;
@@ -118,7 +118,7 @@ namespace Droxid.DataBase
 
             foreach (dynamic singleResult in queryResult)
             {
-                guild = new(singleResult.id, singleResult.name, singleResult.owner, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1));
+                guild = new(singleResult.id, singleResult.name, singleResult.owner, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1), singleResult.isPrivate);
             }
 
             return guild;

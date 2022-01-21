@@ -17,7 +17,7 @@ namespace Droxid.Models
         /// <param name="id">Guild id</param>
         /// <param name="name">Guild name</param>
         /// <param name="owner">Owner id</param>
-        public Guild(int id, string name, int owner) : this(id, name, owner, DateTime.Now, DateTime.Now, false) { }
+        public Guild(int id, string name, int owner) : this(id, name, owner, DateTime.Now, DateTime.Now, false, true) { }
         /// <summary>
         /// Creates a new guild
         /// </summary>
@@ -26,7 +26,7 @@ namespace Droxid.Models
         /// <param name="owner">Owner id</param>
         /// <param name="createdAt">Creation datetime</param>
         /// <param name="updatedAt">Last update</param>
-        public Guild(int id, string name, int owner, DateTime createdAt, DateTime updatedAt) : this(id, name, owner, createdAt, updatedAt, false) { }
+        public Guild(int id, string name, int owner, DateTime createdAt, DateTime updatedAt) : this(id, name, owner, createdAt, updatedAt, false, true) { }
         /// <summary>
         /// Creates a new guild
         /// </summary>
@@ -36,7 +36,8 @@ namespace Droxid.Models
         /// <param name="createdAt">Creation datetime</param>
         /// <param name="updatedAt">Last update</param>
         /// <param name="deleted">Deleted flag</param>
-        public Guild(int id, string name, int owner, DateTime createdAt, DateTime updatedAt, bool deleted) : base(id, createdAt, updatedAt, deleted)
+        /// <param name="isPrivate">Private flag</param>
+        public Guild(int id, string name, int owner, DateTime createdAt, DateTime updatedAt, bool deleted, bool isPrivate) : base(id, createdAt, updatedAt, deleted)
         {
             _name = name;
             _owner = owner;
