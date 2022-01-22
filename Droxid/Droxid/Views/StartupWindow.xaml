@@ -81,9 +81,11 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
+                        <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Button x:Name="btnSave" Grid.Column="0" Content="Save Config" Margin="5,4,10,0" Click="OnSave_Click" IsEnabled="False"/>
-                    <Button x:Name="btnConnect" Grid.Column="1" Content="Connect" Margin="10,4,5,0" Click="OnConnect_Click"/>
+                    <Button x:Name="btnAddUser" Grid.Column="1" Content="Inscription" Margin="10,4,10,0" Click="OnRegisterClick"/>
+                    <Button x:Name="btnConnect" Grid.Column="2" Content="Connexion" Margin="10,4,5,0" Click="OnConnect_Click"/>
                 </Grid>
 
 
