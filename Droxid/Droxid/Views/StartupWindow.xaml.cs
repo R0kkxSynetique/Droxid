@@ -149,6 +149,25 @@ namespace Droxid.Views
             }
         }
 
+        private void OnRegisterClick(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(txtUsername.Text))
+            {
+                try
+                {
+                    //try to add user
+                    throw new NotImplementedException();
+                    MessageBox.Show("Nouvel utilisateur crée","succès",MessageBoxButton.OK,MessageBoxImage.Information);
+                } catch (Exception ex)
+                {
+                    //utilisateur deja existant
+                    MessageBox.Show("Cet utilisateur existe déjà", "erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                    //problème de connexion a la base de donnée
+                    MessageBox.Show("Problème de connexion au serveur", "erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
         private void ImportConfig(string fileName)
         {
             if (File.ReadAllText(fileName).Length != 0)
