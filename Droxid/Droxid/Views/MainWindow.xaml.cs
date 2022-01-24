@@ -125,7 +125,7 @@ namespace Droxid.Views
 
         private void onManageGuildClick(object sender, RoutedEventArgs e)
         {
-            if(_vm.SelectedGuild != null)
+            if (_vm.SelectedGuild != null)
             {
                 ManageGuild dialog = new(_vm.SelectedGuild);
                 dialog.ShowDialog();
@@ -176,7 +176,7 @@ namespace Droxid.Views
 
         private void onEditChannelClick(object sender, RoutedEventArgs e)
         {
-        if(sender is Button btnEditChannel && btnEditChannel.DataContext is Channel channel)
+            if (sender is Button btnEditChannel && btnEditChannel.DataContext is Channel channel)
             {
                 _vm.EditChannel(channel);
             }
@@ -184,7 +184,7 @@ namespace Droxid.Views
 
         private void onDeleteChannelClick(object sender, RoutedEventArgs e)
         {
-            if(sender is Button btnDeleteChannel && btnDeleteChannel.DataContext is Channel channel && MessageBox.Show($"Do you really want to delete \"{channel.Name}\"?", "delete channel", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+            if (sender is Button btnDeleteChannel && btnDeleteChannel.DataContext is Channel channel && MessageBox.Show($"Do you really want to delete \"{channel.Name}\"?", "delete channel", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
             {
                 if (_vm.SelectedChannel == null)
                 {
@@ -215,6 +215,21 @@ namespace Droxid.Views
                 } catch (MainWindowViewModelException ex)
                 {
                     if(ex is GuildOwnerCannotBeKickedException)MessageBox.Show("Le propriétaire de la guilde ne peut pas être renvoyé","erreur",MessageBoxButton.OK,MessageBoxImage.Warning);
+                }
+            }
+        }
+
+        private void onQuitGuild(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Voulez vous quitter cette guilde?", "", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    _vm.QuitGuild();
+                }
+                catch (MainWindowViewModelException ex)
+                {
+                    if (ex is GuildOwnerCannotQuitException) MessageBox.Show("Le propriétaire de la guilde ne peut pas la quitter.", "erreur", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
         }

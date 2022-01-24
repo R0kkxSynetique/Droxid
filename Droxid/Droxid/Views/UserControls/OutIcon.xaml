@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="Droxid.Views.UserControls.OutIcon"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Droxid.Views.UserControls"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance local:OutIcon,IsDesignTimeCreatable=True}"
+             d:DesignHeight="40" d:DesignWidth="40" DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+    <Viewbox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Canvas Width="20" Height="20">
+            <Canvas.RenderTransform>
+                <TranslateTransform X="0" Y="0"/>
+            </Canvas.RenderTransform>
+            <Path Name="Path" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Fill="{Binding Fill}">
+                <Path.Data>
+                    <PathGeometry Figures="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" FillRule="EvenOdd"/>
+                </Path.Data>
+            </Path>
+        </Canvas>
+    </Viewbox>
+</UserControl>
