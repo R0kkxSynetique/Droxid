@@ -12,6 +12,7 @@ namespace Droxid.Models
         private string _content;
         private int _sender;
         private int _channel;
+
         /// <summary>
         /// Creates a new message
         /// </summary>
@@ -20,6 +21,7 @@ namespace Droxid.Models
         /// <param name="sender">Message sender id</param>
         /// <param name="channel">Message channel id</param>
         public Message(int id, string content, int sender, int channel) : this(id, content, sender, channel, DateTime.Now, DateTime.Now, false) { }
+
         /// <summary>
         /// Creates a new message
         /// </summary>
@@ -30,6 +32,7 @@ namespace Droxid.Models
         /// <param name="createdAt">Creation datetime</param>
         /// <param name="updatedAt">Last update</param>
         public Message(int id, string content, int sender, int channel, DateTime createdAt, DateTime updatedAt) : this(id, content, sender, channel, createdAt, updatedAt, false) { }
+
         /// <summary>
         /// Creates a new message
         /// </summary>
@@ -46,6 +49,7 @@ namespace Droxid.Models
             _sender = sender;
             _channel = channel;
         }
+
         /// <summary>
         /// Message content
         /// </summary>
@@ -53,6 +57,7 @@ namespace Droxid.Models
         {
             get => _content;
         }
+
         /// <summary>
         /// Message sender
         /// </summary>
@@ -60,13 +65,15 @@ namespace Droxid.Models
         {
             get => ViewModel.GetUserById(_sender);
         }
+
         /// <summary>
         /// Channel
         /// </summary>
         public Channel Channel
         {
-            get => throw new NotImplementedException();
+            get => ViewModel.GetMessageChannel(_id);
         }
+
         /// <summary>
         /// Updates the instance's values with a given model. used in order to keep the reference in memory of the current instance
         /// </summary>

@@ -48,7 +48,7 @@ namespace Droxid.Models
         /// </summary>
         public List<User> Users
         {
-            get => throw new NotImplementedException();
+            get => ViewModel.GetRoleUsers(_id);
         }
 
         public override bool Equals(object? obj)

@@ -108,7 +108,7 @@ namespace Droxid.ViewModels
                 }
 
                 //Channels update
-                List<Channel> dbChannels = ViewModel.GetGuildChannels(SelectedGuild.Id, _channels.OrderBy(channel => channel.UpdatedAt).DefaultIfEmpty(null).First()?.UpdatedAt ?? new DateTime(0)) ?? new();
+                List<Channel> dbChannels = ViewModel.GetGuildChannels(SelectedGuild.Id, _client.Id, _channels.OrderBy(channel => channel.UpdatedAt).DefaultIfEmpty(null).First()?.UpdatedAt ?? new DateTime(0)) ?? new();
                 //update content
                 foreach (Channel dbChannel in dbChannels)
                 {
@@ -202,7 +202,7 @@ namespace Droxid.ViewModels
                 if (_selectedGuild != value)
                 {
                     _selectedGuild = value;
-                    _channels = ViewModel.GetGuildChannels(SelectedGuild.Id);
+                    _channels = ViewModel.GetGuildChannels(SelectedGuild.Id, _client.Id);
                     _members = ViewModel.GetGuildUsers(SelectedGuild.Id);
                     NotifyPropertyChanged(nameof(SelectedGuild));
                 }
@@ -280,6 +280,45 @@ namespace Droxid.ViewModels
             dialog.ShowDialog();
         }
 
+        public bool canWriteInThisChannel()
+        {
+            if (_selectedChannel != null && _client != null && _selectedGuild != null)
+            {
+                return ViewModel.CanUserWriteInChannel(_selectedChannel.Id, _client.Id, _selectedGuild.Id);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool CanEditGuild()
+        {
+            if (_client != null && _selectedGuild != null)
+            {
+                return ViewModel.CanUserEditGuild(_client.Id, _selectedGuild.Id);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool CanEditChannel()
+        {
+            if (CanEditGuild())
+            {
+                return true;
+            }
+            if (_client != null && _selectedChannel != null)
+            {
+                return ViewModel.CanUserEditChannel(_client.Id, _selectedChannel.Id, _selectedGuild.Id);
+            }
+
+            return false;
+        }
+
+        //Property changed dependencies
         public void InviteMember()
         {
             if (SelectedGuild != null && IsCurrentGuildOwner)

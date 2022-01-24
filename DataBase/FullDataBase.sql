@@ -1,4 +1,5 @@
 -- --------------------------------------------------------
+
 -- Hôte:                         127.0.0.1
 -- Version du serveur:           8.0.25 - MySQL Community Server - GPL
 -- SE du serveur:                Win64
@@ -29,6 +30,7 @@ CREATE TABLE IF NOT EXISTS `channels` (
   `deleted` tinyint NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `fk_channels_guilds1_idx` (`guild_id`),
+
   CONSTRAINT `fk_channels_guilds1` FOREIGN KEY (`guild_id`) REFERENCES `guilds` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
@@ -78,6 +80,7 @@ CREATE TABLE IF NOT EXISTS `guilds` (
   `isPrivate` tinyint NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `fk_guilds_users1_idx` (`owner_id`),
+
   CONSTRAINT `fk_guilds_users1` FOREIGN KEY (`owner_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
@@ -104,6 +107,7 @@ CREATE TABLE IF NOT EXISTS `guilds_has_users` (
   CONSTRAINT `fk_guilds_has_users_guilds` FOREIGN KEY (`guilds_id`) REFERENCES `guilds` (`id`),
   CONSTRAINT `fk_guilds_has_users_users1` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
 
 -- Listage des données de la table droxid.guilds_has_users : ~23 rows (environ)
 /*!40000 ALTER TABLE `guilds_has_users` DISABLE KEYS */;
@@ -267,7 +271,7 @@ CREATE TABLE IF NOT EXISTS `permissions` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Listage des données de la table droxid.permissions : ~6 rows (environ)
+-- Dumping data for table droxid.permissions: ~6 rows (approximately)
 /*!40000 ALTER TABLE `permissions` DISABLE KEYS */;
 REPLACE INTO `permissions` (`id`, `name`, `description`, `created_at`, `updated_at`, `deleted`) VALUES
 	(1, 'Envoyer des messages', 'Permet aux membres d\'envoyer des messages', '2022-01-24 13:10:20', '2022-01-24 13:10:20', 0),
@@ -292,7 +296,7 @@ CREATE TABLE IF NOT EXISTS `roles` (
   CONSTRAINT `fk_roles_guilds1` FOREIGN KEY (`guilds_id`) REFERENCES `guilds` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Listage des données de la table droxid.roles : ~21 rows (environ)
+-- Dumping data for table droxid.roles: ~21 rows (approximately)
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
 REPLACE INTO `roles` (`id`, `name`, `guilds_id`, `created_at`, `updated_at`, `deleted`) VALUES
 	(1, 'MonCorp', 1, '2022-01-24 13:10:20', '2022-01-24 13:10:20', 0),
@@ -387,7 +391,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `username_UNIQUE` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Listage des données de la table droxid.users : ~13 rows (environ)
+-- Dumping data for table droxid.users: ~13 rows (approximately)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 REPLACE INTO `users` (`id`, `username`, `created_at`, `updated_at`, `deleted`) VALUES
 	(1, 'R0kkxSynetique', '2022-01-24 13:10:20', '2022-01-24 13:10:20', 0),

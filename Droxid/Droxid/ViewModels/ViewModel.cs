@@ -175,14 +175,26 @@ namespace Droxid.ViewModels
             return DBManager.SelectChannels(query);
         }
         /// <summary>
+        /// Fetch a list of channels which the given user is allowed to see
+        /// </summary>
+        /// <param name="guild">Guild id</param>
+        /// <param name="user">User id</param>
+        /// <returns>List of channels</returns>
+        public static List<Channel> GetGuildChannels(int guild, int user)
+        {
+            string query = $"SELECT channels.* FROM users_has_roles INNER JOIN roles ON users_has_roles.roles_id = roles.id INNER JOIN channels ON roles.guilds_id = channels.guild_id INNER JOIN roles_has_permissions ON roles_has_permissions.roles_id = roles.id INNER JOIN permissions ON permissions.id = roles_has_permissions.permissions_id WHERE users_has_roles.users_id = {user} AND channels.guild_id = {guild} AND roles_has_permissions.permissions_id = 2 AND channels.deleted = FALSE;";
+
+            return DBManager.SelectChannels(query);
+        }
+        /// <summary>
         /// Fetch a list of channels which were updated after a given datetime
         /// </summary>
-        /// <param name="id">Guild id</param>
+        /// <param name="guild">Guild id</param>
         /// <param name="lastUpdated">Datetime after which the channels were updated</param>
         /// <returns>List of channels</returns>
-        public static List<Channel> GetGuildChannels(int id, DateTime lastUpdated)
+        public static List<Channel> GetGuildChannels(int guild, int user, DateTime lastUpdated)
         {
-            string query = $"SELECT channels.* FROM guilds INNER JOIN channels ON guilds.id = channels.guild_id WHERE guilds.id = {id} AND channels.updated_at > \"{lastUpdated.ToSqlString()}\";";
+            string query = $"SELECT channels.* FROM users_has_roles INNER JOIN roles ON users_has_roles.roles_id = roles.id INNER JOIN channels ON roles.guilds_id = channels.guild_id INNER JOIN roles_has_permissions ON roles_has_permissions.roles_id = roles.id INNER JOIN permissions ON permissions.id = roles_has_permissions.permissions_id WHERE users_has_roles.users_id = {user} AND channels.guild_id = {guild} AND roles_has_permissions.permissions_id = 2 AND channels.updated_at > \"{lastUpdated.ToSqlString()}\" AND channels.deleted = FALSE;";
 
             return DBManager.SelectChannels(query);
         }
@@ -295,6 +307,12 @@ namespace Droxid.ViewModels
 
             return DBManager.Insert(query);
         }
+        public static List<User> GetRoleUsers(int role)
+        {
+            string query = $"SELECT users.* FROM users_has_roles INNER JOIN users ON users_has_roles.users_id = users.id WHERE users_has_roles.roles_id = {role}";
+
+            return DBManager.SelectUsers(query);
+        }
 
         //Channels
         /// <summary>
@@ -327,7 +345,7 @@ namespace Droxid.ViewModels
         /// <returns>List of permissions</returns>
         public static List<Permission> GetChannelPermissions(int id)
         {
-            string query = $"";
+            string query = $"SELECT permissions.* FROM roles_has_permissions INNER JOIN permissions ON roles_has_permissions.permissions_id = permissions.id WHERE roles_has_permissions.channels_id = {id}";
 
             return DBManager.SelectPermissions(query);
         }
@@ -384,6 +402,13 @@ namespace Droxid.ViewModels
             return DBManager.Insert(query);
         }
 
+        public static Channel GetMessageChannel(int message)
+        {
+            string query = $"SELECT channels.* FROM messages INNER JOIN channels ON messages.channel_id = channels.id WHERE messages.id = {message}";
+
+            return DBManager.SelectChannel(query);
+        }
+
         //Permissions
         /// <summary>
         /// Adds a permission to the database
@@ -398,6 +423,33 @@ namespace Droxid.ViewModels
             return DBManager.Insert(query);
         }
 
+        public static List<Role> GetPermissionRoles(int permission)
+        {
+            string query = $"SELECT roles.* FROM roles_has_permissions INNER JOIN roles ON roles_has_permissions.roles_id = roles.id INNER JOIN permissions ON roles_has_permissions.permissions_id = permissions.id WHERE permissions.id = {permission}";
+
+            return DBManager.SelectRoles(query);
+        }
+
+        public static bool CanUserWriteInChannel(int channel, int user, int guild)
+        {
+            string query = $"SELECT roles_has_permissions.permissions_id FROM roles_has_permissions INNER JOIN roles ON roles_has_permissions.roles_id = roles.id INNER JOIN users_has_roles ON roles.id = users_has_roles.roles_id INNER JOIN users ON users_has_roles.users_id = users.id WHERE roles_has_permissions.permissions_id = 1 AND roles_has_permissions.channels_id = {channel} AND users.id = {user} OR roles_has_permissions.permissions_id = 1 AND roles.guilds_id = {guild} AND users.id = {user}";
+
+            return DBManager.CheckPermission(query);
+        }
+
+        public static bool CanUserEditGuild(int user, int guild)
+        {
+            string query = $"SELECT * FROM roles_has_permissions INNER JOIN roles ON roles_has_permissions.roles_id = roles.id INNER JOIN users_has_roles ON roles.id = users_has_roles.roles_id INNER JOIN users ON users_has_roles.users_id = users.id INNER JOIN guilds ON roles.guilds_id = guilds.id WHERE roles_has_permissions.permissions_id = 5 AND roles.guilds_id = {guild} AND users.id = {user} OR roles.guilds_id = {guild} AND guilds.owner_id = {user} AND users.id = {user}";
+
+            return DBManager.CheckPermission(query);
+        }
+
+        public static bool CanUserEditChannel(int user, int channel, int guild)
+        {
+            string query = $"SELECT * FROM roles_has_permissions INNER JOIN roles ON roles_has_permissions.roles_id = roles.id INNER JOIN users_has_roles ON roles.id = users_has_roles.roles_id INNER JOIN users ON users_has_roles.users_id = users.id INNER JOIN guilds ON roles.guilds_id = guilds.id WHERE roles_has_permissions.permissions_id = 3 AND roles.guilds_id = {guild} AND users.id = {user} AND channels_id IS NULL OR roles.guilds_id = {guild} AND guilds.owner_id = {user} AND users.id = {user} OR roles_has_permissions.channels_id = {channel} AND roles_has_permissions.permissions_id = 3 AND users.id = {user}";
+
+            return DBManager.CheckPermission(query);
+        }
         public static bool TestConnection()
         {
             try
@@ -427,12 +479,10 @@ namespace Droxid.ViewModels
     }
 
     public class ViewModelException : Exception { }
-
     public class GuildCreationFailedException : ViewModelException { }
     public class ChannelCreationFailedException : ViewModelException { }
     public class NoGivenChannelException : ViewModelException { }
     public class NoSelectedChannelException : ViewModelException { }
-
     public class EmptyOwnerException : GuildCreationFailedException { }
     public class EmptyGuildNameException : GuildCreationFailedException { }
     public class EmptyChannelName : ChannelCreationFailedException { }

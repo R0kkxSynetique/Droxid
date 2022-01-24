@@ -100,7 +100,7 @@ namespace Droxid.DataBase
 
             foreach (dynamic singleResult in queryResult)
             {
-                guilds.Add(new(singleResult.id, singleResult.name, singleResult.owner_id, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1)));
+                guilds.Add(new(singleResult.id, singleResult.name, singleResult.owner_id, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1), (singleResult.isPrivate == 1)));
             }
 
             return guilds;
@@ -118,7 +118,7 @@ namespace Droxid.DataBase
 
             foreach (dynamic singleResult in queryResult)
             {
-                guild = new(singleResult.id, singleResult.name, singleResult.owner, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1));
+                guild = new(singleResult.id, singleResult.name, singleResult.owner, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1), singleResult.isPrivate);
             }
 
             return guild;
@@ -141,6 +141,19 @@ namespace Droxid.DataBase
 
             return roles;
         }
+        public static Channel SelectChannel(string query)
+        {
+            Channel? channel = null;
+
+            IEnumerable queryResult = _connection.Query(query);
+
+            foreach (dynamic singleResult in queryResult)
+            {
+                channel = new(singleResult.id, singleResult.name, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1));
+            }
+
+            return channel;
+        }
         /// <summary>
         /// Execute a select query for multiple channels
         /// </summary>
@@ -154,7 +167,10 @@ namespace Droxid.DataBase
 
             foreach (dynamic singleResult in queryResult)
             {
-                channels.Add(new(singleResult.id, singleResult.name, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1)));
+                if (!channels.Contains(new(singleResult.id, singleResult.name, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1))))
+                {
+                    channels.Add(new(singleResult.id, singleResult.name, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1)));
+                }
             }
 
             return channels;
@@ -249,6 +265,20 @@ namespace Droxid.DataBase
         public static int InsertMultiple(string query, List<int> parameters)
         {
             return _connection.Execute(query, parameters);
+        }
+
+        public static bool CheckPermission(string query)
+        {
+            bool can = false;
+
+            IEnumerable queryResult = _connection.Query(query);
+
+            foreach (dynamic singleResult in queryResult)
+            {
+                if (!String.IsNullOrWhiteSpace(singleResult.permissions_id.ToString())){can = true;};
+            }
+
+            return can;
         }
         /// <summary>
         /// Execute a delete query
