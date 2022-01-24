@@ -46,7 +46,7 @@ namespace Droxid.Views
 
         public Visibility GuildAdminControlsVisibility
         {
-            get => (_vm.CanEditGuild()) ? Visibility.Visible : Visibility.Collapsed;
+            get => _vm.CanEditGuild() ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public Visibility GuildMembersListVisibility
@@ -66,7 +66,7 @@ namespace Droxid.Views
 
         public Visibility ChannelEditVisibility
         {
-            get => (_vm.IsCurrentGuildOwner && _vm.SelectedChannel != null) ? Visibility.Visible : Visibility.Collapsed;
+            get => _vm.CanEditChannel() ? Visibility.Visible : Visibility.Collapsed;
         }
 
         //ViewModel events

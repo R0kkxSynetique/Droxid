@@ -267,18 +267,18 @@ namespace Droxid.DataBase
             return _connection.Execute(query, parameters);
         }
 
-        public static bool CheckWritePermission(string query)
+        public static bool CheckPermission(string query)
         {
-            bool canWrite = false;
+            bool can = false;
 
             IEnumerable queryResult = _connection.Query(query);
 
             foreach (dynamic singleResult in queryResult)
             {
-                if (!String.IsNullOrWhiteSpace(singleResult.permissions_id.ToString())){canWrite = true;};
+                if (!String.IsNullOrWhiteSpace(singleResult.permissions_id.ToString())){can = true;};
             }
 
-            return canWrite;
+            return can;
         }
         /// <summary>
         /// Execute a delete query

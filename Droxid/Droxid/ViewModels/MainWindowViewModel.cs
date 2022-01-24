@@ -304,6 +304,20 @@ namespace Droxid.ViewModels
             }
         }
 
+        public bool CanEditChannel()
+        {
+            if (CanEditGuild())
+            {
+                return true;
+            }
+            if (_client != null && _selectedChannel != null)
+            {
+                return ViewModel.CanUserEditChannel(_client.Id, _selectedChannel.Id, _selectedGuild.Id);
+            }
+
+            return false;
+        }
+
         //Property changed dependencies
 
         protected override void NotifyPropertyChanged(string propName)

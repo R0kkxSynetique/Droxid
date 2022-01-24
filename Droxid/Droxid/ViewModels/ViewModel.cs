@@ -428,16 +428,22 @@ namespace Droxid.ViewModels
         {
             string query = $"SELECT roles_has_permissions.permissions_id FROM roles_has_permissions INNER JOIN roles ON roles_has_permissions.roles_id = roles.id INNER JOIN users_has_roles ON roles.id = users_has_roles.roles_id INNER JOIN users ON users_has_roles.users_id = users.id WHERE roles_has_permissions.permissions_id = 1 AND roles_has_permissions.channels_id = {channel} AND users.id = {user} OR roles_has_permissions.permissions_id = 1 AND roles.guilds_id = {guild} AND users.id = {user}";
 
-            return DBManager.CheckWritePermission(query);
+            return DBManager.CheckPermission(query);
         }
 
         public static bool CanUserEditGuild(int user, int guild)
         {
             string query = $"SELECT * FROM roles_has_permissions INNER JOIN roles ON roles_has_permissions.roles_id = roles.id INNER JOIN users_has_roles ON roles.id = users_has_roles.roles_id INNER JOIN users ON users_has_roles.users_id = users.id INNER JOIN guilds ON roles.guilds_id = guilds.id WHERE roles_has_permissions.permissions_id = 5 AND roles.guilds_id = {guild} AND users.id = {user} OR roles.guilds_id = {guild} AND guilds.owner_id = {user} AND users.id = {user}";
 
-            return DBManager.CheckWritePermission(query);
+            return DBManager.CheckPermission(query);
         }
 
+        public static bool CanUserEditChannel(int user, int channel, int guild)
+        {
+            string query = $"SELECT * FROM roles_has_permissions INNER JOIN roles ON roles_has_permissions.roles_id = roles.id INNER JOIN users_has_roles ON roles.id = users_has_roles.roles_id INNER JOIN users ON users_has_roles.users_id = users.id INNER JOIN guilds ON roles.guilds_id = guilds.id WHERE roles_has_permissions.permissions_id = 3 AND roles.guilds_id = {guild} AND users.id = {user} AND channels_id IS NULL OR roles.guilds_id = {guild} AND guilds.owner_id = {user} AND users.id = {user} OR roles_has_permissions.channels_id = {channel} AND roles_has_permissions.permissions_id = 3 AND users.id = {user}";
+
+            return DBManager.CheckPermission(query);
+        }
         public static bool TestConnection()
         {
             try
