@@ -18,7 +18,7 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <uc:ToolBar Grid.Row="0" Background="#202225" Title="Invite"/>
+        <uc:ToolBar Grid.Row="0" Background="#202225" Title="Invitation"/>
         <Border Grid.Row="1" Padding="10">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -30,7 +30,7 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Content="Nom" Foreground="White"/>
-                <Border Grid.Row="0" Grid.Column="1" Width="auto" Padding="5">
+                <Border Grid.Row="0" Grid.Column="1" Width="auto" Padding="5,0,0,0">
                     <TextBox x:Name="txtinputName" VerticalAlignment="Center"/>
                 </Border>
                 <Button Grid.Row="1" Grid.ColumnSpan="2" Click="onInviteClick" Content="Inviter"/>
