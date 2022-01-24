@@ -98,6 +98,28 @@
                         <ColumnDefinition Width="160"/>
                         <ColumnDefinition Width="40"/>
                     </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" Visibility="{Binding ElementName=mainWindow, Path=GuildControlsVisibility}" Click="onQuitGuild">
+                        <Button.Resources>
+                            <Style TargetType="{x:Type Button}">
+                                <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Border Name="Border" Background="Transparent" CornerRadius="10" Width="30" Height="30" Padding="5">
+                                                <uc:OutIcon x:Name="UserControl" Fill="#bcbdbf"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="UserControl" Property="Fill" Value="#FFFFFF"/>
+                                                    <Setter TargetName="Border" Property="Background" Value="#202225"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
                     <TextBlock Foreground="white" Text="{Binding SelectedGuild.Name}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,12,0,0" Grid.Column="1"/>
                     <Button Grid.Column="2" Visibility="{Binding ElementName=mainWindow, Path=GuildAdminControlsVisibility}" Click="onManageGuildClick">
                         <Button.Resources>

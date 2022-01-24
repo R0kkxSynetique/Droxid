@@ -227,6 +227,21 @@ namespace Droxid.Views
             }
         }
 
+        private void onQuitGuild(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Voulez vous quitter cette guilde?", "", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    _vm.QuitGuild();
+                }
+                catch (MainWindowViewModelException ex)
+                {
+                    if (ex is GuildOwnerCannotQuitException) MessageBox.Show("Le propriétaire de la guilde ne peut pas la quitter.", "erreur", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+        }
+
 
         private void onWindowDrag(object sender, MouseButtonEventArgs e)
         {

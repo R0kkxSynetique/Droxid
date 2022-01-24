@@ -330,13 +330,27 @@ namespace Droxid.ViewModels
             }
         }
 
+
         public void KickMember(User member)
         {
             //TODO: Permissions
-            if(member.Id == SelectedGuild.Owner.Id) throw new GuildOwnerCannotBeKickedException();
-            ViewModel.RemoveUserFromGuild(member.Id,SelectedGuild.Id);
+            if (member.Id == SelectedGuild.Owner.Id) throw new GuildOwnerCannotBeKickedException();
+            ViewModel.RemoveUserFromGuild(member.Id, SelectedGuild.Id);
             _members = SelectedGuild.Users;
             NotifyPropertyChanged(nameof(SelectedGuildMembers));
+        }
+
+        public void QuitGuild()
+        {
+            if (_client.Id == SelectedGuild.Owner.Id) throw new GuildOwnerCannotQuitException();
+            ViewModel.RemoveUserFromGuild(_client.Id, SelectedGuild.Id);
+            _guilds.Remove(SelectedGuild);
+            _selectedGuild = null;
+            _selectedChannel = null;
+            _members.Clear();
+            _channels.Clear();
+            NotifyPropertyChanged(nameof(SelectedGuild));
+            NotifyPropertyChanged(nameof(Guilds));
         }
 
         //Property changed dependencies
@@ -368,5 +382,6 @@ namespace Droxid.ViewModels
 
     public class MainWindowViewModelException : Exception { }
     public class GuildOwnerCannotBeKickedException : MainWindowViewModelException { }
+    public class GuildOwnerCannotQuitException : MainWindowViewModelException { }
 
 }
