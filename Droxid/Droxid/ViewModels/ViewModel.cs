@@ -221,7 +221,7 @@ namespace Droxid.ViewModels
             if (owner == null) { throw new EmptyOwnerException(); }
             if (name == null) { throw new EmptyGuildNameException(); }
 
-            string query = $"INSERT INTO guilds (`name`, owner_id) VALUES (\"{name}\", {owner.Id}) RETURNING guilds.id";
+            string query = $"INSERT INTO guilds (`name`, owner_id) VALUES (\"{name}\", {owner.Id}); SELECT LAST_INSERT_ID() AS id;";
             int? id = DBManager.SelectId(query);
             if (id == null) throw new GuildCreationFailedException();
             AddUserToGuild(owner.Id, (int)id);

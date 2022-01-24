@@ -224,7 +224,7 @@ namespace Droxid.DataBase
             IEnumerable queryResult = _connection.Query(query);
             foreach (dynamic singleResult in queryResult)
             {
-                id = singleResult.id;
+                id = (int)singleResult.id;
             }
 
             return id;
