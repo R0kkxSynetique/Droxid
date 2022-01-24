@@ -240,6 +240,12 @@ namespace Droxid.ViewModels
             return DBManager.Insert(query);
         }
 
+        public static int RemoveUserFromGuild(int user, int guild)
+        {
+            string query = $"DELETE FROM guilds_has_users WHERE guilds_id = {guild} AND users_id = {user};";
+            return DBManager.Delete(query);
+        }
+
         //Roles
         /// <summary>
         /// Fetch a list of permissons from a role
