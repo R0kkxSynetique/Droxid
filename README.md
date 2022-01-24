@@ -4,7 +4,7 @@ C'est une application de communication textuel. Elle contient un système de gro
 
 ## Status
 
-Ce projet projet est en plein développement et les releases comprendront surement des bugs. C'est pour cela que les [pull requests](https://github.com/R0kkxSynetique/Droxid/pulls) existent.
+Ce projet est en plein développement et les releases comprendront surement des bugs. C'est pour cela que les [pull requests](https://github.com/R0kkxSynetique/Droxid/pulls) existent pour nous aider à corriger ces erreures.
 
 ## Installer Droxid
 
