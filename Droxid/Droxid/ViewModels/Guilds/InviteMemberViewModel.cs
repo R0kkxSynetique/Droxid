@@ -18,13 +18,15 @@ namespace Droxid.ViewModels
 
         public void InviteUser(string username)
         {
-            try
-            {
-                throw new NotImplementedException();
-            } catch (Exception ex)
-            {
-                throw new NotImplementedException();
-            }
+            User user = ViewModel.GetUserByUsername(username);
+            if ( user == null) throw new UnknownUserException();
+            if (_guild.Users.FirstOrDefault(u =>u.Id == user.Id) != null) throw new UserAlreadyInGuildException();
+            ViewModel.AddUserToGuild(user.Id,_guild.Id);
         }
     }
+
+
+    public class InviteMemberViewModelException : Exception { }
+    public class UnknownUserException : InviteMemberViewModelException { }
+    public class UserAlreadyInGuildException : InviteMemberViewModelException { }
 }

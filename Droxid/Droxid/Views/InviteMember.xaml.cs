@@ -31,7 +31,19 @@ namespace Droxid.Views
 
         public void onInviteClick(object sender, RoutedEventArgs e)
         {
-            _vm.InviteUser("");
+            if (!String.IsNullOrWhiteSpace(txtinputName.Text))
+            {
+                try
+                {
+                    _vm.InviteUser(txtinputName.Text);
+                    Close();
+                }
+                catch (Exception exception)
+                {
+                    if (exception is UnknownUserException) MessageBox.Show("Aucun utilisateur de ce nom n'a été trouvé", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                    if (exception is UserAlreadyInGuildException) MessageBox.Show("Cet utilisateur fait déjà partie de la guilde", "", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
         }
     }
 }
