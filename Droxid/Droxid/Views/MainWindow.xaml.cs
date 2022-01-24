@@ -46,7 +46,7 @@ namespace Droxid.Views
 
         public Visibility GuildAdminControlsVisibility
         {
-            get => (_vm.IsCurrentGuildOwner) ? Visibility.Visible : Visibility.Collapsed;
+            get => (_vm.CanEditGuild()) ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public Visibility GuildMembersListVisibility
@@ -111,7 +111,7 @@ namespace Droxid.Views
 
         private void onManageGuildClick(object sender, RoutedEventArgs e)
         {
-            if(_vm.SelectedGuild != null)
+            if (_vm.SelectedGuild != null)
             {
                 ManageGuild dialog = new(_vm.SelectedGuild);
                 dialog.ShowDialog();
@@ -125,6 +125,14 @@ namespace Droxid.Views
                 ListView listView = (ListView)sender;
                 _vm.SelectedChannel = listView.SelectedItem as Channel;
                 ictlMessages.ScrollToBottom();
+                if (!_vm.canWriteInThisChannel())
+                {
+                    txtMessage.IsEnabled = false;
+                }
+                else
+                {
+                    txtMessage.IsEnabled = true;
+                }
             }
         }
 
@@ -162,7 +170,7 @@ namespace Droxid.Views
 
         private void onEditChannelClick(object sender, RoutedEventArgs e)
         {
-        if(sender is Button btnEditChannel && btnEditChannel.DataContext is Channel channel)
+            if (sender is Button btnEditChannel && btnEditChannel.DataContext is Channel channel)
             {
                 _vm.EditChannel(channel);
             }
@@ -170,7 +178,7 @@ namespace Droxid.Views
 
         private void onDeleteChannelClick(object sender, RoutedEventArgs e)
         {
-            if(sender is Button btnDeleteChannel && btnDeleteChannel.DataContext is Channel channel && MessageBox.Show($"Do you really want to delete \"{channel.Name}\"?", "delete channel", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+            if (sender is Button btnDeleteChannel && btnDeleteChannel.DataContext is Channel channel && MessageBox.Show($"Do you really want to delete \"{channel.Name}\"?", "delete channel", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
             {
                 if (_vm.SelectedChannel == null)
                 {

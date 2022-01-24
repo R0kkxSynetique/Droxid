@@ -11,6 +11,7 @@ namespace Droxid.Models
     {
         private string _name;
         private int _owner;
+        private bool _isPrivate;
         /// <summary>
         /// Creates a new guild
         /// </summary>
@@ -41,6 +42,7 @@ namespace Droxid.Models
         {
             _name = name;
             _owner = owner;
+            _isPrivate = isPrivate;
         }
         /// <summary>
         /// List of roles in this guild

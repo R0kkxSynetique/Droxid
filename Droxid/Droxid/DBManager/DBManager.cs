@@ -100,7 +100,7 @@ namespace Droxid.DataBase
 
             foreach (dynamic singleResult in queryResult)
             {
-                guilds.Add(new(singleResult.id, singleResult.name, singleResult.owner_id, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == true), singleResult.isPrivate));
+                guilds.Add(new(singleResult.id, singleResult.name, singleResult.owner_id, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1), (singleResult.isPrivate == 1)));
             }
 
             return guilds;
@@ -265,6 +265,20 @@ namespace Droxid.DataBase
         public static int InsertMultiple(string query, List<int> parameters)
         {
             return _connection.Execute(query, parameters);
+        }
+
+        public static bool CheckWritePermission(string query)
+        {
+            bool canWrite = false;
+
+            IEnumerable queryResult = _connection.Query(query);
+
+            foreach (dynamic singleResult in queryResult)
+            {
+                if (!String.IsNullOrWhiteSpace(singleResult.permissions_id.ToString())){canWrite = true;};
+            }
+
+            return canWrite;
         }
         /// <summary>
         /// Execute a delete query

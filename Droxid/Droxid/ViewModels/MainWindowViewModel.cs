@@ -85,21 +85,23 @@ namespace Droxid.ViewModels
             if (SelectedGuild != null)
             {
                 //Guild members update
-                List<User> dbUsers = ViewModel.GetGuildUsers(SelectedGuild.Id,_members.OrderBy(user => user.UpdatedAt).DefaultIfEmpty(null).First()?.UpdatedAt ?? new DateTime(0)) ?? new();
+                List<User> dbUsers = ViewModel.GetGuildUsers(SelectedGuild.Id, _members.OrderBy(user => user.UpdatedAt).DefaultIfEmpty(null).First()?.UpdatedAt ?? new DateTime(0)) ?? new();
                 //update content
                 foreach (User dbUser in dbUsers)
                 {
                     User? cachedUser = _members.Find(user => user.Id == dbUser.Id);
-                    if(cachedUser != null)
+                    if (cachedUser != null)
                     {
                         if (dbUser.IsDeleted)
                         {
                             _members.Remove(cachedUser);
-                        } else
+                        }
+                        else
                         {
                             cachedUser.Copy(dbUser);
                         }
-                    } else if (!dbUser.IsDeleted)
+                    }
+                    else if (!dbUser.IsDeleted)
                     {
                         _members.Add(dbUser);
                     }
@@ -138,21 +140,23 @@ namespace Droxid.ViewModels
             //Messages update
             if (SelectedChannel != null)
             {
-                List<Message> dbMessages = ViewModel.GetChannelMessages(SelectedChannel.Id,_messages.OrderBy(message => message.UpdatedAt).DefaultIfEmpty(null).First()?.UpdatedAt ?? new DateTime(0)) ?? new();
+                List<Message> dbMessages = ViewModel.GetChannelMessages(SelectedChannel.Id, _messages.OrderBy(message => message.UpdatedAt).DefaultIfEmpty(null).First()?.UpdatedAt ?? new DateTime(0)) ?? new();
                 //Update content
-                foreach(Message dbMessage in dbMessages)
+                foreach (Message dbMessage in dbMessages)
                 {
-                    Message? cachedMessage = _messages.Find(message=>message.Id == dbMessage.Id);
-                    if(cachedMessage != null)
+                    Message? cachedMessage = _messages.Find(message => message.Id == dbMessage.Id);
+                    if (cachedMessage != null)
                     {
                         if (dbMessage.IsDeleted)
                         {
                             _messages.Remove(cachedMessage);
-                        } else
+                        }
+                        else
                         {
                             cachedMessage.Copy(dbMessage);
                         }
-                    } else if (!dbMessage.IsDeleted)
+                    }
+                    else if (!dbMessage.IsDeleted)
                     {
                         _messages.Add(dbMessage);
                     }
@@ -198,7 +202,7 @@ namespace Droxid.ViewModels
                 if (_selectedGuild != value)
                 {
                     _selectedGuild = value;
-                    _channels = ViewModel.GetGuildChannels(SelectedGuild.Id,_client.Id);
+                    _channels = ViewModel.GetGuildChannels(SelectedGuild.Id, _client.Id);
                     _members = ViewModel.GetGuildUsers(SelectedGuild.Id);
                     NotifyPropertyChanged(nameof(SelectedGuild));
                 }
@@ -224,9 +228,9 @@ namespace Droxid.ViewModels
             set
             {
                 _selectedChannel = value;
-                if(_selectedChannel != null)
+                if (_selectedChannel != null)
                 {
-                _messages = ViewModel.GetChannelMessages(_selectedChannel.Id);
+                    _messages = ViewModel.GetChannelMessages(_selectedChannel.Id);
                 }
                 NotifyPropertyChanged(nameof(SelectedChannel));
             }
@@ -241,7 +245,7 @@ namespace Droxid.ViewModels
 
         public List<User> SelectedGuildMembers
         {
-            get =>  _members; 
+            get => _members;
         }
 
         public bool IsCurrentGuildOwner
@@ -274,6 +278,30 @@ namespace Droxid.ViewModels
         {
             EditChannel dialog = new EditChannel(channel);
             dialog.ShowDialog();
+        }
+
+        public bool canWriteInThisChannel()
+        {
+            if (_selectedChannel != null && _client != null && _selectedGuild != null)
+            {
+                return ViewModel.CanUserWriteInChannel(_selectedChannel.Id, _client.Id, _selectedGuild.Id);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool CanEditGuild()
+        {
+            if (_client != null && _selectedGuild != null)
+            {
+                return ViewModel.CanUserEditGuild(_client.Id, _selectedGuild.Id);
+            }
+            else
+            {
+                return false;
+            }
         }
 
         //Property changed dependencies
