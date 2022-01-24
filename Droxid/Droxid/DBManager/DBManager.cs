@@ -64,7 +64,7 @@ namespace Droxid.DataBase
 
             foreach (dynamic singleResult in queryResult)
             {
-                user = new(singleResult.id, singleResult.username, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1));
+                user = new(singleResult.id, singleResult.username, singleResult.created_at, singleResult.updated_at, singleResult.deleted == 1);
             }
 
             return user;
@@ -82,7 +82,7 @@ namespace Droxid.DataBase
 
             foreach (dynamic singleResult in queryResult)
             {
-                users.Add(new(singleResult.id, singleResult.username, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1)));
+                users.Add(new(singleResult.id, singleResult.username, singleResult.created_at, singleResult.updated_at, singleResult.deleted == 1));
             }
 
             return users;
@@ -100,7 +100,7 @@ namespace Droxid.DataBase
 
             foreach (dynamic singleResult in queryResult)
             {
-                guilds.Add(new(singleResult.id, singleResult.name, singleResult.owner_id, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1), (singleResult.isPrivate == 1)));
+                guilds.Add(new(singleResult.id, singleResult.name, singleResult.owner_id, singleResult.created_at, singleResult.updated_at, singleResult.deleted == 1, (singleResult.isPrivate == 1)));
             }
 
             return guilds;
@@ -118,7 +118,7 @@ namespace Droxid.DataBase
 
             foreach (dynamic singleResult in queryResult)
             {
-                guild = new(singleResult.id, singleResult.name, singleResult.owner, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1), singleResult.isPrivate);
+                guild = new(singleResult.id, singleResult.name, singleResult.owner, singleResult.created_at, singleResult.updated_at, singleResult.deleted == 1, singleResult.isPrivate);
             }
 
             return guild;
@@ -136,7 +136,7 @@ namespace Droxid.DataBase
 
             foreach (dynamic singleResult in queryResult)
             {
-                roles.Add(new(singleResult.id, singleResult.name, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1)));
+                roles.Add(new(singleResult.id, singleResult.name, singleResult.created_at, singleResult.updated_at, singleResult.deleted == 1));
             }
 
             return roles;
@@ -169,7 +169,7 @@ namespace Droxid.DataBase
             {
                 if (!channels.Contains(new(singleResult.id, singleResult.name, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1))))
                 {
-                    channels.Add(new(singleResult.id, singleResult.name, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1)));
+                    channels.Add(new(singleResult.id, singleResult.name, singleResult.created_at, singleResult.updated_at, singleResult.deleted == 1));
                 }
             }
 
@@ -188,7 +188,7 @@ namespace Droxid.DataBase
 
             foreach (dynamic singleResult in queryResult)
             {
-                permissions.Add(new(singleResult.id, singleResult.name, singleResult.description, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1)));
+                permissions.Add(new(singleResult.id, singleResult.name, singleResult.description, singleResult.created_at, singleResult.updated_at, singleResult.deleted == 1));
             }
 
             return permissions;
@@ -206,7 +206,7 @@ namespace Droxid.DataBase
 
             foreach (dynamic singleResult in queryResult)
             {
-                messages.Add(new(singleResult.id, singleResult.content, singleResult.user_id, singleResult.channel_id, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1)));
+                messages.Add(new(singleResult.id, singleResult.content, singleResult.user_id, singleResult.channel_id, singleResult.created_at, singleResult.updated_at, singleResult.deleted == 1));
             }
 
             return messages;
