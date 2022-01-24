@@ -10,9 +10,17 @@ Ce projet projet est en plein développement et les releases comprendront sureme
 
 ## Développer Droxid
 
+### Dépendences
+
 Soyez attentif à respecter ces prérequis:
 
-- lalala
+- .Net 5+
+- MySQL 8.0.25+
+- MySql.Data 8.0.27+
+- Dapper 2.0.123+
+- Newtonsoft.Json(Json.NET) 13.0.1+
+- Microsoft.Toolkit.Mvvm 7.1.2+
+- MariaDB
 
 ### Télécharger le code source
 
