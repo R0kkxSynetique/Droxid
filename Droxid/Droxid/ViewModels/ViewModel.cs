@@ -196,12 +196,12 @@ namespace Droxid.ViewModels
         {
             if (isOwner)
             {
-                string query = $"SELECT * FROM channels WHERE channels.guild_id = {guild} AND channels.updated_at > \"{lastUpdated.ToSqlString()}\" AND channels.deleted = FALSE; ";
+                string query = $"SELECT * FROM channels WHERE channels.guild_id = {guild} AND channels.updated_at > \"{lastUpdated.ToSqlString()}\";";
                 return DBManager.SelectChannels(query);
             }
             else
             {
-                string query = $"SELECT channels.* FROM users_has_roles INNER JOIN roles ON users_has_roles.roles_id = roles.id INNER JOIN channels ON roles.guilds_id = channels.guild_id INNER JOIN roles_has_permissions ON roles_has_permissions.roles_id = roles.id INNER JOIN permissions ON permissions.id = roles_has_permissions.permissions_id WHERE users_has_roles.users_id = {user} AND channels.guild_id = {guild} AND roles_has_permissions.permissions_id = 2 AND channels.updated_at > \"{lastUpdated.ToSqlString()}\" AND channels.deleted = FALSE;";
+                string query = $"SELECT channels.* FROM users_has_roles INNER JOIN roles ON users_has_roles.roles_id = roles.id INNER JOIN channels ON roles.guilds_id = channels.guild_id INNER JOIN roles_has_permissions ON roles_has_permissions.roles_id = roles.id INNER JOIN permissions ON permissions.id = roles_has_permissions.permissions_id WHERE users_has_roles.users_id = {user} AND channels.guild_id = {guild} AND roles_has_permissions.permissions_id = 2 AND channels.updated_at > \"{lastUpdated.ToSqlString()}\";";
                 return DBManager.SelectChannels(query);
             }
 
