@@ -20,7 +20,6 @@ Soyez attentif à respecter ces prérequis:
 - Dapper 2.0.123+
 - Newtonsoft.Json(Json.NET) 13.0.1+
 - Microsoft.Toolkit.Mvvm 7.1.2+
-- MariaDB
 
 ### Télécharger le code source
 
