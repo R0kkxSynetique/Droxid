@@ -19,21 +19,7 @@ namespace Droxid.ViewModels
 
         public void CreateChannel(string name)
         {
-            try
-            {
-                _guild.AddChannel(name);
-            }
-            catch (Exception e)
-            {
-                if (e is EmptyChannelGuild)
-                {
-                    //TODO
-                }
-                if (e is EmptyChannelName)
-                {
-                    //TODO
-                }
-            }
+            _guild.AddChannel(name);
         }
     }
 

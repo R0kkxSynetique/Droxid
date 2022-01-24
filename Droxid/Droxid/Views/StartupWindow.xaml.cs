@@ -149,6 +149,48 @@ namespace Droxid.Views
             }
         }
 
+        private async void OnRegisterClick(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(txtUsername.Text))
+            {
+                if (sender is Button button)
+                {
+                    button.IsEnabled = false;
+
+                    if (!String.IsNullOrWhiteSpace(txtDBServer.Text) && !String.IsNullOrWhiteSpace(txtDBUser.Text) && !String.IsNullOrWhiteSpace(txtDBName.Text) && !String.IsNullOrWhiteSpace(txtUsername.Text))
+                    {
+                        _dbServer = txtDBServer.Text;
+                        _dbPassword = txtDBPassword.Text;
+                        _dbUser = txtDBUser.Text;
+                        _dbName = txtDBName.Text;
+                        _username = txtUsername.Text;
+                        _configFilePath = txtPath.Text;
+                    }
+                    if (await Task<bool>.Run(() => ViewModel.TestConnection(_dbServer, _dbName, _dbUser, _dbPassword)))
+                    {
+                        dbHeader.Background = (Brush)new BrushConverter().ConvertFrom("#36393f");
+
+                        if (await Task<bool>.Run(() => _vm.RegisterUser(_username)))
+                        {
+                            MessageBox.Show("Nouvel utilisateur crée", "succès", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Cet utilisateur existe déjà", "erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+
+                    }
+                    else
+                    {
+                        dbHeader.Background = new SolidColorBrush(Colors.Red);
+                    }
+
+                    button.IsEnabled = true;
+                }
+
+            }
+        }
+
         private void ImportConfig(string fileName)
         {
             if (File.ReadAllText(fileName).Length != 0)

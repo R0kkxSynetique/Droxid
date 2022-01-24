@@ -33,8 +33,23 @@ namespace Droxid.Views
         {
             if (!String.IsNullOrEmpty(txtName.Text))
             {
-                _vm.CreateChannel(txtName.Text);
-                Close();
+                try
+                {
+                    _vm.CreateChannel(txtName.Text);
+                    Close();
+                }
+                catch (Exception exception)
+                {
+                    if (exception is EmptyChannelGuild)
+                    {
+                        MessageBox.Show("La guilde selectionnée n'existe pas", "erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    if (exception is EmptyChannelName)
+                    {
+                        MessageBox.Show("Le nom du canal ne peut pas être vide", "erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+
             }
         }
     }

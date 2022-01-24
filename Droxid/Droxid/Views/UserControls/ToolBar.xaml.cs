@@ -20,31 +20,56 @@ namespace Droxid.Views.UserControls
     /// </summary>
     public partial class ToolBar : UserControl
     {
+        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(ToolBar));
 
-        private Window _window;
         public ToolBar()
         {
-            try
-            {
-                _window = FindParentWindow(this);
-            }
-            catch (NoParentWindowException e)
-            {
-                MessageBox.Show("Unable to find parent window");
-            }
+            Loaded += onControlLoaded;
             InitializeComponent();
+            
         }
 
-        private Window FindParentWindow(DependencyObject element)
+        public string Title
         {
-            DependencyObject parent = VisualTreeHelper.GetParent(element);
-            if (parent == null) throw new NoParentWindowException();
-            return (parent is Window) ? (Window)parent : FindParentWindow(parent);
+            get => (string)GetValue(TitleProperty);
+            set => SetValue(TitleProperty, value);
+        }
+
+        private Window _window
+        {
+            get => Window.GetWindow(this);
+        }
+
+        private void onControlLoaded(object sender, RoutedEventArgs e)
+        {
+            _window.WindowStyle = WindowStyle.None;
+            
+        }
+
+        private void onDrag(object sender, MouseButtonEventArgs e)
+        {
+            _window.DragMove();
         }
 
         private void onCloseClick(object sender, RoutedEventArgs e)
         {
+            _window.Close();
+        }
 
+        private void onMaximizeClick(object sender, RoutedEventArgs e)
+        {
+            if (_window != null)
+            {
+                _window.WindowState = (_window.WindowState == WindowState.Maximized) ? WindowState.Normal : WindowState.Maximized;
+            }
+        }
+
+        private void onMinimizeClick(object sender, RoutedEventArgs e)
+        {
+            if (_window != null)
+            {
+                _window.WindowState = WindowState.Minimized;
+            }
         }
     }
 

@@ -5,8 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Droxid.Views"
         xmlns:vm="clr-namespace:Droxid.ViewModels"
+        xmlns:uc="clr-namespace:Droxid.Views.UserControls"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        d:DataContext="{d:DesignInstance vm:StartupWindowViewModel,IsDesignTimeCreatable=False}"
         Title="StartupWindow" Height="450" Width="400" Background="#2f3136">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CornerRadius="0"/>
+    </WindowChrome.WindowChrome>
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -17,60 +22,76 @@
     <Window.DataContext>
         <vm:StartupWindowViewModel/>
     </Window.DataContext>
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="300">
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="100"/>
-            <ColumnDefinition Width="100*"/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="40"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Border x:Name="dbHeader" Grid.ColumnSpan="2" Background="#36393f">
-            <TextBlock  Text="Database" Foreground="White"  HorizontalAlignment="Center" Margin="2"/>
+        <uc:ToolBar Background="#202225" Title="Configuration"/>
+        <Border Grid.Row="1" Background="#36393f" Padding="10">
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="300">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="100*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Border x:Name="dbHeader" Grid.ColumnSpan="2" Background="#36393f">
+                    <TextBlock  Text="Base de données" Foreground="White" FontWeight="SemiBold" FontSize="14" HorizontalAlignment="Center" Margin="2"/>
+                </Border>
+                <Label Grid.Row="1" Grid.Column="0" Content="Serveur" Foreground="White"/>
+                <TextBox x:Name="txtDBServer" Grid.Row="1" Grid.Column="1" Text="localhost" KeyUp="EnableSaveButton"/>
+                <Label Grid.Row="2" Grid.Column="0" Content="Base de données" Foreground="White"/>
+                <TextBox x:Name="txtDBName" Grid.Row="2" Grid.Column="1" Text="droxid" KeyUp="EnableSaveButton"/>
+                <Label Grid.Row="3" Grid.Column="0" Content="Utilisateur" Foreground="White"/>
+                <TextBox x:Name="txtDBUser" Grid.Row="3" Grid.Column="1" Text="root" KeyUp="EnableSaveButton"/>
+                <Label Grid.Row="4" Grid.Column="0" Content="Mot de passe" Foreground="White"/>
+                <TextBox x:Name="txtDBPassword" Grid.Row="4" Grid.Column="1" Text="" KeyUp="EnableSaveButton"/>
+
+
+                <Border x:Name="ConfigHeader" Grid.ColumnSpan="2" Grid.Row="5" Background="#36393f" Margin="0,4,0,0">
+                    <TextBlock  Text="Fichier de configuration" Foreground="White"  HorizontalAlignment="Center" FontWeight="SemiBold" FontSize="14" Margin="2"/>
+                </Border>
+                <Label Grid.Row="6" Grid.Column="0" Content="Path" Foreground="White"/>
+                <TextBox x:Name="txtPath" Grid.Row="6" Grid.Column="1" IsReadOnly="True"/>
+
+                <Button x:Name="btnImportConfig" Grid.Column="1" Content="Choose configuration file" Margin="0,4,0,0" Grid.Row="7" Click="OnImportConfig_Click"/>
+
+                <Border x:Name="appHeader" Grid.ColumnSpan="2" Grid.Row="8" Background="#36393f" Margin="0,4,0,0">
+                    <TextBlock  Text="Droxid" Foreground="White" FontWeight="SemiBold" FontSize="14"  HorizontalAlignment="Center" Margin="2"/>
+                </Border>
+                <Label Grid.Row="9" Grid.Column="0" Content="Utilisateur" Foreground="White"/>
+                <TextBox x:Name="txtUsername" Grid.Row="9" Grid.Column="1" Text="R0kkxSynetique"/>
+
+                <Grid Grid.Row="11" Grid.ColumnSpan="2" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="btnSave" Grid.Column="0" Content="Sauvegarder" Margin="5,4,10,0" Click="OnSave_Click" IsEnabled="False"/>
+                    <Button x:Name="btnAddUser" Grid.Column="1" Content="Inscription" Margin="10,4,10,0" Click="OnRegisterClick"/>
+                    <Button x:Name="btnConnect" Grid.Column="2" Content="Connexion" Margin="10,4,5,0" Click="OnConnect_Click"/>
+                </Grid>
+
+
+            </Grid>
+
         </Border>
-        <Label Grid.Row="1" Grid.Column="0" Content="Server" Foreground="White"/>
-        <TextBox x:Name="txtDBServer" Grid.Row="1" Grid.Column="1" Text="localhost" KeyUp="EnableSaveButton"/>
-        <Label Grid.Row="2" Grid.Column="0" Content="Database" Foreground="White"/>
-        <TextBox x:Name="txtDBName" Grid.Row="2" Grid.Column="1" Text="droxid" KeyUp="EnableSaveButton"/>
-        <Label Grid.Row="3" Grid.Column="0" Content="User" Foreground="White"/>
-        <TextBox x:Name="txtDBUser" Grid.Row="3" Grid.Column="1" Text="root" KeyUp="EnableSaveButton"/>
-        <Label Grid.Row="4" Grid.Column="0" Content="Password" Foreground="White"/>
-        <TextBox x:Name="txtDBPassword" Grid.Row="4" Grid.Column="1" Text="" KeyUp="EnableSaveButton"/>
-        
-
-        <Border x:Name="ConfigHeader" Grid.ColumnSpan="2" Grid.Row="5" Background="#36393f" Margin="0,4,0,0">
-            <TextBlock  Text="Config File" Foreground="White"  HorizontalAlignment="Center" Margin="2"/>
-        </Border>
-        <Label Grid.Row="6" Grid.Column="0" Content="Path" Foreground="White"/>
-        <TextBox x:Name="txtPath" Grid.Row="6" Grid.Column="1"/>
-
-        <Button x:Name="btnImportConfig" Grid.Column="1" Content="Choose configuration file" Margin="0,4,0,0" Grid.Row="7" Click="OnImportConfig_Click"/>
-
-        <Border x:Name="appHeader" Grid.ColumnSpan="2" Grid.Row="8" Background="#36393f" Margin="0,4,0,0">
-            <TextBlock  Text="Droxid" Foreground="White"  HorizontalAlignment="Center" Margin="2"/>
-        </Border>
-        <Label Grid.Row="9" Grid.Column="0" Content="User" Foreground="White"/>
-        <TextBox x:Name="txtUsername" Grid.Row="9" Grid.Column="1" Text="R0kkxSynetique"/>
-
-        <Grid Grid.Row="11" Grid.ColumnSpan="2" >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Button x:Name="btnSave" Grid.Column="0" Content="Save Config" Margin="5,4,10,0" Click="OnSave_Click" IsEnabled="False"/>
-            <Button x:Name="btnConnect" Grid.Column="1" Content="Connect" Margin="10,4,5,0" Click="OnConnect_Click"/>
-        </Grid>
-        
 
     </Grid>
 </Window>

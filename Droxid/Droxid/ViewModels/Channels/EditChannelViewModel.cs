@@ -19,21 +19,7 @@ namespace Droxid.ViewModels
 
         public void EditChannel(string name)
         {
-            try
-            {
-                _channel.UpdateChannel(name);
-            }
-            catch (Exception e)
-            {
-                if (e is NoGivenChannelException)
-                {
-                    //TODO
-                }
-                if (e is EmptyChannelName)
-                {
-                    //TODO
-                }
-            }
+            _channel.UpdateChannel(name);
         }
     }
 

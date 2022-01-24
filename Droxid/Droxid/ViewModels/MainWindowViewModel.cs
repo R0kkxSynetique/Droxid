@@ -319,7 +319,27 @@ namespace Droxid.ViewModels
         }
 
         //Property changed dependencies
+        public void InviteMember()
+        {
+            if (SelectedGuild != null && IsCurrentGuildOwner)
+            {
+                InviteMember dialog = new InviteMember(_selectedGuild);
+                dialog.ShowDialog();
+                _members = SelectedGuild.Users;
+                NotifyPropertyChanged(nameof(SelectedGuildMembers));
+            }
+        }
 
+        public void KickMember(User member)
+        {
+            //TODO: Permissions
+            if(member.Id == SelectedGuild.Owner.Id) throw new GuildOwnerCannotBeKickedException();
+            ViewModel.RemoveUserFromGuild(member.Id,SelectedGuild.Id);
+            _members = SelectedGuild.Users;
+            NotifyPropertyChanged(nameof(SelectedGuildMembers));
+        }
+
+        //Property changed dependencies
         protected override void NotifyPropertyChanged(string propName)
         {
             base.NotifyPropertyChanged(propName);
@@ -345,5 +365,8 @@ namespace Droxid.ViewModels
         }
 
     }
+
+    public class MainWindowViewModelException : Exception { }
+    public class GuildOwnerCannotBeKickedException : MainWindowViewModelException { }
 
 }

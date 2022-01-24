@@ -69,6 +69,16 @@ namespace Droxid.Views
             get => _vm.CanEditChannel() ? Visibility.Visible : Visibility.Collapsed;
         }
 
+        public int MembersListRowSpan
+        {
+            get => GuildAdminControlsVisibility == Visibility.Collapsed ? 2 : 1;
+        }
+
+        public int MembersListRow
+        {
+            get => GuildAdminControlsVisibility != Visibility.Collapsed ? 1 : 0;
+        }
+
         //ViewModel events
         private void viewmodelProperyChangedEventHandler(object? sender, PropertyChangedEventArgs e)
         {
@@ -94,6 +104,10 @@ namespace Droxid.Views
                     break;
                 case "GuildMembersListVisibility":
                     NotifyPropertyChanged(nameof(ChatRowSpan));
+                    break;
+                case "GuildAdminControlsVisibility":
+                    NotifyPropertyChanged(nameof(MembersListRowSpan));
+                    NotifyPropertyChanged(nameof(MembersListRow));
                     break;
             }
         }
@@ -193,6 +207,26 @@ namespace Droxid.Views
             _membersListToggle = !_membersListToggle;
             NotifyPropertyChanged(nameof(_membersListToggle));
         }
+
+        private void onInviteMemberClick(object sender, RoutedEventArgs e)
+        {
+            _vm.InviteMember();
+        }
+
+        private void onKickMemberClick(object sender, RoutedEventArgs e)
+        {
+            if(sender is Button button && button.DataContext is User user)
+            {
+                try
+                {
+                _vm.KickMember(user);
+                } catch (MainWindowViewModelException ex)
+                {
+                    if(ex is GuildOwnerCannotBeKickedException)MessageBox.Show("Le propriétaire de la guilde ne peut pas être renvoyé","erreur",MessageBoxButton.OK,MessageBoxImage.Warning);
+                }
+            }
+        }
+
 
         private void onWindowDrag(object sender, MouseButtonEventArgs e)
         {
