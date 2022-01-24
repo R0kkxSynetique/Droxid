@@ -21,9 +21,9 @@ namespace Droxid.Views
         private EditChannelViewModel _vm;
         public EditChannel(Channel channel)
         {
-            InitializeComponent();
-            _vm = new EditChannelViewModel (channel);
+            _vm = new EditChannelViewModel(channel);
             DataContext = _vm;
+            InitializeComponent();
             txtName.Text = channel.Name;
         }
 
@@ -31,8 +31,18 @@ namespace Droxid.Views
         {
             if (!String.IsNullOrEmpty(txtName.Text))
             {
-                _vm.EditChannel(txtName.Text);
-                Close();
+                try
+                {
+                    _vm.EditChannel(txtName.Text);
+                    Close();
+                }
+                catch (Exception exception)
+                {
+                    if (exception is NoGivenChannelException) MessageBox.Show("Le canal selectionné n'existe pas", "erreur",MessageBoxButton.OK,MessageBoxImage.Error);
+
+                    if (exception is EmptyChannelName) MessageBox.Show("Le nom du canal ne peut pas être vide","erreur",MessageBoxButton.OK,MessageBoxImage.Error);
+
+                }
             }
         }
     }

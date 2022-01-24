@@ -149,22 +149,45 @@ namespace Droxid.Views
             }
         }
 
-        private void OnRegisterClick(object sender, RoutedEventArgs e)
+        private async void OnRegisterClick(object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(txtUsername.Text))
             {
-                try
+                if (sender is Button button)
                 {
-                    //try to add user
-                    throw new NotImplementedException();
-                    MessageBox.Show("Nouvel utilisateur crée","succès",MessageBoxButton.OK,MessageBoxImage.Information);
-                } catch (Exception ex)
-                {
-                    //utilisateur deja existant
-                    MessageBox.Show("Cet utilisateur existe déjà", "erreur", MessageBoxButton.OK, MessageBoxImage.Error);
-                    //problème de connexion a la base de donnée
-                    MessageBox.Show("Problème de connexion au serveur", "erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                    button.IsEnabled = false;
+
+                    if (!String.IsNullOrWhiteSpace(txtDBServer.Text) && !String.IsNullOrWhiteSpace(txtDBUser.Text) && !String.IsNullOrWhiteSpace(txtDBName.Text) && !String.IsNullOrWhiteSpace(txtUsername.Text))
+                    {
+                        _dbServer = txtDBServer.Text;
+                        _dbPassword = txtDBPassword.Text;
+                        _dbUser = txtDBUser.Text;
+                        _dbName = txtDBName.Text;
+                        _username = txtUsername.Text;
+                        _configFilePath = txtPath.Text;
+                    }
+                    if (await Task<bool>.Run(() => ViewModel.TestConnection(_dbServer, _dbName, _dbUser, _dbPassword)))
+                    {
+                        dbHeader.Background = (Brush)new BrushConverter().ConvertFrom("#36393f");
+
+                        if (await Task<bool>.Run(() => _vm.RegisterUser(_username)))
+                        {
+                            MessageBox.Show("Nouvel utilisateur crée", "succès", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Cet utilisateur existe déjà", "erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+
+                    }
+                    else
+                    {
+                        dbHeader.Background = new SolidColorBrush(Colors.Red);
+                    }
+
+                    button.IsEnabled = true;
                 }
+
             }
         }
 
