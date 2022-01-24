@@ -207,7 +207,16 @@ namespace Droxid.Views
 
         private void onKickMemberClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            if(sender is Button button && button.DataContext is User user)
+            {
+                try
+                {
+                _vm.KickMember(user);
+                } catch (MainWindowViewModelException ex)
+                {
+                    if(ex is GuildOwnerCannotBeKickedException)MessageBox.Show("Le propriétaire de la guilde ne peut pas être renvoyé","erreur",MessageBoxButton.OK,MessageBoxImage.Warning);
+                }
+            }
         }
 
 
