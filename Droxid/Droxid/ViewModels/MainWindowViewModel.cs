@@ -286,6 +286,8 @@ namespace Droxid.ViewModels
             {
                 InviteMember dialog = new InviteMember(_selectedGuild);
                 dialog.ShowDialog();
+                _members = SelectedGuild.Users;
+                NotifyPropertyChanged(nameof(SelectedGuildMembers));
             }
         }
 
@@ -299,7 +301,6 @@ namespace Droxid.ViewModels
         }
 
         //Property changed dependencies
-
         protected override void NotifyPropertyChanged(string propName)
         {
             base.NotifyPropertyChanged(propName);
