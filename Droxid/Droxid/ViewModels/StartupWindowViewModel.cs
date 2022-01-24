@@ -28,7 +28,7 @@ namespace Droxid.ViewModels
         /// Whether the user exists in the database
         /// </summary>
         public bool LoginTest { get => _loginTest; }
-        
+
         /// <summary>
         /// Tries to get the user with a given username
         /// </summary>
@@ -47,6 +47,30 @@ namespace Droxid.ViewModels
             NotifyPropertyChanged(nameof(LoginTest));
             return _loginTest;
         }
+
+        public bool RegisterUser(string username)
+        {
+            bool res = true;
+            try
+            {
+                if (ViewModel.GetUserByUsername(username) != null) throw new ExistingUserException();
+                ViewModel.InsertUser(username);
+            }
+            catch (Exception e)
+            {
+                if (e is ExistingUserException)
+                {
+                    res = false;
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return res;
+        }
     }
+
+    public class ExistingUserException : Exception { }
 }
 
