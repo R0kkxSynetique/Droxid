@@ -300,6 +300,11 @@ namespace Droxid.ViewModels
             EditChannel dialog = new EditChannel(channel);
             dialog.ShowDialog();
         }
+        public void DeleteMessage(Message message)
+        {
+            ViewModel.DeleteMessage(message.Id);
+            NotifyPropertyChanged(nameof(_messages));
+        }
         /// <summary>
         /// Display the dialog to manage a guild
         /// </summary>

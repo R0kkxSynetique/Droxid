@@ -240,6 +240,14 @@ namespace Droxid.Views
             }
         }
 
+        private void onDeleteMessageClick(object sender, RoutedEventArgs e)
+        {
+            if(sender is Button button && button.DataContext is Message message)
+            {
+                _vm.DeleteMessage(message);
+            }
+        }
+
 
         private void onWindowDrag(object sender, MouseButtonEventArgs e)
         {

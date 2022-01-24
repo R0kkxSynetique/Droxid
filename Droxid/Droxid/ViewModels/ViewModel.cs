@@ -418,6 +418,13 @@ namespace Droxid.ViewModels
             return DBManager.SelectChannel(query);
         }
 
+        public static int DeleteMessage(int id)
+        {
+            string query = $"UPDATE messages SET deleted = TRUE WHERE messages.id = {id};";
+
+            return DBManager.Delete(query);
+        }
+
         //Permissions
         /// <summary>
         /// Adds a permission to the database
