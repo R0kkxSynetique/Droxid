@@ -16,7 +16,10 @@ namespace Droxid.ViewModels
         {
             _user = user;
         }
-
+        /// <summary>
+        /// Create a guild with the given name
+        /// </summary>
+        /// <param name="name">Guild name</param>
         public void CreateGuild(string name)
         {
             try

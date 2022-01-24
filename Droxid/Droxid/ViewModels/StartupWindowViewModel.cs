@@ -48,6 +48,10 @@ namespace Droxid.ViewModels
             return _loginTest;
         }
 
+        /// <summary>
+        /// Register an user in the database
+        /// </summary>
+        /// <param name="username">User to register</param>
         public bool RegisterUser(string username)
         {
             bool res = true;

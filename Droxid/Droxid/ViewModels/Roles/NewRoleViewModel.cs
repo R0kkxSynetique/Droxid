@@ -15,6 +15,10 @@ namespace Droxid.ViewModels
             _guild = guild;
         }
 
+        /// <summary>
+        /// Creates a role
+        /// </summary>
+        /// <param name="name">Role name</param>
         public void CreateRole(string name)
         {
             try

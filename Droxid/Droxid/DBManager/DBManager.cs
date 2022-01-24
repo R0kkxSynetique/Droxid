@@ -141,6 +141,11 @@ namespace Droxid.DataBase
 
             return roles;
         }
+        /// <summary>
+        /// Execute a select query for a channel
+        /// </summary>
+        /// <param name="query">Query which will be executed</param>
+        /// <returns>Channel</returns>
         public static Channel SelectChannel(string query)
         {
             Channel? channel = null;
@@ -266,7 +271,11 @@ namespace Droxid.DataBase
         {
             return _connection.Execute(query, parameters);
         }
-
+        /// <summary>
+        /// Execute a select query to check if the user has the permission
+        /// </summary>
+        /// <param name="query">Query which will be executed</param>
+        /// <returns>True if the user has the permission</returns>
         public static bool CheckPermission(string query)
         {
             bool can = false;
@@ -298,7 +307,11 @@ namespace Droxid.DataBase
         {
             return _connection.Execute(query);
         }
-
+        /// <summary>
+        /// Check if the given SELECT query has affected some rows
+        /// </summary>
+        /// <param name="query">Query which will be executed</param>
+        /// <returns>The list of roles from the query</returns>
         public static bool isRowsAffected(string query)
         {
 

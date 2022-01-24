@@ -251,6 +251,9 @@ namespace Droxid.ViewModels
             get => SelectedChannel?.Messages ?? new List<Message>();
         }
 
+        /// <summary>
+        /// List of guild members to render
+        /// </summary>
         public List<User> SelectedGuildMembers
         {
             get => _members;
@@ -270,23 +273,36 @@ namespace Droxid.ViewModels
             _client.SendMessage(content, _selectedChannel.Id);
         }
 
+        /// <summary>
+        /// Display the dialog to create a guild
+        /// </summary>
         public void CreateGuild()
         {
             NewGuild dialog = new NewGuild(_client);
             dialog.ShowDialog();
         }
 
+        /// <summary>
+        /// Display the dialog to create a channel
+        /// </summary>
         public void CreateChannel()
         {
             NewChannel dialog = new NewChannel(_selectedGuild);
             dialog.ShowDialog();
         }
 
+        /// <summary>
+        /// Display the dialog to edit a channel
+        /// </summary>
+        /// <param name="channel">Channel to edit</par
         public void EditChannel(Channel channel)
         {
             EditChannel dialog = new EditChannel(channel);
             dialog.ShowDialog();
         }
+        /// <summary>
+        /// Display the dialog to manage a guild
+        /// </summary>
         public void ManageGuild()
         {
             ManageGuild dialog = new(SelectedGuild);
@@ -298,6 +314,9 @@ namespace Droxid.ViewModels
             }
         }
 
+        /// <summary>
+        /// Check if the client can write in the current channel
+        /// </summary>
         public bool canWriteInThisChannel()
         {
             if (_selectedChannel != null && _client != null && _selectedGuild != null)
@@ -310,6 +329,9 @@ namespace Droxid.ViewModels
             }
         }
 
+        /// <summary>
+        /// Check if the client can edit the current guild
+        /// </summary>
         public bool CanEditGuild()
         {
             if (_client != null && _selectedGuild != null)
@@ -329,6 +351,9 @@ namespace Droxid.ViewModels
             }
         }
 
+        /// <summary>
+        /// Check if the client can edit the current channel
+        /// </summary>
         public bool CanEditChannel()
         {
             if (CanEditGuild())
@@ -343,6 +368,9 @@ namespace Droxid.ViewModels
             return false;
         }
 
+        /// <summary>
+        /// Check if the client is the owner of the current guild
+        /// </summary>
         public bool checkOwner()
         {
             return ViewModel.isUserTheOwner(_client.Id, _selectedGuild.Id);
@@ -360,7 +388,10 @@ namespace Droxid.ViewModels
             }
         }
 
-
+        /// <summary>
+        /// Kick the given member out of the guild
+        /// </summary>
+        /// <param name="member">Member to kick</param>
         public void KickMember(User member)
         {
             //TODO: Permissions
@@ -370,6 +401,9 @@ namespace Droxid.ViewModels
             NotifyPropertyChanged(nameof(SelectedGuildMembers));
         }
 
+        /// <summary>
+        /// Removing the client from the current guild
+        /// </summary>
         public void QuitGuild()
         {
             if (_client.Id == SelectedGuild.Owner.Id) throw new GuildOwnerCannotQuitException();

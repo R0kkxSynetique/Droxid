@@ -16,7 +16,11 @@ namespace Droxid.ViewModels
         {
             _guild = guild;
         }
-
+        
+        /// <summary>
+        /// Creates a channel in the database
+        /// </summary>
+        /// <param name="name">Channel name</param>
         public void CreateChannel(string name)
         {
             _guild.AddChannel(name);

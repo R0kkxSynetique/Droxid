@@ -15,7 +15,10 @@ namespace Droxid.ViewModels
         {
             _guild = guild;
         }
-
+        /// <summary>
+        /// Adds an user to the guild
+        /// </summary>
+        /// <param name="username">User to add to the guild</param>
         public void InviteUser(string username)
         {
             User user = ViewModel.GetUserByUsername(username);

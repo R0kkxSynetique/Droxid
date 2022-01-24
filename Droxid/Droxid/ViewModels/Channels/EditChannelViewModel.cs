@@ -17,6 +17,10 @@ namespace Droxid.ViewModels
             _channel = channel;
         }
 
+        /// <summary>
+        /// Modify a channel from the database
+        /// </summary>
+        /// <param name="name">New channel name</param>
         public void EditChannel(string name)
         {
             _channel.UpdateChannel(name);
