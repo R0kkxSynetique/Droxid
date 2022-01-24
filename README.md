@@ -1,6 +1,6 @@
 # Droxid
 
-Un chat Local gratuit.
+C'est une application de communication textuel. Elle contient un système de groupe destiné à créer un espace d'échange
 
 ## Status
 
