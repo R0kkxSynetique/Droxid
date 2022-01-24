@@ -8,9 +8,8 @@ using Droxid.DataBase;
 
 namespace Droxid.ViewModels
 {
-    public class StartupWindowViewModel : INotifyPropertyChanged
+    public class StartupWindowViewModel : VM
     {
-
         private bool _sqlTest;
         private bool _loginTest;
         /// <summary>
@@ -29,28 +28,7 @@ namespace Droxid.ViewModels
         /// Whether the user exists in the database
         /// </summary>
         public bool LoginTest { get => _loginTest; }
-        /// <summary>
-        /// Set database connection and tests it
-        /// </summary>
-        /// <param name="server">server name/ip</param>
-        /// <param name="user">db user</param>
-        /// <param name="password">db password</param>
-        /// <param name="name">database name</param>
-        /// <returns>whether the connection was succesfull</returns>
-        public bool Connect(string server, string user, string password, string name)
-        {
-            try
-            {
-                DBManager.Connect(server, name, user, password);
-                _sqlTest = true;
-            }
-            catch (Exception ex)
-            {
-                _sqlTest = false;
-            }
-            NotifyPropertyChanged(nameof(SqlTest));
-            return _sqlTest;
-        }
+
         /// <summary>
         /// Tries to get the user with a given username
         /// </summary>
@@ -70,16 +48,33 @@ namespace Droxid.ViewModels
             return _loginTest;
         }
 
-        //Property changed dependencies
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        private void NotifyPropertyChanged(string propName)
+        /// <summary>
+        /// Register an user in the database
+        /// </summary>
+        /// <param name="username">User to register</param>
+        public bool RegisterUser(string username)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+            bool res = true;
+            try
+            {
+                if (ViewModel.GetUserByUsername(username) != null) throw new ExistingUserException();
+                ViewModel.InsertUser(username);
+            }
+            catch (Exception e)
+            {
+                if (e is ExistingUserException)
+                {
+                    res = false;
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return res;
         }
-
     }
 
+    public class ExistingUserException : Exception { }
 }
 

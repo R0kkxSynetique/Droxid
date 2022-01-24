@@ -1,0 +1,41 @@
+﻿<Window x:Class="Droxid.Views.NewRole"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Droxid.Views"
+        xmlns:uc="clr-namespace:Droxid.Views.UserControls"
+        xmlns:vm="clr-namespace:Droxid.ViewModels"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance vm:NewRoleViewModel,IsDesignTimeCreatable=False}"
+        WindowStartupLocation="CenterScreen"
+        Title="NewRole" Height="150" Width="300" Background="#2f3136">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CornerRadius="0"/>
+    </WindowChrome.WindowChrome>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <uc:ToolBar Grid.Row="0" Background="#202225" Title="New Role"/>
+        <Border Grid.Row="1" Padding="10" >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Content="Nom" Foreground="White"></Label>
+                <Border Grid.Row="0" Grid.Column="1" Width="auto" Padding="5">
+                    <TextBox x:Name="txtInputName" VerticalAlignment="Center"/>
+                </Border>
+                <Button Grid.Row="1" Grid.ColumnSpan="2" Click="onSubmitClick" Content="Créer"></Button>
+            </Grid>
+        </Border>
+
+    </Grid>
+</Window>

@@ -11,9 +11,8 @@ using System.Collections;
 namespace Droxid.ViewModels
 {
     // send query(data comes from each model) to dbmanager
-    public class ViewModel
+    public static class ViewModel
     {
-
         //Users
         /// <summary>
         /// Fetch an user by username
@@ -142,6 +141,18 @@ namespace Droxid.ViewModels
             return DBManager.SelectUsers(query);
         }
         /// <summary>
+        /// Fetch a list of all the users in a guild which were updated after a given datetime
+        /// </summary>
+        /// <param name="id">Guild id</param>
+        /// <param name="lastUpdated">Datetime after which the users were updated</param>
+        /// <returns>List of users</returns>
+        public static List<User> GetGuildUsers(int id, DateTime lastUpdated)
+        {
+            string query = $"SELECT users.*FROM guilds_has_users INNER JOIN users ON guilds_has_users.users_id = users.id WHERE guilds_has_users.guilds_id = {id} AND users.updated_at > \"{lastUpdated.ToSqlString()}\";";
+
+            return DBManager.SelectUsers(query);
+        }
+        /// <summary>
         /// Fetch a list of roles in a guild
         /// </summary>
         /// <param name="id">Guild id</param>
@@ -164,16 +175,37 @@ namespace Droxid.ViewModels
             return DBManager.SelectChannels(query);
         }
         /// <summary>
-        /// Fetch a list of channels which were updated after a given datetime
+        /// Fetch a list of channels which the given user is allowed to see
         /// </summary>
-        /// <param name="id">Guild id</param>
-        /// <param name="lastUpdated">Datetime after which the channels were updated</param>
+        /// <param name="guild">Guild id</param>
+        /// <param name="user">User id</param>
         /// <returns>List of channels</returns>
-        public static List<Channel> GetGuildChannels(int id, DateTime lastUpdated)
+        public static List<Channel> GetGuildChannels(int guild, int user)
         {
-            string query = $"SELECT channels.* FROM guilds INNER JOIN channels ON guilds.id = channels.guild_id WHERE guilds.id = {id} AND channels.updated_at > \"{lastUpdated.ToSqlString()}\";";
+            string query = $"SELECT channels.* FROM users_has_roles INNER JOIN roles ON users_has_roles.roles_id = roles.id INNER JOIN channels ON roles.guilds_id = channels.guild_id INNER JOIN roles_has_permissions ON roles_has_permissions.roles_id = roles.id INNER JOIN permissions ON permissions.id = roles_has_permissions.permissions_id WHERE users_has_roles.users_id = {user} AND channels.guild_id = {guild} AND roles_has_permissions.permissions_id = 2 AND channels.deleted = FALSE;";
 
             return DBManager.SelectChannels(query);
+        }
+        /// <summary>
+        /// Fetch a list of channels which were updated after a given datetime
+        /// </summary>
+        /// <param name="guild">Guild id</param>
+        /// <param name="lastUpdated">Datetime after which the channels were updated</param>
+        /// <returns>List of channels</returns>
+        public static List<Channel> GetGuildChannels(int guild, int user, DateTime lastUpdated, bool isOwner = false)
+        {
+            if (isOwner)
+            {
+                string query = $"SELECT * FROM channels WHERE channels.guild_id = {guild} AND channels.updated_at > \"{lastUpdated.ToSqlString()}\";";
+                return DBManager.SelectChannels(query);
+            }
+            else
+            {
+                string query = $"SELECT channels.* FROM users_has_roles INNER JOIN roles ON users_has_roles.roles_id = roles.id INNER JOIN channels ON roles.guilds_id = channels.guild_id INNER JOIN roles_has_permissions ON roles_has_permissions.roles_id = roles.id INNER JOIN permissions ON permissions.id = roles_has_permissions.permissions_id WHERE users_has_roles.users_id = {user} AND channels.guild_id = {guild} AND roles_has_permissions.permissions_id = 2 AND channels.updated_at > \"{lastUpdated.ToSqlString()}\";";
+                return DBManager.SelectChannels(query);
+            }
+
+
         }
         /// <summary>
         /// Adds a guild to the database
@@ -188,6 +220,35 @@ namespace Droxid.ViewModels
             return DBManager.Insert(query);
         }
         /// <summary>
+        /// Creates a guild and adds the owner to the list of members
+        /// </summary>
+        /// <param name="owner">Guild owner</param>
+        /// <param name="name">Guild name</param>
+        /// <exception cref="GuildCreationFailedException"></exception>
+        public static void CreateGuild(this User owner, string name)
+        {
+            if (owner == null) { throw new EmptyOwnerException(); }
+            if (name == null) { throw new EmptyGuildNameException(); }
+
+            string query = $"INSERT INTO guilds (`name`, owner_id) VALUES (\"{name}\", {owner.Id}); SELECT LAST_INSERT_ID() AS id;";
+            int? id = DBManager.SelectId(query);
+            if (id == null) throw new GuildCreationFailedException();
+            AddUserToGuild(owner.Id, (int)id);
+
+        }
+        /// <summary>
+        /// Add a new channel to a guild
+        /// </summary>
+        /// <param name="guild">Guild</param>
+        /// <param name="name">New channel name</param>
+        public static void AddChannel(this Guild guild, string name)
+        {
+            if (guild == null) { throw new EmptyChannelGuild(); }
+            if (string.IsNullOrWhiteSpace(name)) { throw new EmptyChannelName(); }
+
+            InsertChannel(name, guild.Id);
+        }
+        /// <summary>
         /// Add an user to a guild
         /// </summary>
         /// <param name="user">User id</param>
@@ -198,6 +259,12 @@ namespace Droxid.ViewModels
             string query = $"INSERT INTO guilds_has_users (guilds_id, users_id) VALUES (\"{guild}\", {user})";
 
             return DBManager.Insert(query);
+        }
+
+        public static int RemoveUserFromGuild(int user, int guild)
+        {
+            string query = $"DELETE FROM guilds_has_users WHERE guilds_id = {guild} AND users_id = {user};";
+            return DBManager.Delete(query);
         }
 
         //Roles
@@ -249,6 +316,12 @@ namespace Droxid.ViewModels
 
             return DBManager.Insert(query);
         }
+        public static List<User> GetRoleUsers(int role)
+        {
+            string query = $"SELECT users.* FROM users_has_roles INNER JOIN users ON users_has_roles.users_id = users.id WHERE users_has_roles.roles_id = {role}";
+
+            return DBManager.SelectUsers(query);
+        }
 
         //Channels
         /// <summary>
@@ -281,7 +354,7 @@ namespace Droxid.ViewModels
         /// <returns>List of permissions</returns>
         public static List<Permission> GetChannelPermissions(int id)
         {
-            string query = $"";
+            string query = $"SELECT permissions.* FROM roles_has_permissions INNER JOIN permissions ON roles_has_permissions.permissions_id = permissions.id WHERE roles_has_permissions.channels_id = {id}";
 
             return DBManager.SelectPermissions(query);
         }
@@ -297,7 +370,32 @@ namespace Droxid.ViewModels
 
             return DBManager.Insert(query);
         }
+        /// <summary>
+        /// Modify a channel from the database
+        /// </summary>
+        /// <param name="channel">Channel to edit</param>
+        /// <param name="name">New channel name</param>
+        /// <returns>Number of rows affected</returns>
+        public static int UpdateChannel(this Channel channel, string name)
+        {
+            if (channel == null) { throw new NoGivenChannelException(); }
+            if (string.IsNullOrWhiteSpace(name)) { throw new EmptyChannelName(); }
 
+            string query = $"UPDATE channels SET `name` = \"{name}\" WHERE id = {channel.Id}";
+
+            return DBManager.Update(query);
+        }
+        /// <summary>
+        /// Mark the channel as delete in the database
+        /// </summary>
+        /// <param name="channel">Channel to delete</param>
+        /// <returns>Number of rows affected</returns>
+        public static int DeleteChannel(this Channel channel)
+        {
+            string query = $"UPDATE channels SET deleted = 1 WHERE id = {channel.Id}";
+
+            return DBManager.Delete(query);
+        }
         //Messages
         /// <summary>
         /// Add a message to the database
@@ -313,6 +411,20 @@ namespace Droxid.ViewModels
             return DBManager.Insert(query);
         }
 
+        public static Channel GetMessageChannel(int message)
+        {
+            string query = $"SELECT channels.* FROM messages INNER JOIN channels ON messages.channel_id = channels.id WHERE messages.id = {message}";
+
+            return DBManager.SelectChannel(query);
+        }
+
+        public static int DeleteMessage(int id)
+        {
+            string query = $"UPDATE messages SET deleted = TRUE WHERE messages.id = {id};";
+
+            return DBManager.Delete(query);
+        }
+
         //Permissions
         /// <summary>
         /// Adds a permission to the database
@@ -326,5 +438,84 @@ namespace Droxid.ViewModels
 
             return DBManager.Insert(query);
         }
+
+        public static List<Role> GetPermissionRoles(int permission)
+        {
+            string query = $"SELECT roles.* FROM roles_has_permissions INNER JOIN roles ON roles_has_permissions.roles_id = roles.id INNER JOIN permissions ON roles_has_permissions.permissions_id = permissions.id WHERE permissions.id = {permission}";
+
+            return DBManager.SelectRoles(query);
+        }
+
+        public static bool CanUserWriteInChannel(int channel, int user, int guild)
+        {
+            string query = $"SELECT roles_has_permissions.permissions_id FROM roles_has_permissions INNER JOIN roles ON roles_has_permissions.roles_id = roles.id INNER JOIN users_has_roles ON roles.id = users_has_roles.roles_id INNER JOIN users ON users_has_roles.users_id = users.id WHERE roles_has_permissions.permissions_id = 1 AND roles_has_permissions.channels_id = {channel} AND users.id = {user} OR roles_has_permissions.permissions_id = 1 AND roles.guilds_id = {guild} AND users.id = {user} AND roles_has_permissions.channels_id IS NULL";
+
+            return DBManager.CheckPermission(query);
+        }
+
+        public static bool CanUserEditGuild(int user, int guild)
+        {
+            string query = $"SELECT * FROM roles_has_permissions INNER JOIN roles ON roles_has_permissions.roles_id = roles.id INNER JOIN users_has_roles ON roles.id = users_has_roles.roles_id INNER JOIN users ON users_has_roles.users_id = users.id INNER JOIN guilds ON roles.guilds_id = guilds.id WHERE roles_has_permissions.permissions_id = 5 AND roles.guilds_id = {guild} AND users.id = {user} OR roles.guilds_id = {guild} AND guilds.owner_id = {user} AND users.id = {user}";
+
+            return DBManager.CheckPermission(query);
+        }
+
+        public static bool CanUserEditChannel(int user, int channel, int guild)
+        {
+            string query = $"SELECT * FROM roles_has_permissions INNER JOIN roles ON roles_has_permissions.roles_id = roles.id INNER JOIN users_has_roles ON roles.id = users_has_roles.roles_id INNER JOIN users ON users_has_roles.users_id = users.id INNER JOIN guilds ON roles.guilds_id = guilds.id WHERE roles_has_permissions.permissions_id = 3 AND roles.guilds_id = {guild} AND users.id = {user} AND channels_id IS NULL OR roles.guilds_id = {guild} AND guilds.owner_id = {user} AND users.id = {user} OR roles_has_permissions.channels_id = {channel} AND roles_has_permissions.permissions_id = 3 AND users.id = {user}";
+
+            return DBManager.CheckPermission(query);
+        }
+
+        public static bool isUserTheOwner(int user, int guild)
+        {
+            string query = $"SELECT * FROM guilds WHERE guilds.owner_id = {user} AND guilds.id = {guild}";
+
+            return DBManager.isRowsAffected(query);
+        }
+
+        public static int DeleteGuild(int guild)
+        {
+            string query = $"UPDATE guilds SET deleted = 1 WHERE id = {guild} ";
+
+            return DBManager.Update(query);
+        }
+        public static bool TestConnection()
+        {
+            try
+            {
+                DBManager.OpenDBConnection();
+                return true;
+
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public static bool TestConnection(string server, string database, string user, string password)
+        {
+            try
+            {
+                DBManager.OpenDBConnection(server, database, user, password);
+                return true;
+
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
+
+    public class ViewModelException : Exception { }
+    public class GuildCreationFailedException : ViewModelException { }
+    public class ChannelCreationFailedException : ViewModelException { }
+    public class NoGivenChannelException : ViewModelException { }
+    public class NoSelectedChannelException : ViewModelException { }
+    public class EmptyOwnerException : GuildCreationFailedException { }
+    public class EmptyGuildNameException : GuildCreationFailedException { }
+    public class EmptyChannelName : ChannelCreationFailedException { }
+    public class EmptyChannelGuild : ChannelCreationFailedException { }
+
 }

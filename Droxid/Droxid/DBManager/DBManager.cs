@@ -12,12 +12,27 @@ using Droxid.ViewModels;
 
 namespace Droxid.DataBase
 {
-    // This class will only open connection to DB
     public class DBManager
     {
-        // TODO Need to be in a config file NOT SECURED
+        private static string _defaultConfigPath = AppDomain.CurrentDomain.BaseDirectory + "config.drxd";
+
         //This may not work beacause of the static methods(May need an object to end a connection)
-        private static MySqlConnection _connection = new("Database=droxid;Server=localhost;user=Droxid;password=Droxid;");
+        private static MySqlConnection _connection;
+
+        /// <summary>
+        /// Changes the static connection during runtime and opens it
+        /// </summary>
+        /// <param name="server">name/ip address of the sql server</param>
+        /// <param name="database">database name used for droxid</param>
+        /// <param name="user">database user with CRUD access to the database</param>
+        /// <param name="password">user's password</param>
+        /// <exception cref="System.InvalidOperationException"></exception>
+        /// <exception cref="MySql.Data.MySqlClient.MySqlException">Thrown when the connection failed to open</exception>
+        public static void OpenDBConnection(string server, string database, string user, string password)
+        {
+            _connection = new($"Database={database};Server={server};user={user};password={password};CharSet=utf8mb4;");
+            _connection.Open();
+        }
 
         /// <summary>
         /// Opens the connection to the database using the static connection instance
@@ -35,21 +50,7 @@ namespace Droxid.DataBase
         {
             _connection.Close();
         }
-        /// <summary>
-        /// Changes the static connection during runtime and open/closes it once to test it
-        /// </summary>
-        /// <param name="server">name/ip address of the sql server</param>
-        /// <param name="database">database name used for droxid</param>
-        /// <param name="user">database user with CRUD access to the database</param>
-        /// <param name="password">user's password</param>
-        /// <exception cref="System.InvalidOperationException"></exception>
-        /// <exception cref="MySql.Data.MySqlClient.MySqlException">Thrown when the connection failed to open</exception>
-        public static void Connect(string server, string database, string user, string password)
-        {
-            _connection = new($"Database={database};Server={server};user={user};password={password};");
-            OpenDBConnection();
-            CloseDBConnection();
-        }
+
         /// <summary>
         /// Executes a select query for 1 user
         /// </summary>
@@ -63,7 +64,7 @@ namespace Droxid.DataBase
 
             foreach (dynamic singleResult in queryResult)
             {
-                user = new(singleResult.id, singleResult.username, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1));
+                user = new(singleResult.id, singleResult.username, singleResult.created_at, singleResult.updated_at, singleResult.deleted == 1);
             }
 
             return user;
@@ -75,13 +76,13 @@ namespace Droxid.DataBase
         /// <returns>The list of users from the query</returns>
         public static List<User> SelectUsers(string query)
         {
-            List<User>? users = new();
+            List<User> users = new();
 
             IEnumerable queryResult = _connection.Query(query);
 
             foreach (dynamic singleResult in queryResult)
             {
-                users.Add(new(singleResult.id, singleResult.username, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1)));
+                users.Add(new(singleResult.id, singleResult.username, singleResult.created_at, singleResult.updated_at, singleResult.deleted == 1));
             }
 
             return users;
@@ -99,7 +100,7 @@ namespace Droxid.DataBase
 
             foreach (dynamic singleResult in queryResult)
             {
-                guilds.Add(new(singleResult.id, singleResult.name, singleResult.owner_id, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1)));
+                guilds.Add(new(singleResult.id, singleResult.name, singleResult.owner_id, singleResult.created_at, singleResult.updated_at, singleResult.deleted == 1, (singleResult.isPrivate == 1)));
             }
 
             return guilds;
@@ -117,7 +118,7 @@ namespace Droxid.DataBase
 
             foreach (dynamic singleResult in queryResult)
             {
-                guild = new(singleResult.id, singleResult.name, singleResult.owner, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1));
+                guild = new(singleResult.id, singleResult.name, singleResult.owner, singleResult.created_at, singleResult.updated_at, singleResult.deleted == 1, singleResult.isPrivate);
             }
 
             return guild;
@@ -135,10 +136,28 @@ namespace Droxid.DataBase
 
             foreach (dynamic singleResult in queryResult)
             {
-                roles.Add(new(singleResult.id, singleResult.name, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1)));
+                roles.Add(new(singleResult.id, singleResult.name, singleResult.created_at, singleResult.updated_at, singleResult.deleted == 1));
             }
 
             return roles;
+        }
+        /// <summary>
+        /// Execute a select query for a channel
+        /// </summary>
+        /// <param name="query">Query which will be executed</param>
+        /// <returns>Channel</returns>
+        public static Channel SelectChannel(string query)
+        {
+            Channel? channel = null;
+
+            IEnumerable queryResult = _connection.Query(query);
+
+            foreach (dynamic singleResult in queryResult)
+            {
+                channel = new(singleResult.id, singleResult.name, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1));
+            }
+
+            return channel;
         }
         /// <summary>
         /// Execute a select query for multiple channels
@@ -147,13 +166,16 @@ namespace Droxid.DataBase
         /// <returns>The list of channels from the query</returns>
         public static List<Channel> SelectChannels(string query)
         {
-            List<Channel>? channels = new();
+            List<Channel> channels = new();
 
             IEnumerable queryResult = _connection.Query(query);
 
             foreach (dynamic singleResult in queryResult)
             {
-                channels.Add(new(singleResult.id, singleResult.name, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1)));
+                if (!channels.Contains(new(singleResult.id, singleResult.name, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1))))
+                {
+                    channels.Add(new(singleResult.id, singleResult.name, singleResult.created_at, singleResult.updated_at, singleResult.deleted == 1));
+                }
             }
 
             return channels;
@@ -165,13 +187,13 @@ namespace Droxid.DataBase
         /// <returns>The list of permissions from the query</returns>
         public static List<Permission> SelectPermissions(string query)
         {
-            List<Permission>? permissions = new();
+            List<Permission> permissions = new();
 
             IEnumerable queryResult = _connection.Query(query);
 
             foreach (dynamic singleResult in queryResult)
             {
-                permissions.Add(new(singleResult.id, singleResult.name, singleResult.description, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1)));
+                permissions.Add(new(singleResult.id, singleResult.name, singleResult.description, singleResult.created_at, singleResult.updated_at, singleResult.deleted == 1));
             }
 
             return permissions;
@@ -183,16 +205,52 @@ namespace Droxid.DataBase
         /// <returns>The list of messages from the query</returns>
         public static List<Message> SelectMessages(string query)
         {
-            List<Message>? messages = new();
+            List<Message> messages = new();
 
             IEnumerable queryResult = _connection.Query(query);
 
             foreach (dynamic singleResult in queryResult)
             {
-                messages.Add(new(singleResult.id, singleResult.content, singleResult.user_id, singleResult.channel_id, singleResult.created_at, singleResult.updated_at, (singleResult.deleted == 1)));
+                messages.Add(new(singleResult.id, singleResult.content, singleResult.user_id, singleResult.channel_id, singleResult.created_at, singleResult.updated_at, singleResult.deleted == 1));
             }
 
             return messages;
+        }
+        /// <summary>
+        /// Execute a select which returns a single id
+        /// </summary>
+        /// <remarks>Mainly for inserts with the RETURNING keyword</remarks>
+        /// <param name="query">Query which will be executed</param>
+        /// <returns>id || null when there are no matches</returns>
+        public static int? SelectId(string query)
+        {
+            int? id = null;
+
+            IEnumerable queryResult = _connection.Query(query);
+            foreach (dynamic singleResult in queryResult)
+            {
+                id = (int)singleResult.id;
+            }
+
+            return id;
+        }
+        /// <summary>
+        /// Execute a select which returns multiple ids
+        /// </summary>
+        /// <remarks>Mainly for inserts with the RETURNING keyword</remarks>
+        /// <param name="query">Query which will be executed</param>
+        /// <returns>List of ids</returns>
+        public static List<int> SelectIds(string query)
+        {
+            List<int> ids = new List<int>();
+            IEnumerable queryResult = _connection.Query(query);
+
+            foreach (dynamic singleResult in queryResult)
+            {
+                ids.Add(singleResult.id);
+            }
+
+            return ids;
         }
         /// <summary>
         /// Execute an insert query
@@ -212,6 +270,57 @@ namespace Droxid.DataBase
         public static int InsertMultiple(string query, List<int> parameters)
         {
             return _connection.Execute(query, parameters);
+        }
+        /// <summary>
+        /// Execute a select query to check if the user has the permission
+        /// </summary>
+        /// <param name="query">Query which will be executed</param>
+        /// <returns>True if the user has the permission</returns>
+        public static bool CheckPermission(string query)
+        {
+            bool can = false;
+
+            IEnumerable queryResult = _connection.Query(query);
+
+            foreach (dynamic singleResult in queryResult)
+            {
+                if (!String.IsNullOrWhiteSpace(singleResult.permissions_id.ToString())) { can = true; };
+            }
+
+            return can;
+        }
+        /// <summary>
+        /// Execute a delete query
+        /// </summary>
+        /// <param name="query">Query which will be executed</param>
+        /// <returns>The number of rows affected</returns>
+        public static int Delete(string query)
+        {
+            return _connection.Execute(query);
+        }
+        /// <summary>
+        /// Execute an update query
+        /// </summary>
+        /// <param name="query">Query which will be executed</param>
+        /// <returns>The number of rows affected</returns>
+        public static int Update(string query)
+        {
+            return _connection.Execute(query);
+        }
+        /// <summary>
+        /// Check if the given SELECT query has affected some rows
+        /// </summary>
+        /// <param name="query">Query which will be executed</param>
+        /// <returns>The list of roles from the query</returns>
+        public static bool isRowsAffected(string query)
+        {
+
+            if(_connection.Query(query).Count() > 0)
+            {
+                return true;
+            }
+            return false;
+
         }
     }
 }
