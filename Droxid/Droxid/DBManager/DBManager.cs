@@ -275,7 +275,7 @@ namespace Droxid.DataBase
 
             foreach (dynamic singleResult in queryResult)
             {
-                if (!String.IsNullOrWhiteSpace(singleResult.permissions_id.ToString())){can = true;};
+                if (!String.IsNullOrWhiteSpace(singleResult.permissions_id.ToString())) { can = true; };
             }
 
             return can;
@@ -297,6 +297,17 @@ namespace Droxid.DataBase
         public static int Update(string query)
         {
             return _connection.Execute(query);
+        }
+
+        public static bool isRowsAffected(string query)
+        {
+
+            if(_connection.Query(query).Count() > 0)
+            {
+                return true;
+            }
+            return false;
+
         }
     }
 }

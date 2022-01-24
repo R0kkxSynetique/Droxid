@@ -108,7 +108,7 @@ namespace Droxid.ViewModels
                 }
 
                 //Channels update
-                List<Channel> dbChannels = ViewModel.GetGuildChannels(SelectedGuild.Id, _client.Id, _channels.OrderBy(channel => channel.UpdatedAt).DefaultIfEmpty(null).First()?.UpdatedAt ?? new DateTime(0)) ?? new();
+                List<Channel> dbChannels = ViewModel.GetGuildChannels(SelectedGuild.Id, _client.Id, _channels.OrderBy(channel => channel.UpdatedAt).DefaultIfEmpty(null).First()?.UpdatedAt ?? new DateTime(0),checkOwner()) ?? new();
                 //update content
                 foreach (Channel dbChannel in dbChannels)
                 {
@@ -296,7 +296,14 @@ namespace Droxid.ViewModels
         {
             if (_client != null && _selectedGuild != null)
             {
-                return ViewModel.CanUserEditGuild(_client.Id, _selectedGuild.Id);
+                if (checkOwner())
+                {
+                    return true;
+                }
+                else
+                {
+                    return ViewModel.CanUserEditGuild(_client.Id, _selectedGuild.Id);
+                }
             }
             else
             {
@@ -316,6 +323,11 @@ namespace Droxid.ViewModels
             }
 
             return false;
+        }
+
+        public bool checkOwner()
+        {
+            return ViewModel.isUserTheOwner(_client.Id, _selectedGuild.Id);
         }
 
         //Property changed dependencies

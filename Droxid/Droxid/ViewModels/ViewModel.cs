@@ -192,11 +192,20 @@ namespace Droxid.ViewModels
         /// <param name="guild">Guild id</param>
         /// <param name="lastUpdated">Datetime after which the channels were updated</param>
         /// <returns>List of channels</returns>
-        public static List<Channel> GetGuildChannels(int guild, int user, DateTime lastUpdated)
+        public static List<Channel> GetGuildChannels(int guild, int user, DateTime lastUpdated, bool isOwner = false)
         {
-            string query = $"SELECT channels.* FROM users_has_roles INNER JOIN roles ON users_has_roles.roles_id = roles.id INNER JOIN channels ON roles.guilds_id = channels.guild_id INNER JOIN roles_has_permissions ON roles_has_permissions.roles_id = roles.id INNER JOIN permissions ON permissions.id = roles_has_permissions.permissions_id WHERE users_has_roles.users_id = {user} AND channels.guild_id = {guild} AND roles_has_permissions.permissions_id = 2 AND channels.updated_at > \"{lastUpdated.ToSqlString()}\" AND channels.deleted = FALSE;";
+            if (isOwner)
+            {
+                string query = $"SELECT * FROM channels WHERE channels.guild_id = {guild} AND channels.updated_at > \"{lastUpdated.ToSqlString()}\" AND channels.deleted = FALSE; ";
+                return DBManager.SelectChannels(query);
+            }
+            else
+            {
+                string query = $"SELECT channels.* FROM users_has_roles INNER JOIN roles ON users_has_roles.roles_id = roles.id INNER JOIN channels ON roles.guilds_id = channels.guild_id INNER JOIN roles_has_permissions ON roles_has_permissions.roles_id = roles.id INNER JOIN permissions ON permissions.id = roles_has_permissions.permissions_id WHERE users_has_roles.users_id = {user} AND channels.guild_id = {guild} AND roles_has_permissions.permissions_id = 2 AND channels.updated_at > \"{lastUpdated.ToSqlString()}\" AND channels.deleted = FALSE;";
+                return DBManager.SelectChannels(query);
+            }
 
-            return DBManager.SelectChannels(query);
+
         }
         /// <summary>
         /// Adds a guild to the database
@@ -432,7 +441,7 @@ namespace Droxid.ViewModels
 
         public static bool CanUserWriteInChannel(int channel, int user, int guild)
         {
-            string query = $"SELECT roles_has_permissions.permissions_id FROM roles_has_permissions INNER JOIN roles ON roles_has_permissions.roles_id = roles.id INNER JOIN users_has_roles ON roles.id = users_has_roles.roles_id INNER JOIN users ON users_has_roles.users_id = users.id WHERE roles_has_permissions.permissions_id = 1 AND roles_has_permissions.channels_id = {channel} AND users.id = {user} OR roles_has_permissions.permissions_id = 1 AND roles.guilds_id = {guild} AND users.id = {user}";
+            string query = $"SELECT roles_has_permissions.permissions_id FROM roles_has_permissions INNER JOIN roles ON roles_has_permissions.roles_id = roles.id INNER JOIN users_has_roles ON roles.id = users_has_roles.roles_id INNER JOIN users ON users_has_roles.users_id = users.id WHERE roles_has_permissions.permissions_id = 1 AND roles_has_permissions.channels_id = {channel} AND users.id = {user} OR roles_has_permissions.permissions_id = 1 AND roles.guilds_id = {guild} AND users.id = {user} AND roles_has_permissions.channels_id IS NULL";
 
             return DBManager.CheckPermission(query);
         }
@@ -449,6 +458,13 @@ namespace Droxid.ViewModels
             string query = $"SELECT * FROM roles_has_permissions INNER JOIN roles ON roles_has_permissions.roles_id = roles.id INNER JOIN users_has_roles ON roles.id = users_has_roles.roles_id INNER JOIN users ON users_has_roles.users_id = users.id INNER JOIN guilds ON roles.guilds_id = guilds.id WHERE roles_has_permissions.permissions_id = 3 AND roles.guilds_id = {guild} AND users.id = {user} AND channels_id IS NULL OR roles.guilds_id = {guild} AND guilds.owner_id = {user} AND users.id = {user} OR roles_has_permissions.channels_id = {channel} AND roles_has_permissions.permissions_id = 3 AND users.id = {user}";
 
             return DBManager.CheckPermission(query);
+        }
+
+        public static bool isUserTheOwner(int user, int guild)
+        {
+            string query = $"SELECT * FROM guilds WHERE guilds.owner_id = {user} AND guilds.id = {guild}";
+
+            return DBManager.isRowsAffected(query);
         }
         public static bool TestConnection()
         {

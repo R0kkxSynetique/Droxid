@@ -139,13 +139,12 @@ namespace Droxid.Views
                 ListView listView = (ListView)sender;
                 _vm.SelectedChannel = listView.SelectedItem as Channel;
                 ictlMessages.ScrollToBottom();
-                if (!_vm.canWriteInThisChannel())
-                {
-                    txtMessage.IsEnabled = false;
-                }
-                else
+                if (_vm.canWriteInThisChannel() || _vm.checkOwner())
                 {
                     txtMessage.IsEnabled = true;
+                }else
+                {
+                    txtMessage.IsEnabled = false;
                 }
             }
         }
