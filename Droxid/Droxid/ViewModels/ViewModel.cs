@@ -466,6 +466,13 @@ namespace Droxid.ViewModels
 
             return DBManager.isRowsAffected(query);
         }
+
+        public static int DeleteGuild(int guild)
+        {
+            string query = $"UPDATE guilds SET deleted = 1 WHERE id = {guild} ";
+
+            return DBManager.Update(query);
+        }
         public static bool TestConnection()
         {
             try

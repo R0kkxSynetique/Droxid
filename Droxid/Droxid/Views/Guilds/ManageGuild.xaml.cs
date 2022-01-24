@@ -19,11 +19,13 @@ namespace Droxid.Views
     public partial class ManageGuild : Window
     {
         private ManageGuildViewModel _vm;
+        public bool DeletedGuild;
         public ManageGuild(Guild guild)
         {
             InitializeComponent();
             _vm = new ManageGuildViewModel(guild);
             DataContext = _vm;
+            DeletedGuild = false;
         }
 
         private void onSaveClick(object sender, RoutedEventArgs e)
@@ -35,7 +37,8 @@ namespace Droxid.Views
         {
             if (MessageBox.Show("Voulez vous vraiment effacer cette guild?", "Effacer la guilde", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
             {
-                throw new NotImplementedException();
+                DeletedGuild = true;
+                this.Close();
             }
         }
 

@@ -127,8 +127,7 @@ namespace Droxid.Views
         {
             if (_vm.SelectedGuild != null)
             {
-                ManageGuild dialog = new(_vm.SelectedGuild);
-                dialog.ShowDialog();
+                _vm.ManageGuild();
             }
         }
 

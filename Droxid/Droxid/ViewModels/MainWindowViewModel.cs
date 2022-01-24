@@ -202,8 +202,16 @@ namespace Droxid.ViewModels
                 if (_selectedGuild != value)
                 {
                     _selectedGuild = value;
+                    if (_selectedGuild == null)
+                    {
+                        _channels.Clear();
+                        _members.Clear();
+                    }
+                    else
+                    {
                     _channels = ViewModel.GetGuildChannels(SelectedGuild.Id, _client.Id);
                     _members = ViewModel.GetGuildUsers(SelectedGuild.Id);
+                    }
                     NotifyPropertyChanged(nameof(SelectedGuild));
                 }
             }
@@ -278,6 +286,16 @@ namespace Droxid.ViewModels
         {
             EditChannel dialog = new EditChannel(channel);
             dialog.ShowDialog();
+        }
+        public void ManageGuild()
+        {
+            ManageGuild dialog = new(SelectedGuild);
+            dialog.ShowDialog();
+            if (dialog.DeletedGuild)
+            {
+                ViewModel.DeleteGuild(SelectedGuild.Id);
+                NotifyPropertyChanged(nameof(SelectedGuild));
+            }
         }
 
         public bool canWriteInThisChannel()
